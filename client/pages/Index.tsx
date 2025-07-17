@@ -570,7 +570,11 @@ export default function Index() {
                 </div>
 
                 <div className="border-t border-border pt-4">
-                  <Button variant="outline" className="w-full text-sm">
+                  <Button
+                    variant="outline"
+                    className="w-full text-sm"
+                    onClick={downloadTranscript}
+                  >
                     <svg
                       className="w-4 h-4 mr-2"
                       fill="none"
