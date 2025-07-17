@@ -386,6 +386,9 @@ export default function Index() {
           </div>
         </div>
       </div>
+
+      {/* Chat Widget Overlay */}
+      <ChatWidgetDemo />
     </div>
   );
 }
