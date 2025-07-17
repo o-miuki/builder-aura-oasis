@@ -11,6 +11,25 @@ export default function Index() {
   const [showConversations, setShowConversations] = useState(false);
   const [showSidebar, setShowSidebar] = useState(false);
 
+  const downloadTranscript = () => {
+    const transcript = messages
+      .map(
+        (msg) =>
+          `[${msg.time}] ${msg.sender === "user" ? "John Doe" : "Support"}: ${msg.text}`,
+      )
+      .join("\n");
+
+    const blob = new Blob([transcript], { type: "text/plain" });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement("a");
+    a.href = url;
+    a.download = `chat-transcript-${new Date().toISOString().split("T")[0]}.txt`;
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+    URL.revokeObjectURL(url);
+  };
+
   const conversations = [
     {
       id: "1",
