@@ -29,6 +29,7 @@ export default function Index() {
   const [showConversations, setShowConversations] = useState(false);
   const [showSidebar, setShowSidebar] = useState(false);
   const [showChatWidget, setShowChatWidget] = useState(false);
+  const [isWidgetOpen, setIsWidgetOpen] = useState(false);
   const [conversations, setConversations] = useState<Conversation[]>([
     {
       id: "1",
