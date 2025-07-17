@@ -57,11 +57,30 @@ export default {
           border: "hsl(var(--sidebar-border))",
           ring: "hsl(var(--sidebar-ring))",
         },
+
+        // Chat-specific colors
+        success: {
+          DEFAULT: "hsl(var(--success))",
+          foreground: "hsl(var(--success-foreground))",
+        },
+        "chat-bubble": {
+          user: "hsl(var(--chat-bubble-user))",
+          support: "hsl(var(--chat-bubble-support))",
+        },
+        "chat-placeholder": "hsl(var(--chat-placeholder))",
+        "chat-timestamp": "hsl(var(--chat-timestamp))",
+        "chat-separator": "hsl(var(--chat-separator))",
+        "chat-name-muted": "hsl(var(--chat-name-muted))",
       },
       borderRadius: {
         lg: "var(--radius)",
         md: "calc(var(--radius) - 2px)",
         sm: "calc(var(--radius) - 4px)",
+
+        // Chat-specific radius tokens
+        "chat-panel": "var(--radius-lg)", // 33px for panels
+        "chat-item": "var(--radius-xl)", // 25px for conversation items
+        "chat-widget": "var(--radius-2xl)", // 49px for chat widget
       },
       keyframes: {
         "accordion-down": {
