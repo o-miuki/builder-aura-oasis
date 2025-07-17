@@ -621,47 +621,142 @@ export default function Index() {
         </div>
       </div>
 
-      {/* Chat Widget - Floating (42px circle) */}
-      <div
-        className={`fixed bottom-6 right-6 z-50 transition-all duration-300 ${showChatWidget ? "scale-100" : "scale-75"}`}
-      >
+      {/* Chat Widget - Floating */}
+      <div className="fixed bottom-6 right-6 z-50">
+        {/* Chat Window */}
+        {isWidgetOpen && (
+          <div className="absolute bottom-16 right-0 w-80 h-96 bg-[#FBFBF9] rounded-2xl shadow-xl border border-[#F1F1F1] mb-3 flex flex-col">
+            {/* Widget Header */}
+            <div className="p-4 border-b border-[#F1F1F1] flex items-center justify-between">
+              <div className="flex items-center gap-3">
+                <div className="w-8 h-8 bg-[#D9D9D9] rounded-full"></div>
+                <div>
+                  <h3 className="font-medium text-sm text-[#363636]">
+                    Suporte ao Cliente
+                  </h3>
+                  <div className="flex items-center gap-1">
+                    <div className="w-2 h-2 bg-green-500 rounded-full"></div>
+                    <span className="text-xs text-[#ACACAC]">Online</span>
+                  </div>
+                </div>
+              </div>
+              <Button
+                variant="ghost"
+                size="sm"
+                onClick={() => setIsWidgetOpen(false)}
+                className="p-1"
+              >
+                <svg
+                  className="w-4 h-4"
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth={2}
+                    d="M6 18L18 6M6 6l12 12"
+                  />
+                </svg>
+              </Button>
+            </div>
+
+            {/* Widget Messages */}
+            <div className="flex-1 overflow-y-auto p-4 space-y-3">
+              <div className="flex justify-start">
+                <div className="bg-white border border-[#F1F1F1] rounded-2xl p-3 max-w-[80%]">
+                  <p className="text-sm text-black">
+                    Olá! Como posso ajudá-lo hoje?
+                  </p>
+                  <p className="text-xs text-[#ACACAC] mt-1">Agora</p>
+                </div>
+              </div>
+            </div>
+
+            {/* Widget Input */}
+            <div className="p-4 border-t border-[#F1F1F1]">
+              <div className="flex items-center gap-2 bg-white border border-[#F1F1F1] rounded-full px-3 py-2">
+                <Input
+                  placeholder="Digite sua mensagem..."
+                  className="border-0 bg-transparent text-sm placeholder:text-[#9B9B9B] focus-visible:ring-0 px-0"
+                />
+                <Button size="sm" className="w-6 h-6 bg-black rounded-full p-0">
+                  <svg
+                    width="12"
+                    height="12"
+                    viewBox="0 0 21 21"
+                    fill="none"
+                    className="rotate-[-90deg]"
+                  >
+                    <path
+                      d="M10.5 18.375L10.5 2.625M10.5 2.625L3.0625 10.0625M10.5 2.625L17.9375 10.0625"
+                      stroke="white"
+                      strokeWidth="2"
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                    />
+                  </svg>
+                </Button>
+              </div>
+            </div>
+          </div>
+        )}
+
+        {/* Widget Button */}
         <div
           className="w-[42px] h-[42px] bg-black rounded-full flex items-center justify-center cursor-pointer shadow-lg hover:scale-105 transition-transform"
-          onClick={() => setShowChatWidget(!showChatWidget)}
+          onClick={() => setIsWidgetOpen(!isWidgetOpen)}
         >
-          <svg width="20" height="20" viewBox="0 0 33 33" fill="none">
-            <path
-              d="M23.375 17.1875C23.7546 17.1875 24.0625 16.8796 24.0625 16.5C24.0625 16.1204 23.7546 15.8125 23.375 15.8125C22.9954 15.8125 22.6875 16.1204 22.6875 16.5C22.6875 16.8796 22.9954 17.1875 23.375 17.1875Z"
-              fill="white"
+          {isWidgetOpen ? (
+            <svg
+              className="w-5 h-5"
+              fill="none"
               stroke="white"
-              strokeWidth="1.5"
-              strokeLinecap="round"
-              strokeLinejoin="round"
-            />
-            <path
-              d="M16.5 17.1875C16.8796 17.1875 17.1875 16.8796 17.1875 16.5C17.1875 16.1204 16.8796 15.8125 16.5 15.8125C16.1204 15.8125 15.8125 16.1204 15.8125 16.5C15.8125 16.8796 16.1204 17.1875 16.5 17.1875Z"
-              fill="white"
-              stroke="white"
-              strokeWidth="1.5"
-              strokeLinecap="round"
-              strokeLinejoin="round"
-            />
-            <path
-              d="M9.625 17.1875C10.0047 17.1875 10.3125 16.8796 10.3125 16.5C10.3125 16.1204 10.0047 15.8125 9.625 15.8125C9.24531 15.8125 8.9375 16.1204 8.9375 16.5C8.9375 16.8796 9.24531 17.1875 9.625 17.1875Z"
-              fill="white"
-              stroke="white"
-              strokeWidth="1.5"
-              strokeLinecap="round"
-              strokeLinejoin="round"
-            />
-            <path
-              d="M16.5 30.25C24.0938 30.25 30.25 24.0938 30.25 16.5C30.25 8.90608 24.0938 2.75 16.5 2.75C8.90608 2.75 2.75 8.90608 2.75 16.5C2.75 19.0044 3.41958 21.3525 4.5895 23.375L3.4375 29.5625L9.625 28.4105C11.6474 29.5804 13.9956 30.25 16.5 30.25Z"
-              stroke="white"
-              strokeWidth="1.5"
-              strokeLinecap="round"
-              strokeLinejoin="round"
-            />
-          </svg>
+              viewBox="0 0 24 24"
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth={2}
+                d="M6 18L18 6M6 6l12 12"
+              />
+            </svg>
+          ) : (
+            <svg width="20" height="20" viewBox="0 0 33 33" fill="none">
+              <path
+                d="M23.375 17.1875C23.7546 17.1875 24.0625 16.8796 24.0625 16.5C24.0625 16.1204 23.7546 15.8125 23.375 15.8125C22.9954 15.8125 22.6875 16.1204 22.6875 16.5C22.6875 16.8796 22.9954 17.1875 23.375 17.1875Z"
+                fill="white"
+                stroke="white"
+                strokeWidth="1.5"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+              />
+              <path
+                d="M16.5 17.1875C16.8796 17.1875 17.1875 16.8796 17.1875 16.5C17.1875 16.1204 16.8796 15.8125 16.5 15.8125C16.1204 15.8125 15.8125 16.1204 15.8125 16.5C15.8125 16.8796 16.1204 17.1875 16.5 17.1875Z"
+                fill="white"
+                stroke="white"
+                strokeWidth="1.5"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+              />
+              <path
+                d="M9.625 17.1875C10.0047 17.1875 10.3125 16.8796 10.3125 16.5C10.3125 16.1204 10.0047 15.8125 9.625 15.8125C9.24531 15.8125 8.9375 16.1204 8.9375 16.5C8.9375 16.8796 9.24531 17.1875 9.625 17.1875Z"
+                fill="white"
+                stroke="white"
+                strokeWidth="1.5"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+              />
+              <path
+                d="M16.5 30.25C24.0938 30.25 30.25 24.0938 30.25 16.5C30.25 8.90608 24.0938 2.75 16.5 2.75C8.90608 2.75 2.75 8.90608 2.75 16.5C2.75 19.0044 3.41958 21.3525 4.5895 23.375L3.4375 29.5625L9.625 28.4105C11.6474 29.5804 13.9956 30.25 16.5 30.25Z"
+                stroke="white"
+                strokeWidth="1.5"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+              />
+            </svg>
+          )}
         </div>
       </div>
     </div>
