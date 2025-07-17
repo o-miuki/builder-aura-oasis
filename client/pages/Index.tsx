@@ -71,9 +71,9 @@ export default function Index() {
   ];
 
   return (
-    <div className="h-screen bg-background flex">
+    <div className="h-screen bg-background flex relative">
       {/* Left Panel - Conversations */}
-      <div className="w-80 bg-card border-r border-border flex flex-col rounded-r-chat-panel">
+      <div className="w-80 bg-card border-r border-border flex flex-col rounded-r-chat-panel hidden lg:flex">
         {/* Header */}
         <div className="p-6 border-b border-border">
           <div className="flex items-center justify-between mb-4">
