@@ -464,6 +464,116 @@ export default function Index() {
         </div>
       </div>
 
+      {/* Mobile Sidebar Overlay */}
+      {showSidebar && (
+        <div
+          className="fixed inset-0 bg-black/50 z-40 xl:hidden"
+          onClick={() => setShowSidebar(false)}
+        >
+          <div
+            className="w-80 bg-card h-full ml-auto border-l border-border rounded-l-chat-panel"
+            onClick={(e) => e.stopPropagation()}
+          >
+            <div className="p-6">
+              <div className="flex items-center justify-between mb-6">
+                <h3 className="font-semibold text-lg">Customer Info</h3>
+                <Button
+                  variant="ghost"
+                  size="sm"
+                  onClick={() => setShowSidebar(false)}
+                >
+                  <svg
+                    className="w-5 h-5"
+                    fill="none"
+                    stroke="currentColor"
+                    viewBox="0 0 24 24"
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth={2}
+                      d="M6 18L18 6M6 6l12 12"
+                    />
+                  </svg>
+                </Button>
+              </div>
+              <div className="text-center mb-6">
+                <Avatar className="w-20 h-20 mx-auto mb-4">
+                  <AvatarFallback className="bg-muted text-muted-foreground text-xl">
+                    JD
+                  </AvatarFallback>
+                </Avatar>
+                <h3 className="font-semibold text-lg">John Doe</h3>
+                <p className="text-sm text-muted-foreground">
+                  Customer since Jan 2024
+                </p>
+                <div className="flex items-center justify-center gap-2 mt-2">
+                  <div className="w-2 h-2 bg-success rounded-full"></div>
+                  <span className="text-sm text-muted-foreground">Online</span>
+                </div>
+              </div>
+
+              <div className="space-y-4">
+                <div>
+                  <h4 className="font-medium text-sm mb-2">
+                    Contact Information
+                  </h4>
+                  <div className="space-y-2 text-sm">
+                    <div className="flex justify-between">
+                      <span className="text-muted-foreground">Email:</span>
+                      <span>john.doe@email.com</span>
+                    </div>
+                    <div className="flex justify-between">
+                      <span className="text-muted-foreground">Phone:</span>
+                      <span>+1 (555) 123-4567</span>
+                    </div>
+                  </div>
+                </div>
+
+                <div className="border-t border-border pt-4">
+                  <h4 className="font-medium text-sm mb-2">
+                    Previous Conversations
+                  </h4>
+                  <div className="space-y-2">
+                    <div className="p-3 bg-accent/50 rounded-lg">
+                      <p className="text-xs text-muted-foreground mb-1">
+                        Jan 15, 2024
+                      </p>
+                      <p className="text-sm">Account setup assistance</p>
+                    </div>
+                    <div className="p-3 bg-accent/50 rounded-lg">
+                      <p className="text-xs text-muted-foreground mb-1">
+                        Jan 10, 2024
+                      </p>
+                      <p className="text-sm">Billing inquiry</p>
+                    </div>
+                  </div>
+                </div>
+
+                <div className="border-t border-border pt-4">
+                  <Button variant="outline" className="w-full text-sm">
+                    <svg
+                      className="w-4 h-4 mr-2"
+                      fill="none"
+                      stroke="currentColor"
+                      viewBox="0 0 24 24"
+                    >
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        strokeWidth={2}
+                        d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"
+                      />
+                    </svg>
+                    Download Transcript
+                  </Button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
+
       {/* Right Panel - Sidebar */}
       <div className="w-80 bg-card border-l border-border rounded-l-chat-panel hidden xl:block">
         <div className="p-6">
