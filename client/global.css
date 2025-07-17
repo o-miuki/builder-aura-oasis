@@ -4,55 +4,74 @@
 
 @layer base {
   /**
-   * Tailwind CSS theme
-   * tailwind.config.ts expects the following color variables to be expressed as HSL values.
-   * A different format will require also updating the theme in tailwind.config.ts.
-  */
+   * Live Chat Application Theme
+   * Custom color system based on Figma design
+   * Using HSL values for Tailwind compatibility
+   */
   :root {
-    --background: 0 0% 100%;
-    --foreground: 222.2 84% 4.9%;
+    /* Main background - light green/beige from design */
+    --background: 67 17% 94%; /* #EFF0EB */
+    --foreground: 0 0% 21%; /* #363636 */
 
-    --card: 0 0% 100%;
-    --card-foreground: 222.2 84% 4.9%;
+    /* Panel/card backgrounds */
+    --card: 60 11% 98%; /* #FBFBF9 */
+    --card-foreground: 0 0% 21%; /* #363636 */
 
-    --popover: 0 0% 100%;
-    --popover-foreground: 222.2 84% 4.9%;
+    /* Popover styling */
+    --popover: 60 11% 98%; /* #FBFBF9 */
+    --popover-foreground: 0 0% 21%; /* #363636 */
 
-    --primary: 222.2 47.4% 11.2%;
-    --primary-foreground: 210 40% 98%;
+    /* Primary - black for chat bubbles */
+    --primary: 0 0% 0%; /* #000000 */
+    --primary-foreground: 0 0% 100%; /* #FFFFFF */
 
-    --secondary: 210 40% 96.1%;
-    --secondary-foreground: 222.2 47.4% 11.2%;
+    /* Secondary - light button background */
+    --secondary: 60 6% 97%; /* #F8F8F7 */
+    --secondary-foreground: 0 0% 21%; /* #363636 */
 
-    --muted: 210 40% 96.1%;
-    --muted-foreground: 215.4 16.3% 46.9%;
+    /* Muted - avatar backgrounds */
+    --muted: 0 0% 85%; /* #D9D9D9 */
+    --muted-foreground: 0 0% 68%; /* #ACACAC */
 
-    --accent: 210 40% 96.1%;
-    --accent-foreground: 222.2 47.4% 11.2%;
+    /* Accent - conversation item backgrounds */
+    --accent: 0 0% 0% / 0.04; /* rgba(0,0,0,0.04) */
+    --accent-foreground: 0 0% 0%; /* #000000 */
 
+    /* Success - online indicator */
+    --success: 158 65% 44%; /* #2EBA85 */
+    --success-foreground: 0 0% 100%;
+
+    /* Destructive colors */
     --destructive: 0 84.2% 60.2%;
-    --destructive-foreground: 210 40% 98%;
+    --destructive-foreground: 0 0% 98%;
 
-    --border: 214.3 31.8% 91.4%;
-    --input: 214.3 31.8% 91.4%;
-    --ring: 222.2 84% 4.9%;
+    /* Borders */
+    --border: 0 0% 94%; /* #F1F1F1 */
+    --input: 0 0% 94%; /* #F1F1F1 */
+    --ring: 0 0% 21%; /* #363636 */
 
+    /* Custom chat colors */
+    --chat-bubble-user: 0 0% 0%; /* #000000 */
+    --chat-bubble-support: 0 0% 0% / 0.03; /* rgba(0,0,0,0.03) */
+    --chat-placeholder: 0 0% 61%; /* #9B9B9B */
+    --chat-timestamp: 0 0% 68%; /* #ACACAC */
+    --chat-separator: 0 0% 96%; /* #F4F4F4 */
+    --chat-name-muted: 25 2% 37%; /* #5A5959 */
+
+    /* Border radius tokens */
     --radius: 0.5rem;
+    --radius-lg: 2rem; /* 33px panels */
+    --radius-xl: 1.5rem; /* 25px conversation items */
+    --radius-2xl: 3rem; /* 49px chat widget */
 
-    --sidebar-background: 0 0% 98%;
-
-    --sidebar-foreground: 240 5.3% 26.1%;
-
-    --sidebar-primary: 240 5.9% 10%;
-
+    /* Sidebar (keeping existing) */
+    --sidebar-background: 60 11% 98%;
+    --sidebar-foreground: 0 0% 21%;
+    --sidebar-primary: 0 0% 10%;
     --sidebar-primary-foreground: 0 0% 98%;
-
-    --sidebar-accent: 240 4.8% 95.9%;
-
-    --sidebar-accent-foreground: 240 5.9% 10%;
-
-    --sidebar-border: 220 13% 91%;
-
+    --sidebar-accent: 60 6% 97%;
+    --sidebar-accent-foreground: 0 0% 10%;
+    --sidebar-border: 0 0% 94%;
     --sidebar-ring: 217.2 91.2% 59.8%;
   }
 
