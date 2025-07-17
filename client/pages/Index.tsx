@@ -312,7 +312,7 @@ export default function Index() {
       </div>
 
       {/* Right Panel - Sidebar */}
-      <div className="w-80 bg-card border-l border-border rounded-l-chat-panel">
+      <div className="w-80 bg-card border-l border-border rounded-l-chat-panel hidden xl:block">
         <div className="p-6">
           <div className="text-center mb-6">
             <Avatar className="w-20 h-20 mx-auto mb-4">
