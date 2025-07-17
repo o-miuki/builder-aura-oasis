@@ -74,6 +74,115 @@ export default function Index() {
 
   return (
     <div className="h-screen bg-background flex relative">
+      {/* Mobile Conversations Overlay */}
+      {showConversations && (
+        <div
+          className="fixed inset-0 bg-black/50 z-40 lg:hidden"
+          onClick={() => setShowConversations(false)}
+        >
+          <div
+            className="w-80 bg-card h-full flex flex-col rounded-r-chat-panel"
+            onClick={(e) => e.stopPropagation()}
+          >
+            <div className="p-6 border-b border-border">
+              <div className="flex items-center justify-between mb-4">
+                <h1 className="text-lg font-semibold">Conversations</h1>
+                <Button
+                  variant="ghost"
+                  size="sm"
+                  onClick={() => setShowConversations(false)}
+                >
+                  <svg
+                    className="w-5 h-5"
+                    fill="none"
+                    stroke="currentColor"
+                    viewBox="0 0 24 24"
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth={2}
+                      d="M6 18L18 6M6 6l12 12"
+                    />
+                  </svg>
+                </Button>
+              </div>
+              <div className="relative">
+                <Input
+                  placeholder="Search conversations..."
+                  className="pl-9 h-9 text-sm"
+                />
+                <svg
+                  className="w-4 h-4 absolute left-3 top-2.5 text-muted-foreground"
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth={2}
+                    d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"
+                  />
+                </svg>
+              </div>
+            </div>
+            <div className="flex-1 overflow-y-auto">
+              {conversations.map((conv) => (
+                <div
+                  key={conv.id}
+                  onClick={() => {
+                    setSelectedConversation(conv.id);
+                    setShowConversations(false);
+                  }}
+                  className={`p-4 border-b border-border cursor-pointer hover:bg-accent/50 transition-colors ${
+                    selectedConversation === conv.id ? "bg-accent" : ""
+                  }`}
+                >
+                  <div className="flex items-start gap-3">
+                    <div className="relative">
+                      <Avatar className="w-10 h-10">
+                        <AvatarImage src={conv.avatar} />
+                        <AvatarFallback className="bg-muted text-muted-foreground text-sm">
+                          {conv.name
+                            .split(" ")
+                            .map((n) => n[0])
+                            .join("")}
+                        </AvatarFallback>
+                      </Avatar>
+                      {conv.online && (
+                        <div className="absolute -bottom-0.5 -right-0.5 w-3 h-3 bg-success rounded-full border-2 border-card"></div>
+                      )}
+                    </div>
+                    <div className="flex-1 min-w-0">
+                      <div className="flex items-center justify-between mb-1">
+                        <h3 className="font-medium text-sm truncate">
+                          {conv.name}
+                        </h3>
+                        <span className="text-xs text-chat-timestamp">
+                          {conv.time}
+                        </span>
+                      </div>
+                      <p className="text-sm text-muted-foreground truncate">
+                        {conv.lastMessage}
+                      </p>
+                    </div>
+                    {conv.unread > 0 && (
+                      <Badge
+                        variant="destructive"
+                        className="text-xs min-w-[20px] h-5 flex items-center justify-center"
+                      >
+                        {conv.unread}
+                      </Badge>
+                    )}
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+        </div>
+      )}
+
       {/* Left Panel - Conversations */}
       <div className="w-80 bg-card border-r border-border flex flex-col rounded-r-chat-panel hidden lg:flex">
         {/* Header */}
