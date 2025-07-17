@@ -8,6 +8,8 @@ import { useState } from "react";
 export default function Index() {
   const [selectedConversation, setSelectedConversation] = useState("1");
   const [message, setMessage] = useState("");
+  const [showConversations, setShowConversations] = useState(false);
+  const [showSidebar, setShowSidebar] = useState(false);
 
   const conversations = [
     {
