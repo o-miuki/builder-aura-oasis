@@ -690,46 +690,55 @@ export default function Index() {
         </div>
 
         {/* Message Input Area */}
-        <div className="p-6">
-          <div className="bg-white border border-[#F1F1F1] rounded-[33px] p-6">
-            <div className="flex items-center gap-4">
-              <div className="flex gap-2">
-                <div className="w-[34px] h-[34px] bg-[#F8F8F7] rounded-[17px] flex items-center justify-center">
-                  <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
-                    <path d="M6.99999 0C5.52307 0 4.32153 1.20157 4.32153 2.67846V11.9475C4.32153 13.0792 5.24231 14 6.37406 14C7.50582 14 8.4266 13.0792 8.4266 11.9475V3.34991C8.4266 2.57534 7.79643 1.94513 7.02181 1.94513C6.24724 1.94513 5.61705 2.57532 5.61705 3.34991V11.4686H6.4742V3.34991C6.4742 3.04798 6.71985 2.80227 7.02184 2.80227C7.32382 2.80227 7.56948 3.04795 7.56948 3.34991V11.9474C7.56948 12.6066 7.03321 13.1428 6.37406 13.1428C5.71492 13.1428 5.17868 12.6066 5.17868 11.9474V2.67846C5.17868 1.6742 5.99571 0.857145 6.99999 0.857145C8.00427 0.857145 8.8213 1.6742 8.8213 2.67846V11.4686H9.67845V2.67846C9.67845 1.20157 8.47691 0 6.99999 0Z" fill="black"/>
-                  </svg>
-                </div>
-                <div className="w-[34px] h-[34px] bg-[#F8F8F7] rounded-[17px] flex items-center justify-center">
-                  <svg width="17" height="17" viewBox="0 0 17 17" fill="none">
-                    <path d="M8.49996 15.5834C4.58794 15.5834 1.41663 12.412 1.41663 8.50002C1.41663 4.588 4.58794 1.41669 8.49996 1.41669C12.4119 1.41669 15.5833 4.588 15.5833 8.50002C15.5833 12.412 12.4119 15.5834 8.49996 15.5834Z" stroke="black" strokeWidth="1.1"/>
-                    <path d="M11.6875 10.2708C11.6875 10.2708 10.625 11.6875 8.5 11.6875C6.375 11.6875 5.3125 10.2708 5.3125 10.2708" stroke="black" strokeWidth="1.1"/>
-                    <path d="M10.9792 6.37502C10.7836 6.37502 10.625 6.21645 10.625 6.02085C10.625 5.82525 10.7836 5.66669 10.9792 5.66669C11.1747 5.66669 11.3333 5.82525 11.3333 6.02085C11.3333 6.21645 11.1747 6.37502 10.9792 6.37502Z" fill="black" stroke="black" strokeWidth="1.1"/>
-                    <path d="M6.02079 6.37502C5.82519 6.37502 5.66663 6.21645 5.66663 6.02085C5.66663 5.82525 5.82519 5.66669 6.02079 5.66669C6.21639 5.66669 6.37496 5.82525 6.37496 6.02085C6.37496 6.21645 6.21639 6.37502 6.02079 6.37502Z" fill="black" stroke="black" strokeWidth="1.1"/>
-                  </svg>
-                </div>
-                <div className="w-[34px] h-[34px] bg-[#F8F8F7] rounded-[17px] flex items-center justify-center">
-                  <svg width="17" height="17" viewBox="0 0 17 17" fill="none">
-                    <path d="M5.66663 9.91669H11.3333" stroke="black" strokeWidth="1.1"/>
-                    <path d="M5.66663 7.08331H7.08329" stroke="black" strokeWidth="1.1"/>
-                    <path d="M5.66663 12.75H8.49996" stroke="black" strokeWidth="1.1"/>
-                    <path d="M7.08337 2.12498H4.25004C3.46764 2.12498 2.83337 2.75924 2.83337 3.54165V14.1666C2.83337 14.9491 3.46764 15.5833 4.25004 15.5833H12.75C13.5325 15.5833 14.1667 14.9491 14.1667 14.1666V3.54165C14.1667 2.75924 13.5325 2.12498 12.75 2.12498H10.2709M7.08337 2.12498V0.708313M7.08337 2.12498V3.54165" stroke="black" strokeWidth="1.1"/>
-                  </svg>
-                </div>
-              </div>
+                <div className="p-6">
+          <div className="bg-white border border-[#F1F1F1] rounded-[33px] relative h-[162px]" style={{fontFamily: "'Saans TRIAL', -apple-system, Roboto, Helvetica, sans-serif"}}>
+            {/* Input Text */}
+            <Input
+              value={message}
+              onChange={(e) => setMessage(e.target.value)}
+              onKeyPress={handleKeyPress}
+              placeholder="Insira a sua mensagem"
+              className="absolute top-[33px] left-[24px] right-[24px] border-0 bg-transparent text-[17px] text-[#9B9B9B] placeholder:text-[#9B9B9B] focus-visible:ring-0 px-0 font-normal h-auto"
+              style={{fontWeight: 380}}
+            />
 
-              <Input
-                value={message}
-                onChange={(e) => setMessage(e.target.value)}
-                onKeyPress={handleKeyPress}
-                placeholder="Insira a sua mensagem"
-                className="flex-1 border-0 bg-transparent text-[17px] text-[#9B9B9B] placeholder:text-[#9B9B9B] focus-visible:ring-0 px-0 font-normal"
-              />
-
-                            <div className="w-[48px] h-[48px] bg-[#D9D9D9] rounded-[24px] flex items-center justify-center cursor-pointer hover:bg-[#CACACA] transition-colors" onClick={sendMessage}>
-                <svg width="21" height="21" viewBox="0 0 21 21" fill="none" className="rotate-[-90deg]">
-                  <path d="M10.5 18.375L10.5 2.625M10.5 2.625L3.0625 10.0625M10.5 2.625L17.9375 10.0625" stroke="#989898" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+            {/* Bottom Action Buttons */}
+            <div className="absolute bottom-[24px] left-[24px] flex gap-2">
+              <div className="w-[34px] h-[34px] bg-[#F8F8F7] rounded-[17px] flex items-center justify-center cursor-pointer hover:bg-[#EAEAEA] transition-colors">
+                <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
+                  <path d="M6.99999 0C5.52307 0 4.32153 1.20157 4.32153 2.67846V11.9475C4.32153 13.0792 5.24231 14 6.37406 14C7.50582 14 8.4266 13.0792 8.4266 11.9475V3.34991C8.4266 2.57534 7.79643 1.94513 7.02181 1.94513C6.24724 1.94513 5.61705 2.57532 5.61705 3.34991V11.4686H6.4742V3.34991C6.4742 3.04798 6.71985 2.80227 7.02184 2.80227C7.32382 2.80227 7.56948 3.04795 7.56948 3.34991V11.9474C7.56948 12.6066 7.03321 13.1428 6.37406 13.1428C5.71492 13.1428 5.17868 12.6066 5.17868 11.9474V2.67846C5.17868 1.6742 5.99571 0.857145 6.99999 0.857145C8.00427 0.857145 8.8213 1.6742 8.8213 2.67846V11.4686H9.67845V2.67846C9.67845 1.20157 8.47691 0 6.99999 0Z" fill="black"/>
                 </svg>
               </div>
+              <div className="w-[34px] h-[34px] bg-[#F8F8F7] rounded-[17px] flex items-center justify-center cursor-pointer hover:bg-[#EAEAEA] transition-colors">
+                <svg width="17" height="17" viewBox="0 0 17 17" fill="none">
+                  <g clipPath="url(#clip0_4_25)">
+                    <path d="M8.49996 15.5834C4.58794 15.5834 1.41663 12.412 1.41663 8.50002C1.41663 4.588 4.58794 1.41669 8.49996 1.41669C12.4119 1.41669 15.5833 4.588 15.5833 8.50002C15.5833 12.412 12.4119 15.5834 8.49996 15.5834Z" stroke="black" strokeWidth="1.1" strokeLinecap="round" strokeLinejoin="round"/>
+                    <path d="M11.6875 10.2708C11.6875 10.2708 10.625 11.6875 8.5 11.6875C6.375 11.6875 5.3125 10.2708 5.3125 10.2708" stroke="black" strokeWidth="1.1" strokeLinecap="round" strokeLinejoin="round"/>
+                    <path d="M10.9792 6.37502C10.7836 6.37502 10.625 6.21645 10.625 6.02085C10.625 5.82525 10.7836 5.66669 10.9792 5.66669C11.1747 5.66669 11.3333 5.82525 11.3333 6.02085C11.3333 6.21645 11.1747 6.37502 10.9792 6.37502Z" fill="black" stroke="black" strokeWidth="1.1" strokeLinecap="round" strokeLinejoin="round"/>
+                    <path d="M6.02079 6.37502C5.82519 6.37502 5.66663 6.21645 5.66663 6.02085C5.66663 5.82525 5.82519 5.66669 6.02079 5.66669C6.21639 5.66669 6.37496 5.82525 6.37496 6.02085C6.37496 6.21645 6.21639 6.37502 6.02079 6.37502Z" fill="black" stroke="black" strokeWidth="1.1" strokeLinecap="round" strokeLinejoin="round"/>
+                  </g>
+                  <defs>
+                    <clipPath id="clip0_4_25">
+                      <rect width="17" height="17" fill="white"/>
+                    </clipPath>
+                  </defs>
+                </svg>
+              </div>
+              <div className="w-[34px] h-[34px] bg-[#F8F8F7] rounded-[17px] flex items-center justify-center cursor-pointer hover:bg-[#EAEAEA] transition-colors">
+                <svg width="17" height="17" viewBox="0 0 17 17" fill="none">
+                  <path d="M5.66663 9.91669H11.3333" stroke="black" strokeWidth="1.1" strokeLinecap="round" strokeLinejoin="round"/>
+                  <path d="M5.66663 7.08331H7.08329" stroke="black" strokeWidth="1.1" strokeLinecap="round" strokeLinejoin="round"/>
+                  <path d="M5.66663 12.75H8.49996" stroke="black" strokeWidth="1.1" strokeLinecap="round" strokeLinejoin="round"/>
+                  <path d="M7.08337 2.12498H4.25004C3.46764 2.12498 2.83337 2.75924 2.83337 3.54165V14.1666C2.83337 14.9491 3.46764 15.5833 4.25004 15.5833H12.75C13.5325 15.5833 14.1667 14.9491 14.1667 14.1666V3.54165C14.1667 2.75924 13.5325 2.12498 12.75 2.12498H10.2709M7.08337 2.12498V0.708313M7.08337 2.12498V3.54165" stroke="black" strokeWidth="1.1" strokeLinecap="round" strokeLinejoin="round"/>
+                </svg>
+              </div>
+            </div>
+
+            {/* Send Button */}
+            <div className="absolute bottom-[57px] right-[24px] w-[48px] h-[48px] bg-[#D9D9D9] rounded-[24px] flex items-center justify-center cursor-pointer hover:bg-[#CACACA] transition-colors" onClick={sendMessage}>
+              <svg width="21" height="21" viewBox="0 0 21 21" fill="none" className="transform rotate-[-90deg]">
+                <path d="M10.5 18.375L10.5 2.625M10.5 2.625L3.0625 10.0625M10.5 2.625L17.9375 10.0625" stroke="#989898" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+              </svg>
             </div>
           </div>
         </div>
