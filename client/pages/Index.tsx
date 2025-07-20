@@ -22,7 +22,7 @@ interface Conversation {
   avatar: string;
   selected: boolean;
   messages: Message[];
-  status: "online" | "offline";
+  status: "open" | "pending" | "resolved";
   isWidget?: boolean;
 }
 
@@ -33,6 +33,12 @@ export default function Index() {
   const [isWidgetOpen, setIsWidgetOpen] = useState(false);
   const [showWidgetChat, setShowWidgetChat] = useState(false);
   const [widgetMessage, setWidgetMessage] = useState("");
+  const [showFilterDropdown, setShowFilterDropdown] = useState(false);
+  const [selectedFilter, setSelectedFilter] = useState<"all" | "open" | "pending" | "resolved">("all");
+  const [showSearch, setShowSearch] = useState(false);
+  const [searchQuery, setSearchQuery] = useState("");
+  const [showWidgetEmojiPanel, setShowWidgetEmojiPanel] = useState(false);
+  
   const [conversations, setConversations] = useState<Conversation[]>([
     {
       id: "1",
@@ -42,7 +48,7 @@ export default function Index() {
       unread: 2,
       avatar: "",
       selected: true,
-      status: "online",
+      status: "open",
       isWidget: false,
       messages: [
         {
@@ -65,92 +71,45 @@ export default function Index() {
     },
     {
       id: "2",
-      name: "John Doe",
-      lastMessage: "Hello, please help me. For lorem impsun dolor....",
-      time: "1 minute ago",
+      name: "Maria Silva",
+      lastMessage: "Need help with my account settings",
+      time: "5 minutes ago",
       unread: 0,
       avatar: "",
       selected: false,
-      status: "online",
+      status: "pending",
       isWidget: false,
       messages: [],
     },
     {
       id: "3",
-      name: "John Doe",
-      lastMessage: "Hello, please help me. For lorem impsun dolor....",
-      time: "1 minute ago",
+      name: "Carlos Santos",
+      lastMessage: "Thank you for the solution!",
+      time: "1 hour ago",
       unread: 0,
       avatar: "",
       selected: false,
-      status: "online",
+      status: "resolved",
       isWidget: false,
       messages: [],
     },
     {
       id: "4",
-      name: "John Doe",
-      lastMessage: "Hello, please help me. For lorem impsun dolor....",
-      time: "1 minute ago",
-      unread: 0,
+      name: "Ana Costa",
+      lastMessage: "Can you help me with billing?",
+      time: "2 hours ago",
+      unread: 1,
       avatar: "",
       selected: false,
-      status: "online",
+      status: "open",
       isWidget: false,
       messages: [],
-    },
-    {
-      id: "5",
-      name: "John Doe",
-      lastMessage: "Hello, please help me. For lorem impsun dolor....",
-      time: "1 minute ago",
-      unread: 0,
-      avatar: "",
-      selected: false,
-      status: "online",
-      isWidget: false,
-      messages: [],
-    },
-    {
-      id: "6",
-      name: "John Doe",
-      lastMessage: "Hello, please help me. For lorem impsun dolor....",
-      time: "1 minute ago",
-      unread: 0,
-      avatar: "",
-      selected: false,
-      status: "online",
-      isWidget: false,
-      messages: [],
-    },
-    {
-      id: "7",
-      name: "John Doe",
-      lastMessage: "Hello, please help me. For lorem impsun dolor....",
-      time: "1 minute ago",
-      unread: 0,
-      avatar: "",
-      selected: false,
-      status: "online",
-      isWidget: false,
-      messages: [],
-    },
-    {
-      id: "8",
-      name: "John Doe",
-      lastMessage: "Hello, please help me. For lorem impsun dolor....",
-      time: "1 minute ago",
-      unread: 0,
-      avatar: "",
-      selected: false,
-      status: "online",
-      isWidget: false,
-      messages: [],
-    },
+    }
   ]);
 
   const messagesEndRef = useRef<HTMLDivElement>(null);
   const wsRef = useRef<WebSocket | null>(null);
+  const fileInputRef = useRef<HTMLInputElement>(null);
   const [connectionStatus, setConnectionStatus] = useState<"connecting" | "connected" | "disconnected">("connected");
 
   const scrollToBottom = () => {
@@ -245,7 +204,7 @@ export default function Index() {
         unread: 1,
         avatar: "",
         selected: false,
-        status: "online",
+        status: "open",
         isWidget: true,
         messages: [],
       };
@@ -257,7 +216,7 @@ export default function Index() {
     const newMessage: Message = {
       id: Date.now().toString(),
       text: text,
-      sender: "user",
+      sender: "user", // Corrected: widget messages are from user
       time: "now",
       timestamp: Date.now(),
       conversationId: widgetConversation.id,
@@ -278,6 +237,31 @@ export default function Index() {
     );
 
     setWidgetMessage("");
+
+    // Auto-reply from support
+    setTimeout(() => {
+      const supportReply: Message = {
+        id: (Date.now() + 1).toString(),
+        text: "Hello! Thank you for reaching out. How can I help you today?",
+        sender: "support", // Support replies
+        time: "now",
+        timestamp: Date.now(),
+        conversationId: widgetConversation!.id,
+      };
+
+      setConversations((prev) =>
+        prev.map((conv) =>
+          conv.id === widgetConversation!.id
+            ? {
+                ...conv,
+                messages: [...conv.messages, supportReply],
+                lastMessage: supportReply.text,
+                time: "now",
+              }
+            : conv,
+        ),
+      );
+    }, 1500);
   };
 
   const handleWidgetKeyPress = (e: React.KeyboardEvent) => {
@@ -287,8 +271,94 @@ export default function Index() {
     }
   };
 
+  const handleFilterSelect = (filter: "all" | "open" | "pending" | "resolved") => {
+    setSelectedFilter(filter);
+    setShowFilterDropdown(false);
+  };
+
+  const filteredConversations = conversations.filter(conv => {
+    const matchesFilter = selectedFilter === "all" || conv.status === selectedFilter;
+    const matchesSearch = !searchQuery || conv.name.toLowerCase().includes(searchQuery.toLowerCase());
+    return matchesFilter && matchesSearch;
+  });
+
+  const handleSearchToggle = () => {
+    setShowSearch(!showSearch);
+    if (showSearch) {
+      setSearchQuery("");
+    }
+  };
+
+  const handleFileUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (file) {
+      // Simulate file upload in widget
+      const fileMessage: Message = {
+        id: Date.now().toString(),
+        text: `📎 ${file.name}`,
+        sender: "user",
+        time: "now",
+        timestamp: Date.now(),
+        conversationId: conversations.find(c => c.isWidget)?.id || "",
+      };
+
+      if (conversations.find(c => c.isWidget)) {
+        setConversations((prev) =>
+          prev.map((conv) =>
+            conv.isWidget
+              ? {
+                  ...conv,
+                  messages: [...conv.messages, fileMessage],
+                  lastMessage: `📎 ${file.name}`,
+                  time: "now",
+                }
+              : conv,
+          ),
+        );
+      }
+    }
+    // Reset file input
+    if (fileInputRef.current) {
+      fileInputRef.current.value = "";
+    }
+  };
+
+  const emojis = ['😀', '😃', '😄', '😁', '😆', '😅', '😂', '🤣', '😊', '😇', '🙂', '🙃', '😉', '😌', '😍', '🥰', '😘', '😗', '😙', '😚', '😋', '😛', '😝', '😜', '🤪', '🤨', '🧐', '🤓', '😎', '🤩', '🥳', '😏', '😒', '👍', '👎', '✌️', '🤞', '🤟', '🤘', '🤙', '👌', '🙌', '👏', '🙏', '❤️', '💕', '💖', '💗', '💙', '💚', '💛', '🧡', '💜', '🖤', '🤍', '🤎', '💔', '❣️', '💯', '🔥', '✨', '🎉', '🎊'];
+
+  const handleEmojiSelect = (emoji: string) => {
+    setWidgetMessage(prev => prev + emoji);
+    setShowWidgetEmojiPanel(false);
+  };
+
+  const getStatusColor = (status: string) => {
+    switch (status) {
+      case 'open': return 'bg-green-500';
+      case 'pending': return 'bg-yellow-500';
+      case 'resolved': return 'bg-gray-500';
+      default: return 'bg-gray-500';
+    }
+  };
+
+  const getStatusLabel = (status: string) => {
+    switch (status) {
+      case 'open': return 'Aberto';
+      case 'pending': return 'Pendente';
+      case 'resolved': return 'Resolvido';
+      default: return status;
+    }
+  };
+
   return (
     <div className="h-screen bg-[#EFF0EB] flex relative overflow-hidden" style={{fontFamily: "'Saans TRIAL', -apple-system, Roboto, Helvetica, sans-serif"}}>
+      {/* Hidden file input for widget */}
+      <input
+        ref={fileInputRef}
+        type="file"
+        className="hidden"
+        onChange={handleFileUpload}
+        accept="image/*,.pdf,.doc,.docx,.txt"
+      />
+
       {/* Mobile Menu Overlay */}
       {showMobileMenu && (
         <div
@@ -306,7 +376,7 @@ export default function Index() {
                 ✕ Fechar
               </Button>
             </div>
-                        {/* Navigation Icons */}
+            {/* Navigation Icons */}
             <div className="flex flex-col gap-4 px-4">
               <div className="w-[42px] h-[42px] bg-white rounded-lg border border-[#F1F1F1] shadow-[0_0_9.2px_rgba(0,0,0,0.13)] flex items-center justify-center">
                 <svg width="18" height="18" viewBox="0 0 18 18" fill="none">
@@ -356,18 +426,59 @@ export default function Index() {
         <div className="px-5 pt-[29px] pb-0">
           <div className="flex items-center justify-between mb-6">
             <h1 className="text-[20px] font-medium text-[#363636]">Conversas</h1>
-            <div className="flex gap-2">
-              <div className="w-[34px] h-[34px] bg-[#F8F8F7] rounded-[17px] flex items-center justify-center">
-                <svg width="17" height="17" viewBox="0 0 17 17" fill="none">
-                  <path d="M2.83346 2.125H14.1669C14.5581 2.125 14.8752 2.44208 14.8752 2.83324L14.8753 3.95653C14.8754 4.14444 14.8007 4.32464 14.6679 4.45751L10.1243 9.00086C9.99145 9.13367 9.91679 9.31387 9.91679 9.50172V13.9678C9.91679 14.4286 9.48371 14.7668 9.03668 14.655L7.62002 14.3008C7.30467 14.222 7.08346 13.9387 7.08346 13.6136V9.50172C7.08346 9.31387 7.00883 9.13367 6.87598 9.00086L2.33259 4.45746C2.19975 4.32463 2.12512 4.14446 2.12512 3.9566V2.83333C2.12512 2.44213 2.44225 2.125 2.83346 2.125Z" stroke="black" strokeWidth="1.1" strokeLinecap="round" strokeLinejoin="round"/>
-                </svg>
+            <div className="flex gap-2 items-center">
+              {/* Filter Dropdown */}
+              <div className="relative">
+                <div 
+                  className={`w-[34px] h-[34px] bg-[#F8F8F7] rounded-[17px] flex items-center justify-center cursor-pointer transition-all duration-300 ${showSearch ? 'opacity-0 scale-0' : 'opacity-100 scale-100'}`}
+                  onClick={() => setShowFilterDropdown(!showFilterDropdown)}
+                >
+                  <svg width="17" height="17" viewBox="0 0 17 17" fill="none">
+                    <path d="M2.83346 2.125H14.1669C14.5581 2.125 14.8752 2.44208 14.8752 2.83324L14.8753 3.95653C14.8754 4.14444 14.8007 4.32464 14.6679 4.45751L10.1243 9.00086C9.99145 9.13367 9.91679 9.31387 9.91679 9.50172V13.9678C9.91679 14.4286 9.48371 14.7668 9.03668 14.655L7.62002 14.3008C7.30467 14.222 7.08346 13.9387 7.08346 13.6136V9.50172C7.08346 9.31387 7.00883 9.13367 6.87598 9.00086L2.33259 4.45746C2.19975 4.32463 2.12512 4.14446 2.12512 3.9566V2.83333C2.12512 2.44213 2.44225 2.125 2.83346 2.125Z" stroke="black" strokeWidth="1.1" strokeLinecap="round" strokeLinejoin="round"/>
+                  </svg>
+                </div>
+
+                {showFilterDropdown && (
+                  <div className="absolute top-full right-0 mt-2 bg-white border border-[#F1F1F1] rounded-lg shadow-lg z-10 min-w-[120px]">
+                    <div 
+                      className="px-3 py-2 hover:bg-gray-50 cursor-pointer text-sm"
+                      onClick={() => handleFilterSelect("all")}
+                    >
+                      Todos
+                    </div>
+                    <div 
+                      className="px-3 py-2 hover:bg-gray-50 cursor-pointer text-sm"
+                      onClick={() => handleFilterSelect("open")}
+                    >
+                      Aberto
+                    </div>
+                    <div 
+                      className="px-3 py-2 hover:bg-gray-50 cursor-pointer text-sm"
+                      onClick={() => handleFilterSelect("pending")}
+                    >
+                      Pendente
+                    </div>
+                    <div 
+                      className="px-3 py-2 hover:bg-gray-50 cursor-pointer text-sm"
+                      onClick={() => handleFilterSelect("resolved")}
+                    >
+                      Resolvido
+                    </div>
+                  </div>
+                )}
               </div>
-              <div className="w-[34px] h-[34px] bg-[#F8F8F7] rounded-[17px] flex items-center justify-center">
+
+              {/* Search Toggle */}
+              <div 
+                className="w-[34px] h-[34px] bg-[#F8F8F7] rounded-[17px] flex items-center justify-center cursor-pointer"
+                onClick={handleSearchToggle}
+              >
                 <svg width="19" height="19" viewBox="0 0 19 19" fill="none">
                   <path d="M13.4584 13.4584L16.625 16.625" stroke="black" strokeWidth="1.1" strokeLinecap="round" strokeLinejoin="round"/>
                   <path d="M2.375 8.70833C2.375 12.2062 5.21053 15.0417 8.70833 15.0417C10.4603 15.0417 12.0461 14.3304 13.1927 13.1807C14.3353 12.0351 15.0417 10.4542 15.0417 8.70833C15.0417 5.21053 12.2062 2.375 8.70833 2.375C5.21053 2.375 2.375 5.21053 2.375 8.70833Z" stroke="black" strokeWidth="1.1" strokeLinecap="round" strokeLinejoin="round"/>
                 </svg>
               </div>
+
               <div className="w-[34px] h-[34px] bg-[#F8F8F7] rounded-[17px] flex items-center justify-center">
                 <svg width="17" height="17" viewBox="0 0 17 17" fill="none">
                   <path fillRule="evenodd" clipRule="evenodd" d="M3.655 1.7C2.59444 1.7 1.7 2.59444 1.7 3.655V8.33H3.655C4.72917 8.33 5.68667 8.92166 6.17582 9.77443C6.63771 10.5643 7.47921 11.135 8.5 11.135C9.51337 11.135 10.35 10.5726 10.814 9.79166C11.3307 8.78685 12.3359 8.33 13.345 8.33H16.15C16.6194 8.33 17 8.71057 17 9.18V13.345C17 15.3444 15.3444 17 13.345 17H3.655C1.65556 17 0 15.3444 0 13.345V3.655C0 1.65556 1.65556 0 3.655 0H13.43C15.3612 0 17 1.67252 17 3.655V6.46C17 6.92943 16.6194 7.31 16.15 7.31C15.6806 7.31 15.3 6.92943 15.3 6.46V3.655C15.3 2.57748 14.3888 1.7 13.43 1.7H3.655ZM1.7 10.03V13.345C1.7 14.4056 2.59444 15.3 3.655 15.3H13.345C14.4056 15.3 15.3 14.4056 15.3 13.345V10.03H13.345C12.8335 10.03 12.488 10.2446 12.3202 10.5801C12.3121 10.5964 12.3034 10.6125 12.2942 10.6283C11.5658 11.8771 10.198 12.835 8.5 12.835C6.80198 12.835 5.43422 11.8771 4.70577 10.6283L4.70197 10.6217C4.51044 10.8866 4.10924 10.03 3.655 10.03H1.7Z" fill="black"/>
@@ -375,11 +486,23 @@ export default function Index() {
               </div>
             </div>
           </div>
+
+          {/* Search Input with Animation */}
+          <div className={`overflow-hidden transition-all duration-300 ease-in-out ${showSearch ? 'max-h-20 opacity-100' : 'max-h-0 opacity-0'}`}>
+            <div className="mb-4">
+              <Input
+                value={searchQuery}
+                onChange={(e) => setSearchQuery(e.target.value)}
+                placeholder="Search here..."
+                className="w-full px-3 py-2 text-sm border border-[#F1F1F1] rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+              />
+            </div>
+          </div>
         </div>
 
         {/* Conversations List */}
         <div className="flex-1 overflow-y-auto px-5 pb-4 space-y-4">
-          {conversations.map((conv, index) => (
+          {filteredConversations.map((conv, index) => (
             <div
               key={conv.id}
               onClick={() => {
@@ -393,12 +516,20 @@ export default function Index() {
               }`}
             >
               <div className="flex items-start gap-3">
-                <div className="w-[36px] h-[36px] bg-[#D9D9D9] rounded-[18px] flex-shrink-0"></div>
+                <div className="relative">
+                  <div className="w-[36px] h-[36px] bg-[#D9D9D9] rounded-[18px] flex-shrink-0"></div>
+                  {conv.isWidget && (
+                    <div className="absolute -top-1 -right-1 w-3 h-3 bg-blue-500 rounded-full"></div>
+                  )}
+                </div>
                 <div className="flex-1 min-w-0">
                   <div className="flex items-center justify-between mb-1">
-                    <h3 className="font-medium text-[16px] text-black">
-                      {conv.name}
-                    </h3>
+                    <div className="flex items-center gap-2">
+                      <h3 className="font-medium text-[16px] text-black">
+                        {conv.name}
+                      </h3>
+                      <div className={`w-2 h-2 rounded-full ${getStatusColor(conv.status)}`}></div>
+                    </div>
                     <span className="text-[10px] text-[#ACACAC]">
                       {conv.time}
                     </span>
@@ -406,6 +537,11 @@ export default function Index() {
                   <p className="text-[14px] text-black font-normal truncate">
                     {conv.lastMessage}
                   </p>
+                  {conv.unread > 0 && (
+                    <Badge className="bg-red-500 text-white text-xs mt-1">
+                      {conv.unread}
+                    </Badge>
+                  )}
                 </div>
               </div>
             </div>
@@ -462,38 +598,38 @@ export default function Index() {
         </div>
 
         {/* Message Content */}
-        <div className="flex-1 p-6 flex flex-col gap-6">
-          {/* User Message */}
-          <div className="bg-white border border-[#F1F1F1] rounded-[33px] p-6 max-w-[384px]">
-            <p className="text-[16px] text-black font-normal mb-3">
-              Hello, please help me. For lorem impsun dolor lorem impsum?
-            </p>
-            <p className="text-[12px] text-[#ACACAC] font-normal">
-              John doe - 1 minute ago
-            </p>
-          </div>
-
-          {/* Large Content Area */}
-          <div className="bg-white border border-[#F1F1F1] rounded-[33px] p-6 flex-1 min-h-[380px]">
-            <div className="w-full h-[332px] bg-[#E7E7E7] rounded-[18px] flex items-center justify-center">
-              <span className="text-[#999] text-sm">Content area</span>
+        <div className="flex-1 p-6 flex flex-col gap-6 overflow-y-auto">
+          {currentMessages.length === 0 ? (
+            <div className="flex-1 flex items-center justify-center text-gray-500">
+              <div className="text-center">
+                <p className="text-lg">Nenhuma mensagem ainda</p>
+                <p className="text-sm">Comece uma conversa enviando uma mensagem</p>
+              </div>
             </div>
-            <p className="text-[12px] text-[#ACACAC] font-normal mt-4">
-              John doe - 1 minute ago
-            </p>
-          </div>
-
-          {/* Support Response */}
-          <div className="flex justify-end">
-            <div className="bg-black text-white rounded-[25px] p-4 max-w-[238px]">
-              <p className="text-[16px] font-normal">
-                Hi, yes, my name is john
-              </p>
-              <p className="text-[12px] text-[#ACACAC] font-normal mt-2">
-                1 minute ago
-              </p>
-            </div>
-          </div>
+          ) : (
+            currentMessages.map((msg) => (
+              <div
+                key={msg.id}
+                className={`flex ${msg.sender === "user" ? "justify-start" : "justify-end"}`}
+              >
+                <div
+                  className={`max-w-[70%] rounded-[33px] p-6 ${
+                    msg.sender === "user"
+                      ? "bg-white border border-[#F1F1F1]"
+                      : "bg-black text-white"
+                  }`}
+                >
+                  <p className={`text-[16px] font-normal mb-3 ${msg.sender === "user" ? "text-black" : "text-white"}`}>
+                    {msg.text}
+                  </p>
+                  <p className={`text-[12px] font-normal ${msg.sender === "user" ? "text-[#ACACAC]" : "text-[#ACACAC]"}`}>
+                    {currentConversation?.name} - {msg.time}
+                  </p>
+                </div>
+              </div>
+            ))
+          )}
+          <div ref={messagesEndRef} />
         </div>
 
         {/* Message Input Area */}
@@ -580,7 +716,7 @@ export default function Index() {
             <div className="space-y-4">
               <div className="flex items-center justify-between">
                 <span className="text-[16px] text-[#5A5A5A] font-normal">Full name</span>
-                <span className="text-[16px] text-black font-normal">John Doe</span>
+                <span className="text-[16px] text-black font-normal">{currentConversation?.name || "John Doe"}</span>
               </div>
 
               <div className="flex items-center justify-between">
@@ -596,6 +732,11 @@ export default function Index() {
               <div className="flex items-center justify-between">
                 <span className="text-[16px] text-[#5A5A5A] font-normal">Tag ID</span>
                 <span className="text-[16px] text-black font-normal">123456</span>
+              </div>
+
+              <div className="flex items-center justify-between">
+                <span className="text-[16px] text-[#5A5A5A] font-normal">Status</span>
+                <span className="text-[16px] text-black font-normal">{getStatusLabel(currentConversation?.status || "open")}</span>
               </div>
             </div>
           </div>
@@ -709,20 +850,37 @@ export default function Index() {
                   </div>
                   
                   {conversations.find(c => c.isWidget)?.messages.map((msg) => (
-                    <div key={msg.id} className={`flex flex-col mb-[18px] max-w-[80%] ${msg.sender === "support" ? "self-end items-end" : "self-start items-start"}`}>
+                    <div key={msg.id} className={`flex flex-col mb-[18px] max-w-[80%] ${msg.sender === "user" ? "self-end items-end" : "self-start items-start"}`}>
                       <div className={`p-[12px_16px] text-[15px] leading-[1.5] font-normal ${
-                        msg.sender === "support" 
+                        msg.sender === "user" 
                           ? "bg-black text-white rounded-[18px_18px_5px_18px]"
                           : "bg-[#F1F1F1] text-black rounded-[18px_18px_18px_5px]"
                       }`}>
                         {msg.text}
                       </div>
-                      <div className={`text-[11px] text-[#8A8A8A] mt-[6px] font-normal ${msg.sender === "support" ? "pr-[5px]" : "pl-[5px]"}`}>
+                      <div className={`text-[11px] text-[#8A8A8A] mt-[6px] font-normal ${msg.sender === "user" ? "pr-[5px]" : "pl-[5px]"}`}>
                         {msg.time}
                       </div>
                     </div>
                   ))}
                 </div>
+
+                {/* Emoji Panel */}
+                {showWidgetEmojiPanel && (
+                  <div className="absolute bottom-20 left-3 right-3 bg-white border border-[#F1F1F1] rounded-[18px] p-4 shadow-lg z-10">
+                    <div className="grid grid-cols-8 gap-2 max-h-32 overflow-y-auto">
+                      {emojis.map((emoji, index) => (
+                        <button
+                          key={index}
+                          onClick={() => handleEmojiSelect(emoji)}
+                          className="text-lg hover:bg-gray-100 p-1 rounded"
+                        >
+                          {emoji}
+                        </button>
+                      ))}
+                    </div>
+                  </div>
+                )}
 
                 {/* Chat Footer */}
                 <div className="p-[14px] bg-white border-2 border-[#F1F1F1] w-[83%] rounded-[27px] mx-auto mb-3 relative">
@@ -734,6 +892,27 @@ export default function Index() {
                       placeholder="Digite sua mensagem..."
                       className="flex-grow border-none outline-none bg-transparent text-[15px] text-black font-normal placeholder:text-[#8A8A8A] focus-visible:ring-0 shadow-none"
                     />
+                    <div className="flex items-center gap-[6px] mx-[6px]">
+                      <div 
+                        className="cursor-pointer text-[#5F5F5F] flex items-center"
+                        onClick={() => fileInputRef.current?.click()}
+                      >
+                        <svg width="6" height="14" viewBox="0 0 6 14" fill="none">
+                          <path d="M3.00023 0C1.52332 0 0.321777 1.20157 0.321777 2.67846V11.9475C0.321777 13.0792 1.24255 14 2.37431 14C3.50607 14 4.42684 13.0792 4.42684 11.9475V3.34991C4.42684 2.57534 3.79668 1.94513 3.02205 1.94513C2.24749 1.94513 1.6173 2.57532 1.6173 3.34991V11.4686H2.47444V3.34991C2.47444 3.04798 2.7201 2.80227 3.02208 2.80227C3.32407 2.80227 3.56972 3.04795 3.56972 3.34991V11.9474C3.56972 12.6066 3.03346 13.1428 2.37431 13.1428C1.71516 13.1428 1.17892 12.6066 1.17892 11.9474V2.67846C1.17892 1.6742 1.99595 0.857145 3.00023 0.857145C4.00452 0.857145 4.82155 1.6742 4.82155 2.67846V11.4686H5.67869V2.67846C5.67869 1.20157 4.47715 0 3.00023 0Z" fill="black"/>
+                        </svg>
+                      </div>
+                      <div 
+                        className="cursor-pointer text-[#5F5F5F] flex items-center"
+                        onClick={() => setShowWidgetEmojiPanel(!showWidgetEmojiPanel)}
+                      >
+                        <svg width="20" height="20" strokeWidth="0.8" viewBox="0 0 24 24" fill="none">
+                          <path d="M12 22C6.47715 22 2 17.5228 2 12C2 6.47715 6.47715 2 12 2C17.5228 2 22 6.47715 22 12C22 17.5228 17.5228 22 12 22Z" stroke="black" strokeWidth="0.8"/>
+                          <path d="M16.5 14.5C16.5 14.5 15 16.5 12 16.5C9 16.5 7.5 14.5 7.5 14.5" stroke="black" strokeWidth="0.8"/>
+                          <path d="M15.5 9C15.2239 9 15 8.77614 15 8.5C15 8.22386 15.2239 8 15.5 8C15.7761 8 16 8.22386 16 8.5C16 8.77614 15.7761 9 15.5 9Z" fill="black" stroke="black" strokeWidth="0.8"/>
+                          <path d="M8.5 9C8.22386 9 8 8.77614 8 8.5C8 8.22386 8.22386 8 8.5 8C8.77614 8 9 8.22386 9 8.5C9 8.77614 8.77614 9 8.5 9Z" fill="black" stroke="black" strokeWidth="0.8"/>
+                        </svg>
+                      </div>
+                    </div>
                     <div 
                       onClick={sendWidgetMessage}
                       className="w-[38px] h-[38px] bg-black text-white rounded-full flex justify-center items-center cursor-pointer transition-transform hover:scale-110 flex-shrink-0 ml-2"
