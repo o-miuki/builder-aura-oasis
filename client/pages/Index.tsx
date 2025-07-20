@@ -441,12 +441,15 @@ export default function Index() {
       )}
 
             {/* 1. Menu Column (Left Navigation) */}
-      <div className="w-[70px] bg-transparent border-r border-[#F4F4F4] hidden lg:flex flex-col items-center py-6 flex-shrink-0 justify-start">
-        {/* Navigation Icons */}
-        <div className="relative mb-6 flex flex-col justify-start">
+            <div className="w-[70px] bg-transparent border-r border-[#F4F4F4] hidden lg:flex flex-col items-center flex-shrink-0 h-full relative">
+        {/* Logo at top */}
+        <div className="mt-12 mb-8">
+          <svg width="21" height="21" viewBox="0 0 22 22" fill="none">
+            <path fillRule="evenodd" clipRule="evenodd" d="M2.66101 4.68274C2.66101 3.35381 3.73833 2.27649 5.06726 2.27649H17.3173C18.6462 2.27649 19.7235 3.35381 19.7235 4.68274V13.4327C19.7235 14.7617 18.6462 15.839 17.3173 15.839H7.65835C7.32611 15.839 7.01186 15.99 6.80428 16.2495L4.76467 18.7989C4.06715 19.6709 2.66101 19.1777 2.66101 18.0611V4.68274Z" fill="black"/>
+          </svg>
         </div>
 
-        {/* Navigation Icons */}
+        {/* Navigation Icons in middle */}
         <div className="flex flex-col gap-4">
           <div className="w-[42px] h-[42px] bg-white rounded-lg border border-[#F1F1F1] shadow-[0_0_9.2px_rgba(0,0,0,0.13)] flex items-center justify-center">
             <svg width="18" height="18" viewBox="0 0 18 18" fill="none">
@@ -454,7 +457,7 @@ export default function Index() {
             </svg>
           </div>
 
-                    <div className="w-[42px] h-[42px] bg-transparent rounded-lg flex items-center justify-center">
+          <div className="w-[42px] h-[42px] bg-transparent rounded-lg flex items-center justify-center">
             <svg width="22" height="22" viewBox="0 0 22 22" fill="none">
               <path d="M4.58337 18.3333V17.4167C4.58337 13.8728 7.45622 11 11 11C14.5439 11 17.4167 13.8728 17.4167 17.4167V18.3333" stroke="black" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
               <path d="M11 11C13.025 11 14.6667 9.3583 14.6667 7.33329C14.6667 5.30825 13.025 3.66663 11 3.66663C8.975 3.66663 7.33337 5.30825 7.33337 7.33329C7.33337 9.3583 8.975 11 11 11Z" stroke="black" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
@@ -462,10 +465,10 @@ export default function Index() {
           </div>
         </div>
 
-                {/* Online Status Indicator */}
-        <div className="relative w-[34px] h-[34px] flex items-start justify-end">
+        {/* Profile image at bottom */}
+        <div className="absolute bottom-8 relative">
           <img
-            src={generateAvatarUrl('operator-profile')}
+            src={generateAvatarUrl('operator-main')}
             alt="Operator Profile"
             className="w-[34px] h-[34px] rounded-full object-cover"
           />
