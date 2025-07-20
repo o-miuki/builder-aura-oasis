@@ -32,6 +32,7 @@ export default function Index() {
   const [showConversations, setShowConversations] = useState(false);
   const [showSidebar, setShowSidebar] = useState(false);
   const [isWidgetOpen, setIsWidgetOpen] = useState(false);
+  const [showWidgetChat, setShowWidgetChat] = useState(false);
   const [widgetMessage, setWidgetMessage] = useState("");
   const [conversations, setConversations] = useState<Conversation[]>([
     {
@@ -669,7 +670,7 @@ export default function Index() {
               <button className="w-8 h-8 bg-[#F8F8F7] rounded-full flex items-center justify-center">
                 <svg width="12" height="12" viewBox="0 0 14 14" fill="none">
                   <path
-                    d="M6.99999 0C5.52307 0 4.32153 1.20157 4.32153 2.67846V11.9475C4.32153 13.0792 5.24231 14 6.37406 14C7.50582 14 8.4266 13.0792 8.4266 11.9475V3.34991C8.4266 2.57534 7.79643 1.94513 7.02181 1.94513C6.24724 1.94513 5.61705 2.57532 5.61705 3.34991V11.4686H6.4742V3.34991C6.4742 3.04798 6.71985 2.80227 7.02184 2.80227C7.32382 2.80227 7.56948 3.04795 7.56948 3.34991V11.9474C7.56948 12.6066 7.03321 13.1428 6.37406 13.1428C5.71492 13.1428 5.17868 12.6066 5.17868 11.9474V2.67846C5.17868 1.6742 5.99571 0.857145 6.99999 0.857145C8.00427 0.857145 8.8213 1.6742 8.8213 2.67846V11.4686H9.67845V2.67846C9.67845 1.20157 8.47691 0 6.99999 0Z"
+                    d="M6.99999 0C5.52307 0 4.32153 1.20157 4.32153 2.67846V11.9475C4.32153 13.0792 5.24231 14 6.37406 14C7.50582 14 8.4266 13.0792 8.4266 11.9475V3.34991C8.4266 2.57534 7.79643 1.94513 7.02181 1.94513C6.24724 1.94513 5.61705 2.57532 5.61705 3.34991V11.4686H6.4742V3.34991C6.4742 3.04798 6.71985 2.80227 7.02184 2.80227C7.32382 2.80227 7.56948 3.04795 7.56948 3.34991V11.9474C7.56948 12.6066 7.03321 13.1428 6.37406 13.1428C1.71516 13.1428 1.17892 12.6066 1.17892 11.9474V2.67846C1.17892 1.6742 1.99595 0.857145 6.99999 0.857145C8.00427 0.857145 8.8213 1.6742 8.8213 2.67846V11.4686H9.67845V2.67846C9.67845 1.20157 8.47691 0 6.99999 0Z"
                     fill="black"
                   />
                 </svg>
@@ -864,178 +865,197 @@ export default function Index() {
         </div>
       </div>
 
-      {/* Live Chat Widget - Floating */}
-      <div className="fixed bottom-6 right-6 z-50">
-        {/* Chat Window */}
-        {isWidgetOpen && (
-          <div className="absolute bottom-16 right-0 w-80 h-96 bg-[#FBFBF9] rounded-2xl shadow-xl border border-[#F1F1F1] mb-3 flex flex-col">
-            {/* Widget Header */}
-            <div className="p-4 border-b border-[#F1F1F1] flex items-center justify-between">
-              <div className="flex items-center gap-3">
-                <div className="w-8 h-8 bg-[#D9D9D9] rounded-full"></div>
-                <div>
-                  <h3 className="font-medium text-sm text-[#363636]">
-                    Suporte ao Cliente
-                  </h3>
-                  <div className="flex items-center gap-1">
-                    <div className={`w-2 h-2 rounded-full ${connectionStatus === "connected" ? "bg-green-500" : "bg-red-500"}`}></div>
-                    <span className="text-xs text-[#ACACAC]">
-                      {connectionStatus === "connected" ? "Online" : "Offline"}
-                    </span>
-                  </div>
-                </div>
-              </div>
-              <Button
-                variant="ghost"
-                size="sm"
-                onClick={() => setIsWidgetOpen(false)}
-                className="p-1"
-              >
-                <svg
-                  className="w-4 h-4"
-                  fill="none"
-                  stroke="currentColor"
-                  viewBox="0 0 24 24"
-                >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth={2}
-                    d="M6 18L18 6M6 6l12 12"
-                  />
-                </svg>
-              </Button>
+      {/* Live Chat Widget - Floating (Design baseado no HTML fornecido) */}
+      <div className="fixed bottom-5 right-5 z-[1000] flex flex-col items-end">
+        {/* Preview Bubble */}
+        {!isWidgetOpen && (
+          <div className="relative bg-white rounded-[22px] shadow-[0_0_21.2px_6px_rgba(0,0,0,0.02)] p-[15px_20px] mb-[15px] cursor-pointer opacity-0 translate-y-[10px] transition-all duration-[0.4s] ease-out pointer-events-none">
+            <div className="hidden absolute -top-[10px] right-[10px] bg-black text-white px-3 py-1 text-xs font-medium rounded-[59px]">
+              close
             </div>
-
-            {/* Widget Messages */}
-            <div className="flex-1 overflow-y-auto p-4 space-y-3">
-              <div className="flex justify-start">
-                <div className="bg-white border border-[#F1F1F1] rounded-2xl p-3 max-w-[80%]">
-                  <p className="text-sm text-black">
-                    Olá! Como posso ajudá-lo hoje?
-                  </p>
-                  <p className="text-xs text-[#ACACAC] mt-1">Agora</p>
-                </div>
-              </div>
-              
-              {/* Show messages from widget conversation if exists */}
-              {conversations.find(c => c.isWidget)?.messages.map((msg) => (
-                <div
-                  key={msg.id}
-                  className={`flex ${msg.sender === "support" ? "justify-end" : "justify-start"}`}
-                >
-                  <div
-                    className={`max-w-[80%] rounded-2xl p-3 ${
-                      msg.sender === "support"
-                        ? "bg-black text-white"
-                        : "bg-white border border-[#F1F1F1]"
-                    }`}
-                  >
-                    <p className="text-sm">{msg.text}</p>
-                    <p
-                      className={`text-xs mt-1 ${
-                        msg.sender === "support"
-                          ? "text-gray-300"
-                          : "text-[#ACACAC]"
-                      }`}
-                    >
-                      {msg.time}
-                    </p>
-                  </div>
-                </div>
-              ))}
-            </div>
-
-            {/* Widget Input */}
-            <div className="p-4 border-t border-[#F1F1F1]">
-              <div className="flex items-center gap-2 bg-white border border-[#F1F1F1] rounded-full px-3 py-2">
-                <Input
-                  value={widgetMessage}
-                  onChange={(e) => setWidgetMessage(e.target.value)}
-                  onKeyPress={handleWidgetKeyPress}
-                  placeholder="Digite sua mensagem..."
-                  className="border-0 bg-transparent text-sm placeholder:text-[#9B9B9B] focus-visible:ring-0 px-0"
-                />
-                <Button 
-                  onClick={sendWidgetMessage}
-                  size="sm" 
-                  className="w-6 h-6 bg-black rounded-full p-0"
-                >
-                  <svg
-                    width="12"
-                    height="12"
-                    viewBox="0 0 21 21"
-                    fill="none"
-                    className="rotate-[-90deg]"
-                  >
-                    <path
-                      d="M10.5 18.375L10.5 2.625M10.5 2.625L3.0625 10.0625M10.5 2.625L17.9375 10.0625"
-                      stroke="white"
-                      strokeWidth="2"
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                    />
-                  </svg>
-                </Button>
+            <div className="flex items-center">
+              <div className="w-[35px] h-[35px] bg-[#E9E9E9] rounded-full mr-[15px] flex-shrink-0"></div>
+              <div>
+                <div className="text-[15px] text-black font-medium">Nova mensagem</div>
+                <div className="text-[13px] text-[#8A8A8A] mt-1">Suporte • agora</div>
               </div>
             </div>
           </div>
         )}
 
-        {/* Widget Button */}
+        {/* Chat Container */}
+        {isWidgetOpen && (
+          <div className="w-[370px] h-[630px] bg-white rounded-[24px] shadow-[0_10px_40px_rgba(0,0,0,0.15)] flex flex-col overflow-hidden mb-[15px] opacity-100 translate-y-0 transition-all duration-300 ease-out" style={{fontFamily: "'Saans TRIAL', sans-serif"}}>
+            {/* Home View */}
+            {!showWidgetChat ? (
+              <div className="flex flex-col p-[30px_25px] h-full">
+                {/* Header */}
+                <div className="flex justify-between items-center">
+                  <div>
+                    <svg width="32" height="32" viewBox="0 0 100 100" fill="none">
+                      <path d="M25 75C25 58.4315 38.4315 45 55 45C71.5685 45 85 58.4315 85 75" stroke="black" strokeWidth="10" strokeLinecap="round"/>
+                    </svg>
+                  </div>
+                  <div className="flex">
+                    <div className="w-7 h-7 rounded-full border-2 border-white bg-[#FF8F8F] z-[2]"></div>
+                    <div className="w-7 h-7 rounded-full border-2 border-white bg-[#82CFFF] -ml-[10px] z-[1]"></div>
+                  </div>
+                </div>
+
+                {/* Content */}
+                <div className="mt-[30px]">
+                  <h1 className="text-[28px] font-medium leading-[1.3] text-black">
+                    Olá! Como podemos te ajudar hoje?
+                  </h1>
+                  <p className="text-[15px] text-[#8A8A8A] mt-[10px] font-normal">
+                    Fale conosco, estamos prontos para atender você.
+                  </p>
+
+                  {/* Copilot Button */}
+                  <div 
+                    onClick={() => setShowWidgetChat(true)}
+                    className="flex items-center justify-between bg-black text-white rounded-[14px] p-4 mt-[25px] cursor-pointer"
+                  >
+                    <div>
+                      <h2 className="font-medium text-[15px]">Pergunte ao Copilot</h2>
+                      <p className="text-[13px] opacity-70 mt-1 font-normal">Responde em minutos</p>
+                    </div>
+                    <div>
+                      <svg width="33" height="33" viewBox="0 0 33 33" fill="none">
+                        <path d="M30.4597 4.88562L15.3686 28.881L13.0719 17.0607L2.75 10.8596L30.4597 4.88562Z" stroke="white" strokeWidth="1.1" strokeLinecap="round" strokeLinejoin="round"/>
+                        <path d="M13.0015 17.1099L30.4596 4.88562" stroke="white" strokeWidth="1.1" strokeLinecap="round" strokeLinejoin="round"/>
+                      </svg>
+                    </div>
+                  </div>
+
+                  {/* Knowledge Base */}
+                  <div className="mt-[30px]">
+                    <h3 className="text-[15px] text-[#8A8A8A] mb-[15px] font-normal">Nossa base de conhecimento</h3>
+                    <button className="w-full text-left p-4 rounded-[14px] border border-[#EAEAEA] bg-white text-[15px] text-black cursor-pointer mb-3 font-normal transition-colors hover:bg-[#F9F9F9]">
+                      Como criar uma conta de Email
+                    </button>
+                    <button className="w-full text-left p-4 rounded-[14px] border border-[#EAEAEA] bg-white text-[15px] text-black cursor-pointer mb-3 font-normal transition-colors hover:bg-[#F9F9F9]">
+                      Configurar dns do domínio
+                    </button>
+                    <button className="w-full text-left p-4 rounded-[14px] border border-[#EAEAEA] bg-white text-[15px] text-black cursor-pointer mb-3 font-normal transition-colors hover:bg-[#F9F9F9]">
+                      Acessar base de conhecimento
+                    </button>
+                  </div>
+                </div>
+              </div>
+            ) : (
+              /* Chat View */
+              <div className="flex flex-col h-full">
+                {/* Chat Header */}
+                <div className="flex items-center p-[20px_25px] border-b border-[#EDEDED]">
+                  <div 
+                    onClick={() => setShowWidgetChat(false)}
+                    className="cursor-pointer text-black flex items-center"
+                  >
+                    <svg width="33" height="33" strokeWidth="0.8" viewBox="0 0 24 24" fill="none">
+                      <path d="M15 6L9 12L15 18" stroke="black" strokeWidth="0.8" strokeLinecap="round" strokeLinejoin="round"/>
+                    </svg>
+                  </div>
+                  <div className="w-10 h-10 bg-[#E9E9E9] rounded-full mx-3"></div>
+                  <div className="flex-grow">
+                    <div className="font-medium text-base text-black">Equipa de Suporte</div>
+                    <div className="text-[13px] text-[#8A8A8A] font-normal">Responde em minutos</div>
+                  </div>
+                  <div className="relative">
+                    <div className="cursor-pointer text-black flex items-center">
+                      <svg width="33" height="33" viewBox="0 0 33 33" fill="none">
+                        <path d="M25.2623 19.1925C26.1955 19.1925 26.9523 18.4357 26.9523 17.5025C26.9523 16.5693 26.1955 15.8125 25.2623 15.8125C24.329 15.8125 23.5723 16.5693 23.5723 17.5025C23.5723 18.4357 24.329 19.1925 25.2623 19.1925Z" fill="#7A7A7A" stroke="#7A7A7A" strokeWidth="1.1"/>
+                        <path d="M15.8824 19.1925C16.8156 19.1925 17.5724 18.4357 17.5724 17.5025C17.5724 16.5693 16.8156 15.8125 15.8824 15.8125C14.9492 15.8125 14.1924 16.5693 14.1924 17.5025C14.1924 18.4357 14.9492 19.1925 15.8824 19.1925Z" fill="#7A7A7A" stroke="#7A7A7A" strokeWidth="1.1"/>
+                        <path d="M6.5025 19.1925C7.43585 19.1925 8.1925 18.4357 8.1925 17.5025C8.1925 16.5693 7.43585 15.8125 6.5025 15.8125C5.56915 15.8125 4.8125 16.5693 4.8125 17.5025C4.8125 18.4357 5.56915 19.1925 6.5025 19.1925Z" fill="#7A7A7A" stroke="#7A7A7A" strokeWidth="1.1"/>
+                      </svg>
+                    </div>
+                  </div>
+                </div>
+
+                {/* Chat Body */}
+                <div className="flex-grow p-5 overflow-y-auto flex flex-col">
+                  <div className="flex flex-col mb-[18px] max-w-[80%] self-start items-start">
+                    <div className="p-[12px_16px] text-[15px] leading-[1.5] font-normal bg-[#F1F1F1] text-black rounded-[18px_18px_18px_5px]">
+                      Olá! Como posso ajudá-lo hoje?
+                    </div>
+                    <div className="text-[11px] text-[#8A8A8A] mt-[6px] font-normal pl-[5px]">
+                      Agora
+                    </div>
+                  </div>
+                  
+                  {conversations.find(c => c.isWidget)?.messages.map((msg) => (
+                    <div key={msg.id} className={`flex flex-col mb-[18px] max-w-[80%] ${msg.sender === "support" ? "self-end items-end" : "self-start items-start"}`}>
+                      <div className={`p-[12px_16px] text-[15px] leading-[1.5] font-normal ${
+                        msg.sender === "support" 
+                          ? "bg-black text-white rounded-[18px_18px_5px_18px]"
+                          : "bg-[#F1F1F1] text-black rounded-[18px_18px_18px_5px]"
+                      }`}>
+                        {msg.text}
+                      </div>
+                      <div className={`text-[11px] text-[#8A8A8A] mt-[6px] font-normal ${msg.sender === "support" ? "pr-[5px]" : "pl-[5px]"}`}>
+                        {msg.time}
+                      </div>
+                    </div>
+                  ))}
+                </div>
+
+                {/* Chat Footer */}
+                <div className="p-[14px] bg-white border-2 border-[#F1F1F1] w-[83%] rounded-[27px] mx-auto mb-3 relative">
+                  <div className="flex items-center bg-transparent rounded-[25px] p-0">
+                    <Input
+                      value={widgetMessage}
+                      onChange={(e) => setWidgetMessage(e.target.value)}
+                      onKeyPress={handleWidgetKeyPress}
+                      placeholder="Digite sua mensagem..."
+                      className="flex-grow border-none outline-none bg-transparent text-[15px] text-black font-normal placeholder:text-[#8A8A8A] focus-visible:ring-0 shadow-none"
+                    />
+                    <div className="flex items-center gap-[6px] mx-[6px]">
+                      <div className="cursor-pointer text-[#5F5F5F] flex items-center">
+                        <svg width="6" height="14" viewBox="0 0 6 14" fill="none">
+                          <path d="M3.00023 0C1.52332 0 0.321777 1.20157 0.321777 2.67846V11.9475C0.321777 13.0792 1.24255 14 2.37431 14C3.50607 14 4.42684 13.0792 4.42684 11.9475V3.34991C4.42684 2.57534 3.79668 1.94513 3.02205 1.94513C2.24749 1.94513 1.6173 2.57532 1.6173 3.34991V11.4686H2.47444V3.34991C2.47444 3.04798 2.7201 2.80227 3.02208 2.80227C3.32407 2.80227 3.56972 3.04795 3.56972 3.34991V11.9474C3.56972 12.6066 3.03346 13.1428 2.37431 13.1428C1.71516 13.1428 1.17892 12.6066 1.17892 11.9474V2.67846C1.17892 1.6742 1.99595 0.857145 3.00023 0.857145C4.00452 0.857145 4.82155 1.6742 4.82155 2.67846V11.4686H5.67869V2.67846C5.67869 1.20157 4.47715 0 3.00023 0Z" fill="black"/>
+                        </svg>
+                      </div>
+                      <div className="cursor-pointer text-[#5F5F5F] flex items-center">
+                        <svg width="20" height="20" strokeWidth="0.8" viewBox="0 0 24 24" fill="none">
+                          <path d="M12 22C6.47715 22 2 17.5228 2 12C2 6.47715 6.47715 2 12 2C17.5228 2 22 6.47715 22 12C22 17.5228 17.5228 22 12 22Z" stroke="black" strokeWidth="0.8"/>
+                          <path d="M16.5 14.5C16.5 14.5 15 16.5 12 16.5C9 16.5 7.5 14.5 7.5 14.5" stroke="black" strokeWidth="0.8"/>
+                          <path d="M15.5 9C15.2239 9 15 8.77614 15 8.5C15 8.22386 15.2239 8 15.5 8C15.7761 8 16 8.22386 16 8.5C16 8.77614 15.7761 9 15.5 9Z" fill="black" stroke="black" strokeWidth="0.8"/>
+                          <path d="M8.5 9C8.22386 9 8 8.77614 8 8.5C8 8.22386 8.22386 8 8.5 8C8.77614 8 9 8.22386 9 8.5C9 8.77614 8.77614 9 8.5 9Z" fill="black" stroke="black" strokeWidth="0.8"/>
+                        </svg>
+                      </div>
+                    </div>
+                    <div 
+                      onClick={sendWidgetMessage}
+                      className="w-[38px] h-[38px] bg-black text-white rounded-full flex justify-center items-center cursor-pointer transition-transform hover:scale-110 flex-shrink-0 ml-2"
+                    >
+                      <svg width="17" height="17" viewBox="0 0 17 17" fill="none">
+                        <path d="M8.49984 14.875L8.49984 2.125M8.49984 2.125L2.479 8.14583M8.49984 2.125L14.5207 8.14583" stroke="white" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+                      </svg>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            )}
+          </div>
+        )}
+
+        {/* Widget Toggle Button */}
         <div
-          className="w-[42px] h-[42px] bg-black rounded-full flex items-center justify-center cursor-pointer shadow-lg hover:scale-105 transition-transform"
+          className="w-[60px] h-[60px] bg-black text-white rounded-full flex justify-center items-center cursor-pointer shadow-[0_4px_12px_rgba(0,0,0,0.2)] transition-transform hover:scale-110"
           onClick={() => setIsWidgetOpen(!isWidgetOpen)}
         >
-          {isWidgetOpen ? (
-            <svg
-              className="w-5 h-5"
-              fill="none"
-              stroke="white"
-              viewBox="0 0 24 24"
-            >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                strokeWidth={2}
-                d="M6 18L18 6M6 6l12 12"
-              />
+          <div className={`absolute transition-all duration-200 flex items-center justify-center ${isWidgetOpen ? 'opacity-0 rotate-90' : 'opacity-100 rotate-0'}`}>
+            <svg width="33" height="33" strokeWidth="0.8" viewBox="0 0 24 24" fill="none">
+              <path d="M8 10L12 10L16 10" stroke="white" strokeWidth="0.8" strokeLinecap="round" strokeLinejoin="round"/>
+              <path d="M8 14L10 14L12 14" stroke="white" strokeWidth="0.8" strokeLinecap="round" strokeLinejoin="round"/>
+              <path d="M12 22C17.5228 22 22 17.5228 22 12C22 6.47715 17.5228 2 12 2C6.47715 2 2 6.47715 2 12C2 13.8214 2.48697 15.5291 3.33782 17L2.5 21.5L7 20.6622C8.47087 21.513 10.1786 22 12 22Z" stroke="white" strokeWidth="0.8" strokeLinecap="round" strokeLinejoin="round"/>
             </svg>
-          ) : (
-            <svg width="20" height="20" viewBox="0 0 33 33" fill="none">
-              <path
-                d="M23.375 17.1875C23.7546 17.1875 24.0625 16.8796 24.0625 16.5C24.0625 16.1204 23.7546 15.8125 23.375 15.8125C22.9954 15.8125 22.6875 16.1204 22.6875 16.5C22.6875 16.8796 22.9954 17.1875 23.375 17.1875Z"
-                fill="white"
-                stroke="white"
-                strokeWidth="1.5"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-              />
-              <path
-                d="M16.5 17.1875C16.8796 17.1875 17.1875 16.8796 17.1875 16.5C17.1875 16.1204 16.8796 15.8125 16.5 15.8125C16.1204 15.8125 15.8125 16.1204 15.8125 16.5C15.8125 16.8796 16.1204 17.1875 16.5 17.1875Z"
-                fill="white"
-                stroke="white"
-                strokeWidth="1.5"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-              />
-              <path
-                d="M9.625 17.1875C10.0047 17.1875 10.3125 16.8796 10.3125 16.5C10.3125 16.1204 10.0047 15.8125 9.625 15.8125C9.24531 15.8125 8.9375 16.1204 8.9375 16.5C8.9375 16.8796 9.24531 17.1875 9.625 17.1875Z"
-                fill="white"
-                stroke="white"
-                strokeWidth="1.5"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-              />
-              <path
-                d="M16.5 30.25C24.0938 30.25 30.25 24.0938 30.25 16.5C30.25 8.90608 24.0938 2.75 16.5 2.75C8.90608 2.75 2.75 8.90608 2.75 16.5C2.75 19.0044 3.41958 21.3525 4.5895 23.375L3.4375 29.5625L9.625 28.4105C11.6474 29.5804 13.9956 30.25 16.5 30.25Z"
-                stroke="white"
-                strokeWidth="1.5"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-              />
+          </div>
+          <div className={`absolute transition-all duration-200 flex items-center justify-center ${isWidgetOpen ? 'opacity-100 rotate-0' : 'opacity-0 -rotate-90'}`}>
+            <svg width="33" height="33" strokeWidth="0.8" viewBox="0 0 24 24" fill="none">
+              <path d="M6 9L12 15L18 9" stroke="white" strokeWidth="0.8" strokeLinecap="round" strokeLinejoin="round"/>
             </svg>
-          )}
+          </div>
         </div>
       </div>
     </div>
