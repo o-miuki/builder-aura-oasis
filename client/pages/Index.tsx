@@ -844,9 +844,12 @@ export default function Index() {
                       <path d="M25 75C25 58.4315 38.4315 45 55 45C71.5685 45 85 58.4315 85 75" stroke="black" strokeWidth="10" strokeLinecap="round"/>
                     </svg>
                   </div>
-                  <div className="flex">
-                    <div className="w-7 h-7 rounded-full border-2 border-white bg-[#FF8F8F] z-[2]"></div>
-                    <div className="w-7 h-7 rounded-full border-2 border-white bg-[#82CFFF] -ml-[10px] z-[1]"></div>
+                                    <div className="flex">
+                    <img
+                      src={generateAvatarUrl('operator-main')}
+                      alt="Operator Profile"
+                      className="w-7 h-7 rounded-full border-2 border-white object-cover"
+                    />
                   </div>
                 </div>
 
