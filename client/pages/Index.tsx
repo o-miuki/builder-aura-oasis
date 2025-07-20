@@ -363,11 +363,27 @@ export default function Index() {
     }
   };
 
-  const handleClosePreviewMessages = () => {
+    const handleClosePreviewMessages = () => {
     setShowPreviewMessages(false);
     setTimeout(() => {
       setPreviewMessages([]);
     }, 300); // Wait for fade out animation
+  };
+
+  const showPreviewMessage = (message: Message) => {
+    if (!isWidgetOpen) {
+      setPreviewMessages(prev => {
+        const newMessages = [...prev, message];
+        return newMessages.slice(-2); // Keep only last 2 messages
+      });
+      setShowPreviewMessages(true);
+
+      // Auto-hide preview after 5 seconds
+      setTimeout(() => {
+        setShowPreviewMessages(false);
+        setTimeout(() => setPreviewMessages([]), 300);
+      }, 5000);
+    }
   };
 
   const formatTimeAgo = (timestamp: number) => {
