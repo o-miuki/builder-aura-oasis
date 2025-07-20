@@ -1034,9 +1034,9 @@ export default function Index() {
                 }}
               >
                                 <div className="flex items-start gap-3">
-                  <img
-                    src={generateAvatarUrl('karen-preview')}
-                    alt="Karen Profile"
+                                    <img
+                    src={generateAvatarUrl('operator-main')}
+                    alt="Operator Profile"
                     className="w-10 h-10 rounded-full flex-shrink-0 object-cover"
                   />
                   <div className="flex-1 min-w-0">
