@@ -258,7 +258,7 @@ export default function Index() {
         conversationId: widgetConversation!.id,
       };
 
-      setConversations((prev) =>
+            setConversations((prev) =>
         prev.map((conv) =>
           conv.id === widgetConversation!.id
             ? {
@@ -270,6 +270,12 @@ export default function Index() {
             : conv,
         ),
       );
+
+      // Show preview message if widget is closed
+      if (!isWidgetOpen) {
+        setPreviewMessages(prev => [...prev.slice(-1), supportReply]); // Keep max 2 messages
+        setShowPreviewMessages(true);
+      }
     }, 1500);
   };
 
