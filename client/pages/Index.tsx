@@ -10,6 +10,7 @@ interface Message {
   sender: "user" | "support";
   time: string;
   timestamp: number;
+  conversationId: string;
 }
 
 interface Conversation {
@@ -21,6 +22,8 @@ interface Conversation {
   avatar: string;
   selected: boolean;
   messages: Message[];
+  status: "online" | "offline";
+  isWidget?: boolean;
 }
 
 export default function Index() {
@@ -28,8 +31,8 @@ export default function Index() {
   const [message, setMessage] = useState("");
   const [showConversations, setShowConversations] = useState(false);
   const [showSidebar, setShowSidebar] = useState(false);
-  const [showChatWidget, setShowChatWidget] = useState(false);
   const [isWidgetOpen, setIsWidgetOpen] = useState(false);
+  const [widgetMessage, setWidgetMessage] = useState("");
   const [conversations, setConversations] = useState<Conversation[]>([
     {
       id: "1",
@@ -39,6 +42,8 @@ export default function Index() {
       unread: 2,
       avatar: "",
       selected: true,
+      status: "online",
+      isWidget: false,
       messages: [
         {
           id: "1",
@@ -46,6 +51,7 @@ export default function Index() {
           sender: "user",
           time: "1 minute ago",
           timestamp: Date.now() - 60000,
+          conversationId: "1",
         },
         {
           id: "2",
@@ -53,12 +59,15 @@ export default function Index() {
           sender: "support",
           time: "1 minute ago",
           timestamp: Date.now() - 30000,
+          conversationId: "1",
         },
       ],
     },
   ]);
 
   const messagesEndRef = useRef<HTMLDivElement>(null);
+  const wsRef = useRef<WebSocket | null>(null);
+  const [connectionStatus, setConnectionStatus] = useState<"connecting" | "connected" | "disconnected">("disconnected");
 
   const scrollToBottom = () => {
     messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
@@ -68,62 +77,238 @@ export default function Index() {
     scrollToBottom();
   }, [conversations]);
 
-  const sendMessage = () => {
-    if (!message.trim()) return;
+  // WebSocket Connection
+  useEffect(() => {
+    // Simulating WebSocket connection
+    setConnectionStatus("connecting");
+    
+    // Mock WebSocket connection
+    const mockWs = {
+      send: (data: string) => {
+        console.log("WebSocket sending:", data);
+      },
+      close: () => {
+        console.log("WebSocket closed");
+      }
+    };
+
+    wsRef.current = mockWs as any;
+    setConnectionStatus("connected");
+
+    // Simulate real-time message reception
+    const interval = setInterval(() => {
+      if (Math.random() > 0.95) { // 5% chance every second to receive a message
+        const randomResponses = [
+          "Thank you for contacting us!",
+          "How can I help you today?",
+          "I understand your concern.",
+          "Let me check that for you.",
+          "Is there anything else I can help with?"
+        ];
+        
+        const randomResponse = randomResponses[Math.floor(Math.random() * randomResponses.length)];
+        receiveMessage(randomResponse, selectedConversation);
+      }
+    }, 1000);
+
+    return () => {
+      clearInterval(interval);
+      if (wsRef.current) {
+        wsRef.current.close();
+      }
+    };
+  }, []);
+
+  const sendMessage = (conversationId?: string, messageText?: string) => {
+    const text = messageText || message.trim();
+    const targetConversationId = conversationId || selectedConversation;
+    
+    if (!text) return;
 
     const newMessage: Message = {
       id: Date.now().toString(),
-      text: message,
+      text: text,
       sender: "support",
       time: "now",
       timestamp: Date.now(),
+      conversationId: targetConversationId,
     };
 
     setConversations((prev) =>
       prev.map((conv) =>
-        conv.id === selectedConversation
+        conv.id === targetConversationId
           ? {
               ...conv,
               messages: [...conv.messages, newMessage],
-              lastMessage: message,
+              lastMessage: text,
               time: "now",
             }
           : conv,
       ),
     );
 
-    setMessage("");
+    if (!conversationId) {
+      setMessage("");
+    }
 
-    // Simulate user response after 3 seconds
+    // Send via WebSocket
+    if (wsRef.current && connectionStatus === "connected") {
+      wsRef.current.send(JSON.stringify({
+        type: "message",
+        conversationId: targetConversationId,
+        message: newMessage
+      }));
+    }
+
+    // Auto-reply simulation
     setTimeout(() => {
       const autoReply: Message = {
         id: (Date.now() + 1).toString(),
-        text: "Thank you for your help! That's exactly what I needed.",
+        text: "Thank you for your message! Our team will get back to you shortly.",
         sender: "user",
         time: "now",
         timestamp: Date.now(),
+        conversationId: targetConversationId,
       };
 
       setConversations((prev) =>
         prev.map((conv) =>
-          conv.id === selectedConversation
+          conv.id === targetConversationId
             ? {
                 ...conv,
                 messages: [...conv.messages, autoReply],
                 lastMessage: autoReply.text,
                 time: "now",
-                unread: conv.unread + 1,
+                unread: conv.id !== selectedConversation ? conv.unread + 1 : conv.unread,
               }
             : conv,
         ),
       );
-    }, 3000);
+    }, 2000);
+  };
+
+  const receiveMessage = (text: string, conversationId: string) => {
+    const newMessage: Message = {
+      id: Date.now().toString(),
+      text: text,
+      sender: "user",
+      time: "now",
+      timestamp: Date.now(),
+      conversationId: conversationId,
+    };
+
+    setConversations((prev) =>
+      prev.map((conv) =>
+        conv.id === conversationId
+          ? {
+              ...conv,
+              messages: [...conv.messages, newMessage],
+              lastMessage: text,
+              time: "now",
+              unread: conv.id !== selectedConversation ? conv.unread + 1 : conv.unread,
+            }
+          : conv,
+      ),
+    );
+  };
+
+  const sendWidgetMessage = () => {
+    const text = widgetMessage.trim();
+    if (!text) return;
+
+    // Check if there's already a widget conversation
+    let widgetConversation = conversations.find(conv => conv.isWidget);
+    
+    if (!widgetConversation) {
+      // Create new widget conversation
+      const newConversation: Conversation = {
+        id: "widget-" + Date.now(),
+        name: "Website Visitor",
+        lastMessage: text,
+        time: "now",
+        unread: 1,
+        avatar: "",
+        selected: false,
+        status: "online",
+        isWidget: true,
+        messages: [],
+      };
+
+      setConversations(prev => [newConversation, ...prev]);
+      widgetConversation = newConversation;
+    }
+
+    const newMessage: Message = {
+      id: Date.now().toString(),
+      text: text,
+      sender: "user",
+      time: "now",
+      timestamp: Date.now(),
+      conversationId: widgetConversation.id,
+    };
+
+    setConversations((prev) =>
+      prev.map((conv) =>
+        conv.id === widgetConversation!.id
+          ? {
+              ...conv,
+              messages: [...conv.messages, newMessage],
+              lastMessage: text,
+              time: "now",
+              unread: conv.id !== selectedConversation ? conv.unread + 1 : conv.unread,
+            }
+          : conv,
+      ),
+    );
+
+    setWidgetMessage("");
+
+    // Send via WebSocket
+    if (wsRef.current && connectionStatus === "connected") {
+      wsRef.current.send(JSON.stringify({
+        type: "widget_message",
+        conversationId: widgetConversation.id,
+        message: newMessage
+      }));
+    }
+
+    // Auto-reply from support
+    setTimeout(() => {
+      const supportReply: Message = {
+        id: (Date.now() + 1).toString(),
+        text: "Hello! Thank you for reaching out. How can I help you today?",
+        sender: "support",
+        time: "now",
+        timestamp: Date.now(),
+        conversationId: widgetConversation!.id,
+      };
+
+      setConversations((prev) =>
+        prev.map((conv) =>
+          conv.id === widgetConversation!.id
+            ? {
+                ...conv,
+                messages: [...conv.messages, supportReply],
+                lastMessage: supportReply.text,
+                time: "now",
+              }
+            : conv,
+        ),
+      );
+    }, 1500);
   };
 
   const handleKeyPress = (e: React.KeyboardEvent) => {
     if (e.key === "Enter" && !e.shiftKey) {
       e.preventDefault();
       sendMessage();
+    }
+  };
+
+  const handleWidgetKeyPress = (e: React.KeyboardEvent) => {
+    if (e.key === "Enter" && !e.shiftKey) {
+      e.preventDefault();
+      sendWidgetMessage();
     }
   };
 
@@ -215,11 +400,19 @@ export default function Index() {
                   }`}
                 >
                   <div className="flex items-start gap-3">
-                    <div className="w-8 h-8 bg-[#D9D9D9] rounded-full"></div>
+                    <div className="relative">
+                      <div className="w-8 h-8 bg-[#D9D9D9] rounded-full"></div>
+                      {conv.isWidget && (
+                        <div className="absolute -top-1 -right-1 w-3 h-3 bg-blue-500 rounded-full"></div>
+                      )}
+                    </div>
                     <div className="flex-1 min-w-0">
                       <div className="flex items-center justify-between mb-1">
-                        <h3 className="font-medium text-sm text-black">
+                        <h3 className="font-medium text-sm text-black flex items-center gap-1">
                           {conv.name}
+                          {conv.isWidget && (
+                            <span className="text-xs text-blue-600">(Widget)</span>
+                          )}
                         </h3>
                         <span className="text-xs text-[#ACACAC]">
                           {conv.time}
@@ -228,6 +421,17 @@ export default function Index() {
                       <p className="text-sm text-black truncate">
                         {conv.lastMessage}
                       </p>
+                      <div className="flex items-center justify-between mt-1">
+                        <div className="flex items-center gap-1">
+                          <div className={`w-2 h-2 rounded-full ${conv.status === "online" ? "bg-green-500" : "bg-gray-400"}`}></div>
+                          <span className="text-xs text-[#ACACAC]">{conv.status}</span>
+                        </div>
+                        {conv.unread > 0 && (
+                          <Badge className="bg-red-500 text-white text-xs">
+                            {conv.unread}
+                          </Badge>
+                        )}
+                      </div>
                     </div>
                   </div>
                 </div>
@@ -282,26 +486,40 @@ export default function Index() {
               key={conv.id}
               onClick={() => setSelectedConversation(conv.id)}
               className={`mb-3 rounded-2xl p-3 cursor-pointer transition-colors ${
-                conv.selected ? "bg-black/[0.04]" : "hover:bg-black/[0.02]"
+                conv.id === selectedConversation ? "bg-black/[0.04]" : "hover:bg-black/[0.02]"
               }`}
             >
               <div className="flex items-start gap-3">
-                <div className="w-8 h-8 bg-[#D9D9D9] rounded-full"></div>
+                <div className="relative">
+                  <div className="w-8 h-8 bg-[#D9D9D9] rounded-full"></div>
+                  {conv.isWidget && (
+                    <div className="absolute -top-1 -right-1 w-3 h-3 bg-blue-500 rounded-full"></div>
+                  )}
+                </div>
                 <div className="flex-1 min-w-0">
                   <div className="flex items-center justify-between mb-1">
-                    <h3 className="font-medium text-sm text-black">
+                    <h3 className="font-medium text-sm text-black flex items-center gap-1">
                       {conv.name}
+                      {conv.isWidget && (
+                        <span className="text-xs text-blue-600">(Widget)</span>
+                      )}
                     </h3>
                     <span className="text-xs text-[#ACACAC]">{conv.time}</span>
                   </div>
                   <p className="text-sm text-black truncate">
                     {conv.lastMessage}
                   </p>
-                  {conv.unread > 0 && (
-                    <Badge className="bg-red-500 text-white text-xs mt-1">
-                      {conv.unread}
-                    </Badge>
-                  )}
+                  <div className="flex items-center justify-between mt-1">
+                    <div className="flex items-center gap-1">
+                      <div className={`w-2 h-2 rounded-full ${conv.status === "online" ? "bg-green-500" : "bg-gray-400"}`}></div>
+                      <span className="text-xs text-[#ACACAC]">{conv.status}</span>
+                    </div>
+                    {conv.unread > 0 && (
+                      <Badge className="bg-red-500 text-white text-xs">
+                        {conv.unread}
+                      </Badge>
+                    )}
+                  </div>
                 </div>
               </div>
             </div>
@@ -337,11 +555,26 @@ export default function Index() {
               </Button>
               <h2 className="text-lg font-medium text-[#363636]">
                 {currentConversation
-                  ? `Mensagens de ${currentConversation.name}`
+                  ? `Mensagens de ${currentConversation.name}${currentConversation.isWidget ? " (Widget)" : ""}`
                   : "Selecione uma conversa"}
               </h2>
+              {currentConversation && (
+                <div className="flex items-center gap-2">
+                  <div className={`w-2 h-2 rounded-full ${currentConversation.status === "online" ? "bg-green-500" : "bg-gray-400"}`}></div>
+                  <span className="text-sm text-[#ACACAC]">{currentConversation.status}</span>
+                </div>
+              )}
             </div>
             <div className="flex items-center gap-2">
+              <div className={`px-2 py-1 rounded-full text-xs ${
+                connectionStatus === "connected" 
+                  ? "bg-green-100 text-green-800" 
+                  : connectionStatus === "connecting" 
+                  ? "bg-yellow-100 text-yellow-800"
+                  : "bg-red-100 text-red-800"
+              }`}>
+                {connectionStatus === "connected" ? "🟢 Online" : connectionStatus === "connecting" ? "🟡 Conectando" : "🔴 Offline"}
+              </div>
               <Button
                 variant="ghost"
                 size="sm"
@@ -486,7 +719,7 @@ export default function Index() {
             />
 
             <Button
-              onClick={sendMessage}
+              onClick={() => sendMessage()}
               size="sm"
               className="w-8 h-8 bg-[#D9D9D9] rounded-full p-0 hover:bg-[#C9C9C9]"
             >
@@ -553,8 +786,15 @@ export default function Index() {
                 <div className="p-3 bg-white rounded-lg border border-[#F1F1F1]">
                   <h4 className="font-medium text-sm mb-2">Status do Chat</h4>
                   <div className="flex items-center gap-2">
-                    <div className="w-2 h-2 bg-green-500 rounded-full"></div>
-                    <span className="text-xs text-[#363636]">Online</span>
+                    <div className={`w-2 h-2 rounded-full ${connectionStatus === "connected" ? "bg-green-500" : "bg-red-500"}`}></div>
+                    <span className="text-xs text-[#363636]">{connectionStatus === "connected" ? "Online" : "Offline"}</span>
+                  </div>
+                </div>
+
+                <div className="p-3 bg-white rounded-lg border border-[#F1F1F1]">
+                  <h4 className="font-medium text-sm mb-2">WebSocket</h4>
+                  <div className="text-xs text-[#363636]">
+                    Status: {connectionStatus}
                   </div>
                 </div>
 
@@ -562,7 +802,7 @@ export default function Index() {
                   <h4 className="font-medium text-sm mb-2">Configurações</h4>
                   <button
                     onClick={downloadTranscript}
-                    className="text-xs text-blue-600 hover:underline"
+                    className="text-xs text-blue-600 hover:underline block mb-1"
                   >
                     Baixar transcrição
                   </button>
@@ -587,8 +827,17 @@ export default function Index() {
             <div className="p-3 bg-white rounded-lg border border-[#F1F1F1]">
               <h4 className="font-medium text-sm mb-2">Status do Chat</h4>
               <div className="flex items-center gap-2">
-                <div className="w-2 h-2 bg-green-500 rounded-full"></div>
-                <span className="text-xs text-[#363636]">Online</span>
+                <div className={`w-2 h-2 rounded-full ${connectionStatus === "connected" ? "bg-green-500" : "bg-red-500"}`}></div>
+                <span className="text-xs text-[#363636]">{connectionStatus === "connected" ? "Online" : "Offline"}</span>
+              </div>
+            </div>
+
+            <div className="p-3 bg-white rounded-lg border border-[#F1F1F1]">
+              <h4 className="font-medium text-sm mb-2">WebSocket Status</h4>
+              <div className="text-xs text-[#363636] space-y-1">
+                <div>Conexão: {connectionStatus}</div>
+                <div>Conversas ativas: {conversations.length}</div>
+                <div>Widget conversations: {conversations.filter(c => c.isWidget).length}</div>
               </div>
             </div>
 
@@ -610,18 +859,12 @@ export default function Index() {
               >
                 Baixar transcrição
               </button>
-              <button
-                onClick={() => setShowChatWidget(!showChatWidget)}
-                className="text-xs text-blue-600 hover:underline block"
-              >
-                {showChatWidget ? "Ocultar" : "Mostrar"} widget
-              </button>
             </div>
           </div>
         </div>
       </div>
 
-      {/* Chat Widget - Floating */}
+      {/* Live Chat Widget - Floating */}
       <div className="fixed bottom-6 right-6 z-50">
         {/* Chat Window */}
         {isWidgetOpen && (
@@ -635,8 +878,10 @@ export default function Index() {
                     Suporte ao Cliente
                   </h3>
                   <div className="flex items-center gap-1">
-                    <div className="w-2 h-2 bg-green-500 rounded-full"></div>
-                    <span className="text-xs text-[#ACACAC]">Online</span>
+                    <div className={`w-2 h-2 rounded-full ${connectionStatus === "connected" ? "bg-green-500" : "bg-red-500"}`}></div>
+                    <span className="text-xs text-[#ACACAC]">
+                      {connectionStatus === "connected" ? "Online" : "Offline"}
+                    </span>
                   </div>
                 </div>
               </div>
@@ -672,16 +917,50 @@ export default function Index() {
                   <p className="text-xs text-[#ACACAC] mt-1">Agora</p>
                 </div>
               </div>
+              
+              {/* Show messages from widget conversation if exists */}
+              {conversations.find(c => c.isWidget)?.messages.map((msg) => (
+                <div
+                  key={msg.id}
+                  className={`flex ${msg.sender === "support" ? "justify-end" : "justify-start"}`}
+                >
+                  <div
+                    className={`max-w-[80%] rounded-2xl p-3 ${
+                      msg.sender === "support"
+                        ? "bg-black text-white"
+                        : "bg-white border border-[#F1F1F1]"
+                    }`}
+                  >
+                    <p className="text-sm">{msg.text}</p>
+                    <p
+                      className={`text-xs mt-1 ${
+                        msg.sender === "support"
+                          ? "text-gray-300"
+                          : "text-[#ACACAC]"
+                      }`}
+                    >
+                      {msg.time}
+                    </p>
+                  </div>
+                </div>
+              ))}
             </div>
 
             {/* Widget Input */}
             <div className="p-4 border-t border-[#F1F1F1]">
               <div className="flex items-center gap-2 bg-white border border-[#F1F1F1] rounded-full px-3 py-2">
                 <Input
+                  value={widgetMessage}
+                  onChange={(e) => setWidgetMessage(e.target.value)}
+                  onKeyPress={handleWidgetKeyPress}
                   placeholder="Digite sua mensagem..."
                   className="border-0 bg-transparent text-sm placeholder:text-[#9B9B9B] focus-visible:ring-0 px-0"
                 />
-                <Button size="sm" className="w-6 h-6 bg-black rounded-full p-0">
+                <Button 
+                  onClick={sendWidgetMessage}
+                  size="sm" 
+                  className="w-6 h-6 bg-black rounded-full p-0"
+                >
                   <svg
                     width="12"
                     height="12"
