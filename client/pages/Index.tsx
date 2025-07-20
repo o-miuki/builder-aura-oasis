@@ -306,7 +306,20 @@ export default function Index() {
                 ✕ Fechar
               </Button>
             </div>
-            {/* Mobile menu content would go here */}
+                        {/* Navigation Icons */}
+            <div className="flex flex-col gap-4 px-4">
+              <div className="w-[42px] h-[42px] bg-white rounded-lg border border-[#F1F1F1] shadow-[0_0_9.2px_rgba(0,0,0,0.13)] flex items-center justify-center">
+                <svg width="18" height="18" viewBox="0 0 18 18" fill="none">
+                  <path fillRule="evenodd" clipRule="evenodd" d="M3.87 1.8C2.74706 1.8 1.8 2.74706 1.8 3.87V8.82H3.87C5.00736 8.82 6.02118 9.44646 6.5391 10.3494C7.02816 11.1857 7.91916 11.79 9 11.79C10.073 11.79 10.9588 11.1945 11.4502 10.3676C11.9972 9.30372 13.0615 8.82 14.13 8.82H17.1C17.597 8.82 18 9.22296 18 9.72V14.13C18 16.247 16.247 18 14.13 18H3.87C1.75294 18 0 16.247 0 14.13V3.87C0 1.75294 1.75294 0 3.87 0H14.22C16.2648 0 18 1.7709 18 3.87V6.84C18 7.33704 17.597 7.74 17.1 7.74C16.603 7.74 16.2 7.33704 16.2 6.84V3.87C16.2 2.7291 15.2352 1.8 14.22 1.8H3.87ZM1.8 10.62V14.13C1.8 15.253 2.74706 16.2 3.87 16.2H14.13C15.253 16.2 16.2 15.253 16.2 14.13V10.62H14.13C13.5884 10.62 13.2226 10.8472 13.045 11.2025C13.0363 11.2198 13.0271 11.2368 13.0174 11.2535C12.2461 12.5757 10.7979 13.59 9 13.59C7.2021 13.59 5.75388 12.5757 4.98258 11.2535L4.97856 11.2465C4.77576 10.8917 4.35096 10.62 3.87 10.62H1.8Z" fill="#464646"/>
+                </svg>
+              </div>
+              <div className="w-[42px] h-[42px] bg-transparent rounded-lg flex items-center justify-center">
+                <svg width="22" height="22" viewBox="0 0 22 22" fill="none">
+                  <path d="M4.58337 18.3333V17.4167C4.58337 13.8728 7.45622 11 11 11C14.5439 11 17.4167 13.8728 17.4167 17.4167V18.3333" stroke="black" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+                  <path d="M11 11C13.025 11 14.6667 9.3583 14.6667 7.33329C14.6667 5.30825 13.025 3.66663 11 3.66663C8.975 3.66663 7.33337 5.30825 7.33337 7.33329C7.33337 9.3583 8.975 11 11 11Z" stroke="black" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+                </svg>
+              </div>
+            </div>
           </div>
         </div>
       )}
@@ -626,7 +639,7 @@ export default function Index() {
                 {/* Content */}
                 <div className="mt-[30px]">
                   <h1 className="text-[28px] font-medium leading-[1.3] text-black">
-                    Ol��! Como podemos te ajudar hoje?
+                    Olá! Como podemos te ajudar hoje?
                   </h1>
                   <p className="text-[15px] text-[#8A8A8A] mt-[10px] font-normal">
                     Fale conosco, estamos prontos para atender você.
