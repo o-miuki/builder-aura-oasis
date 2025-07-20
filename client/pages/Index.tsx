@@ -354,13 +354,28 @@ export default function Index() {
     }
   };
 
-  const getStatusLabel = (status: string) => {
+    const getStatusLabel = (status: string) => {
     switch (status) {
       case 'open': return 'Aberto';
       case 'pending': return 'Pendente';
       case 'resolved': return 'Resolvido';
       default: return status;
     }
+  };
+
+  const handleClosePreviewMessages = () => {
+    setShowPreviewMessages(false);
+    setTimeout(() => {
+      setPreviewMessages([]);
+    }, 300); // Wait for fade out animation
+  };
+
+  const formatTimeAgo = (timestamp: number) => {
+    const now = Date.now();
+    const diff = Math.floor((now - timestamp) / 1000 / 60);
+    if (diff < 1) return 'agora';
+    if (diff === 1) return 'há 1 minuto';
+    return `há ${diff} minutos`;
   };
 
   return (
