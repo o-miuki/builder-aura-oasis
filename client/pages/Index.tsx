@@ -410,7 +410,7 @@ export default function Index() {
       )}
 
             {/* 1. Menu Column (Left Navigation) */}
-            <div className="w-[70px] bg-transparent border-r border-[#F4F4F4] hidden lg:flex flex-col items-center flex-shrink-0 h-full relative">
+                  <div className="w-[70px] bg-transparent border-r-0 border-[#F4F4F4] hidden lg:flex flex-col items-center flex-shrink-0 h-full relative">
         {/* Logo at top */}
         <div className="mt-12 mb-8">
           <svg width="21" height="21" viewBox="0 0 22 22" fill="none">
