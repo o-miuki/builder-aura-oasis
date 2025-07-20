@@ -175,11 +175,10 @@ export default function Index() {
         ),
       );
 
-      // Show preview message if widget is closed and this is a widget conversation
+            // Show preview message if widget is closed and this is a widget conversation
       const isWidgetConversation = conversations.find(c => c.id === selectedConversation)?.isWidget;
-      if (!isWidgetOpen && isWidgetConversation) {
-        setPreviewMessages(prev => [...prev.slice(-1), autoReply]); // Keep max 2 messages
-        setShowPreviewMessages(true);
+      if (isWidgetConversation) {
+        showPreviewMessage(autoReply);
       }
     }, 2000);
   };
