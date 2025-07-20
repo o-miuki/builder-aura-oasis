@@ -960,14 +960,14 @@ export default function Index() {
           </div>
                 )}
 
-        {/* Preview Messages */}
+                {/* Preview Messages */}
         {showPreviewMessages && previewMessages.length > 0 && (
           <div className="flex flex-col gap-3 mb-4">
             {/* Close Button */}
             <div className="flex justify-end">
               <button
                 onClick={handleClosePreviewMessages}
-                className="bg-black text-white px-3 py-1 rounded-full text-xs font-normal"
+                className="bg-black text-white px-3 py-1 rounded-full text-xs font-normal hover:bg-gray-800 transition-colors"
               >
                 close
               </button>
@@ -977,12 +977,11 @@ export default function Index() {
             {previewMessages.slice(-2).map((msg, index) => (
               <div
                 key={msg.id}
-                className={`bg-white rounded-[22px] p-4 shadow-[0_0_21.2px_6px_rgba(0,0,0,0.02)] max-w-[256px] transition-all duration-300 ease-out ${
-                  showPreviewMessages ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-2'
-                }`}
+                className={`bg-white rounded-[22px] p-4 shadow-[0_0_21.2px_6px_rgba(0,0,0,0.02)] max-w-[256px] preview-message-enter`}
                 style={{
                   fontFamily: "'Inter', -apple-system, Roboto, Helvetica, sans-serif",
                   animationDelay: `${index * 100}ms`,
+                  animationFillMode: 'both',
                 }}
               >
                 <div className="flex items-start gap-3">
