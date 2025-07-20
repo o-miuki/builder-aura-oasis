@@ -958,6 +958,49 @@ export default function Index() {
               </div>
             )}
           </div>
+                )}
+
+        {/* Preview Messages */}
+        {showPreviewMessages && previewMessages.length > 0 && (
+          <div className="flex flex-col gap-3 mb-4">
+            {/* Close Button */}
+            <div className="flex justify-end">
+              <button
+                onClick={handleClosePreviewMessages}
+                className="bg-black text-white px-3 py-1 rounded-full text-xs font-normal"
+              >
+                close
+              </button>
+            </div>
+
+            {/* Preview Message Bubbles */}
+            {previewMessages.slice(-2).map((msg, index) => (
+              <div
+                key={msg.id}
+                className={`bg-white rounded-[22px] p-4 shadow-[0_0_21.2px_6px_rgba(0,0,0,0.02)] max-w-[256px] transition-all duration-300 ease-out ${
+                  showPreviewMessages ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-2'
+                }`}
+                style={{
+                  fontFamily: "'Inter', -apple-system, Roboto, Helvetica, sans-serif",
+                  animationDelay: `${index * 100}ms`,
+                }}
+              >
+                <div className="flex items-start gap-3">
+                  <div className="w-10 h-10 bg-[#D9D9D9] rounded-full flex-shrink-0"></div>
+                  <div className="flex-1 min-w-0">
+                    <div className="text-black text-sm font-normal mb-1 truncate">
+                      {msg.text.length > 25 ? `${msg.text.substring(0, 25)}...` : msg.text}
+                    </div>
+                    <div className="flex items-center gap-1 text-[#686868] text-xs font-normal">
+                      <span>Karen</span>
+                      <div className="w-1 h-1 bg-[#686868] rounded-full"></div>
+                      <span>{formatTimeAgo(msg.timestamp)}</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            ))}
+          </div>
         )}
 
         {/* Widget Toggle Button */}
