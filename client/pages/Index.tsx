@@ -958,14 +958,18 @@ export default function Index() {
 
                 {/* Chat Footer */}
                                 <div className="bg-white border-2 border-[#F1F1F1] w-[83%] rounded-[33px] mx-auto mb-3 relative h-[113px]" style={{fontFamily: "'Saans TRIAL', -apple-system, Roboto, Helvetica, sans-serif"}}>
-                  <div className="flex items-center bg-transparent rounded-[25px] p-0">
-                    <Input
-                      value={widgetMessage}
-                      onChange={(e) => setWidgetMessage(e.target.value)}
-                      onKeyPress={handleWidgetKeyPress}
-                      placeholder="Digite sua mensagem..."
-                      className="flex-grow border-none outline-none bg-transparent text-[15px] text-black font-normal placeholder:text-[#8A8A8A] focus-visible:ring-0 shadow-none"
-                    />
+                                    {/* Input Text */}
+                  <Input
+                    value={widgetMessage}
+                    onChange={(e) => setWidgetMessage(e.target.value)}
+                    onKeyPress={handleWidgetKeyPress}
+                    placeholder="Insira a sua mensagem"
+                    className="absolute top-[20px] left-[20px] right-[20px] border-0 bg-transparent text-[17px] text-[#9B9B9B] placeholder:text-[#9B9B9B] focus-visible:ring-0 px-0 font-normal h-auto"
+                    style={{fontWeight: 380}}
+                  />
+
+                  {/* Bottom Action Buttons */}
+                  <div className="absolute bottom-[20px] left-[20px] flex gap-2">
                     <div className="flex items-center gap-[6px] mx-[6px]">
                       <div 
                         className="cursor-pointer text-[#5F5F5F] flex items-center"
