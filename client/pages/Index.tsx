@@ -148,39 +148,7 @@ export default function Index() {
       ),
     );
 
-    setMessage("");
-
-        // Auto-reply simulation
-    setTimeout(() => {
-      const autoReply: Message = {
-        id: (Date.now() + 1).toString(),
-        text: "Thank you for your message! Our team will get back to you shortly.",
-        sender: "user",
-        time: "now",
-        timestamp: Date.now(),
-        conversationId: selectedConversation,
-      };
-
-      setConversations((prev) =>
-        prev.map((conv) =>
-          conv.id === selectedConversation
-            ? {
-                ...conv,
-                messages: [...conv.messages, autoReply],
-                lastMessage: autoReply.text,
-                time: "now",
-                unread: conv.id !== selectedConversation ? conv.unread + 1 : conv.unread,
-              }
-            : conv,
-        ),
-      );
-
-            // Show preview message if widget is closed and this is a widget conversation
-      const isWidgetConversation = conversations.find(c => c.id === selectedConversation)?.isWidget;
-      if (isWidgetConversation) {
-        showPreviewMessage(autoReply);
-      }
-    }, 2000);
+        setMessage("");
   };
 
   const handleKeyPress = (e: React.KeyboardEvent) => {
