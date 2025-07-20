@@ -1004,9 +1004,16 @@ export default function Index() {
         )}
 
         {/* Widget Toggle Button */}
-        <div
+                <div
           className="w-[60px] h-[60px] bg-black text-white rounded-full flex justify-center items-center cursor-pointer shadow-[0_4px_12px_rgba(0,0,0,0.2)] transition-transform hover:scale-110"
-          onClick={() => setIsWidgetOpen(!isWidgetOpen)}
+          onClick={() => {
+            setIsWidgetOpen(!isWidgetOpen);
+            if (!isWidgetOpen) {
+              // Hide preview messages when opening widget
+              setShowPreviewMessages(false);
+              setTimeout(() => setPreviewMessages([]), 300);
+            }
+          }}
         >
           <div className={`absolute transition-all duration-200 flex items-center justify-center ${isWidgetOpen ? 'opacity-0 rotate-90' : 'opacity-100 rotate-0'}`}>
             <svg width="33" height="33" strokeWidth="0.8" viewBox="0 0 24 24" fill="none">
