@@ -382,12 +382,16 @@ export default function Index() {
     }
   };
 
-  const formatTimeAgo = (timestamp: number) => {
+    const formatTimeAgo = (timestamp: number) => {
     const now = Date.now();
     const diff = Math.floor((now - timestamp) / 1000 / 60);
     if (diff < 1) return 'agora';
     if (diff === 1) return 'há 1 minuto';
     return `há ${diff} minutos`;
+  };
+
+  const generateAvatarUrl = (seed: string) => {
+    return `https://tapback.co/api/avatar.webp?seed=${encodeURIComponent(seed)}`;
   };
 
   return (
