@@ -1013,8 +1013,12 @@ export default function Index() {
                   animationFillMode: 'both',
                 }}
               >
-                <div className="flex items-start gap-3">
-                  <div className="w-10 h-10 bg-[#D9D9D9] rounded-full flex-shrink-0"></div>
+                                <div className="flex items-start gap-3">
+                  <img
+                    src={generateAvatarUrl('karen-preview')}
+                    alt="Karen Profile"
+                    className="w-10 h-10 rounded-full flex-shrink-0 object-cover"
+                  />
                   <div className="flex-1 min-w-0">
                     <div className="text-black text-sm font-normal mb-1 truncate">
                       {msg.text.length > 25 ? `${msg.text.substring(0, 25)}...` : msg.text}
