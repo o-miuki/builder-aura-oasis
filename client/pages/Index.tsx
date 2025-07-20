@@ -334,7 +334,7 @@ export default function Index() {
     }
   };
 
-  const emojis = ['😀', '😃', '😄', '😁', '😆', '😅', '😂', '🤣', '😊', '😇', '🙂', '🙃', '😉', '😌', '😍', '🥰', '😘', '😗', '😙', '😚', '😋', '😛', '😝', '😜', '🤪', '🤨', '🧐', '🤓', '😎', '🤩', '🥳', '😏', '😒', '👍', '👎', '✌️', '🤞', '🤟', '🤘', '🤙', '👌', '🙌', '👏', '🙏', '❤️', '💕', '💖', '💗', '💙', '💚', '💛', '🧡', '💜', '🖤', '🤍', '🤎', '💔', '❣️', '💯', '🔥', '✨', '🎉', '🎊'];
+  const emojis = ['😀', '😃', '😄', '😁', '😆', '😅', '😂', '🤣', '😊', '😇', '🙂', '🙃', '😉', '😌', '😍', '🥰', '😘', '😗', '😙', '😚', '😋', '😛', '😝', '😜', '🤪', '🤨', '🧐', '🤓', '��', '🤩', '🥳', '😏', '😒', '👍', '👎', '✌️', '🤞', '🤟', '🤘', '🤙', '👌', '🙌', '👏', '🙏', '❤️', '💕', '💖', '💗', '💙', '💚', '💛', '🧡', '💜', '🖤', '🤍', '🤎', '💔', '❣️', '💯', '🔥', '✨', '🎉', '🎊'];
 
   const handleEmojiSelect = (emoji: string) => {
     setWidgetMessage(prev => prev + emoji);
@@ -462,8 +462,13 @@ export default function Index() {
           </div>
         </div>
 
-        {/* Online Status Indicator */}
-        <div className="w-[34px] h-[34px] bg-[#D9D9D9] rounded-full flex items-start justify-end">
+                {/* Online Status Indicator */}
+        <div className="relative w-[34px] h-[34px] flex items-start justify-end">
+          <img
+            src={generateAvatarUrl('operator-profile')}
+            alt="Operator Profile"
+            className="w-[34px] h-[34px] rounded-full object-cover"
+          />
           <div className="w-2 h-2 bg-[#2EBA85] rounded-full border border-white absolute -bottom-1 -right-1"></div>
         </div>
       </div>
