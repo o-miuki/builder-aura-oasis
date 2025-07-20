@@ -270,11 +270,8 @@ export default function Index() {
         ),
       );
 
-      // Show preview message if widget is closed
-      if (!isWidgetOpen) {
-        setPreviewMessages(prev => [...prev.slice(-1), supportReply]); // Keep max 2 messages
-        setShowPreviewMessages(true);
-      }
+            // Show preview message if widget is closed
+      showPreviewMessage(supportReply);
     }, 1500);
   };
 
