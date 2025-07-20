@@ -752,8 +752,12 @@ export default function Index() {
           <div className="space-y-4">
             <div className="flex items-center justify-between">
               <span className="text-[16px] text-[#5A5A5A] font-normal">Assignee</span>
-              <div className="flex items-center gap-2">
-                <div className="w-5 h-5 bg-[#D9D9D9] rounded-full"></div>
+                            <div className="flex items-center gap-2">
+                <img
+                  src={generateAvatarUrl('james-doe')}
+                  alt="James Doe Profile"
+                  className="w-5 h-5 rounded-full object-cover"
+                />
                 <span className="text-[16px] text-black font-normal">James doe</span>
               </div>
             </div>
