@@ -37,7 +37,9 @@ export default function Index() {
   const [selectedFilter, setSelectedFilter] = useState<"all" | "open" | "pending" | "resolved">("all");
   const [showSearch, setShowSearch] = useState(false);
   const [searchQuery, setSearchQuery] = useState("");
-  const [showWidgetEmojiPanel, setShowWidgetEmojiPanel] = useState(false);
+    const [showWidgetEmojiPanel, setShowWidgetEmojiPanel] = useState(false);
+  const [previewMessages, setPreviewMessages] = useState<Message[]>([]);
+  const [showPreviewMessages, setShowPreviewMessages] = useState(false);
   
   const [conversations, setConversations] = useState<Conversation[]>([
     {
