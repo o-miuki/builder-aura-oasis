@@ -29,8 +29,7 @@ interface Conversation {
 export default function Index() {
   const [selectedConversation, setSelectedConversation] = useState("1");
   const [message, setMessage] = useState("");
-  const [showConversations, setShowConversations] = useState(false);
-  const [showSidebar, setShowSidebar] = useState(false);
+  const [showMobileMenu, setShowMobileMenu] = useState(false);
   const [isWidgetOpen, setIsWidgetOpen] = useState(false);
   const [showWidgetChat, setShowWidgetChat] = useState(false);
   const [widgetMessage, setWidgetMessage] = useState("");
@@ -64,11 +63,95 @@ export default function Index() {
         },
       ],
     },
+    {
+      id: "2",
+      name: "John Doe",
+      lastMessage: "Hello, please help me. For lorem impsun dolor....",
+      time: "1 minute ago",
+      unread: 0,
+      avatar: "",
+      selected: false,
+      status: "online",
+      isWidget: false,
+      messages: [],
+    },
+    {
+      id: "3",
+      name: "John Doe",
+      lastMessage: "Hello, please help me. For lorem impsun dolor....",
+      time: "1 minute ago",
+      unread: 0,
+      avatar: "",
+      selected: false,
+      status: "online",
+      isWidget: false,
+      messages: [],
+    },
+    {
+      id: "4",
+      name: "John Doe",
+      lastMessage: "Hello, please help me. For lorem impsun dolor....",
+      time: "1 minute ago",
+      unread: 0,
+      avatar: "",
+      selected: false,
+      status: "online",
+      isWidget: false,
+      messages: [],
+    },
+    {
+      id: "5",
+      name: "John Doe",
+      lastMessage: "Hello, please help me. For lorem impsun dolor....",
+      time: "1 minute ago",
+      unread: 0,
+      avatar: "",
+      selected: false,
+      status: "online",
+      isWidget: false,
+      messages: [],
+    },
+    {
+      id: "6",
+      name: "John Doe",
+      lastMessage: "Hello, please help me. For lorem impsun dolor....",
+      time: "1 minute ago",
+      unread: 0,
+      avatar: "",
+      selected: false,
+      status: "online",
+      isWidget: false,
+      messages: [],
+    },
+    {
+      id: "7",
+      name: "John Doe",
+      lastMessage: "Hello, please help me. For lorem impsun dolor....",
+      time: "1 minute ago",
+      unread: 0,
+      avatar: "",
+      selected: false,
+      status: "online",
+      isWidget: false,
+      messages: [],
+    },
+    {
+      id: "8",
+      name: "John Doe",
+      lastMessage: "Hello, please help me. For lorem impsun dolor....",
+      time: "1 minute ago",
+      unread: 0,
+      avatar: "",
+      selected: false,
+      status: "online",
+      isWidget: false,
+      messages: [],
+    },
   ]);
 
   const messagesEndRef = useRef<HTMLDivElement>(null);
   const wsRef = useRef<WebSocket | null>(null);
-  const [connectionStatus, setConnectionStatus] = useState<"connecting" | "connected" | "disconnected">("disconnected");
+  const [connectionStatus, setConnectionStatus] = useState<"connecting" | "connected" | "disconnected">("connected");
 
   const scrollToBottom = () => {
     messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
@@ -78,52 +161,8 @@ export default function Index() {
     scrollToBottom();
   }, [conversations]);
 
-  // WebSocket Connection
-  useEffect(() => {
-    // Simulating WebSocket connection
-    setConnectionStatus("connecting");
-    
-    // Mock WebSocket connection
-    const mockWs = {
-      send: (data: string) => {
-        console.log("WebSocket sending:", data);
-      },
-      close: () => {
-        console.log("WebSocket closed");
-      }
-    };
-
-    wsRef.current = mockWs as any;
-    setConnectionStatus("connected");
-
-    // Simulate real-time message reception
-    const interval = setInterval(() => {
-      if (Math.random() > 0.95) { // 5% chance every second to receive a message
-        const randomResponses = [
-          "Thank you for contacting us!",
-          "How can I help you today?",
-          "I understand your concern.",
-          "Let me check that for you.",
-          "Is there anything else I can help with?"
-        ];
-        
-        const randomResponse = randomResponses[Math.floor(Math.random() * randomResponses.length)];
-        receiveMessage(randomResponse, selectedConversation);
-      }
-    }, 1000);
-
-    return () => {
-      clearInterval(interval);
-      if (wsRef.current) {
-        wsRef.current.close();
-      }
-    };
-  }, []);
-
-  const sendMessage = (conversationId?: string, messageText?: string) => {
-    const text = messageText || message.trim();
-    const targetConversationId = conversationId || selectedConversation;
-    
+  const sendMessage = () => {
+    const text = message.trim();
     if (!text) return;
 
     const newMessage: Message = {
@@ -132,12 +171,12 @@ export default function Index() {
       sender: "support",
       time: "now",
       timestamp: Date.now(),
-      conversationId: targetConversationId,
+      conversationId: selectedConversation,
     };
 
     setConversations((prev) =>
       prev.map((conv) =>
-        conv.id === targetConversationId
+        conv.id === selectedConversation
           ? {
               ...conv,
               messages: [...conv.messages, newMessage],
@@ -148,18 +187,7 @@ export default function Index() {
       ),
     );
 
-    if (!conversationId) {
-      setMessage("");
-    }
-
-    // Send via WebSocket
-    if (wsRef.current && connectionStatus === "connected") {
-      wsRef.current.send(JSON.stringify({
-        type: "message",
-        conversationId: targetConversationId,
-        message: newMessage
-      }));
-    }
+    setMessage("");
 
     // Auto-reply simulation
     setTimeout(() => {
@@ -169,12 +197,12 @@ export default function Index() {
         sender: "user",
         time: "now",
         timestamp: Date.now(),
-        conversationId: targetConversationId,
+        conversationId: selectedConversation,
       };
 
       setConversations((prev) =>
         prev.map((conv) =>
-          conv.id === targetConversationId
+          conv.id === selectedConversation
             ? {
                 ...conv,
                 messages: [...conv.messages, autoReply],
@@ -188,30 +216,17 @@ export default function Index() {
     }, 2000);
   };
 
-  const receiveMessage = (text: string, conversationId: string) => {
-    const newMessage: Message = {
-      id: Date.now().toString(),
-      text: text,
-      sender: "user",
-      time: "now",
-      timestamp: Date.now(),
-      conversationId: conversationId,
-    };
-
-    setConversations((prev) =>
-      prev.map((conv) =>
-        conv.id === conversationId
-          ? {
-              ...conv,
-              messages: [...conv.messages, newMessage],
-              lastMessage: text,
-              time: "now",
-              unread: conv.id !== selectedConversation ? conv.unread + 1 : conv.unread,
-            }
-          : conv,
-      ),
-    );
+  const handleKeyPress = (e: React.KeyboardEvent) => {
+    if (e.key === "Enter" && !e.shiftKey) {
+      e.preventDefault();
+      sendMessage();
+    }
   };
+
+  const currentConversation = conversations.find(
+    (c) => c.id === selectedConversation,
+  );
+  const currentMessages = currentConversation?.messages || [];
 
   const sendWidgetMessage = () => {
     const text = widgetMessage.trim();
@@ -263,47 +278,6 @@ export default function Index() {
     );
 
     setWidgetMessage("");
-
-    // Send via WebSocket
-    if (wsRef.current && connectionStatus === "connected") {
-      wsRef.current.send(JSON.stringify({
-        type: "widget_message",
-        conversationId: widgetConversation.id,
-        message: newMessage
-      }));
-    }
-
-    // Auto-reply from support
-    setTimeout(() => {
-      const supportReply: Message = {
-        id: (Date.now() + 1).toString(),
-        text: "Hello! Thank you for reaching out. How can I help you today?",
-        sender: "support",
-        time: "now",
-        timestamp: Date.now(),
-        conversationId: widgetConversation!.id,
-      };
-
-      setConversations((prev) =>
-        prev.map((conv) =>
-          conv.id === widgetConversation!.id
-            ? {
-                ...conv,
-                messages: [...conv.messages, supportReply],
-                lastMessage: supportReply.text,
-                time: "now",
-              }
-            : conv,
-        ),
-      );
-    }, 1500);
-  };
-
-  const handleKeyPress = (e: React.KeyboardEvent) => {
-    if (e.key === "Enter" && !e.shiftKey) {
-      e.preventDefault();
-      sendMessage();
-    }
   };
 
   const handleWidgetKeyPress = (e: React.KeyboardEvent) => {
@@ -313,214 +287,112 @@ export default function Index() {
     }
   };
 
-  const currentConversation = conversations.find(
-    (c) => c.id === selectedConversation,
-  );
-  const currentMessages = currentConversation?.messages || [];
-
-  const downloadTranscript = () => {
-    const transcript = currentMessages
-      .map(
-        (msg) =>
-          `[${msg.time}] ${msg.sender === "user" ? currentConversation?.name : "Support"}: ${msg.text}`,
-      )
-      .join("\n");
-
-    const blob = new Blob([transcript], { type: "text/plain" });
-    const url = URL.createObjectURL(blob);
-    const a = document.createElement("a");
-    a.href = url;
-    a.download = `chat-transcript-${new Date().toISOString().split("T")[0]}.txt`;
-    document.body.appendChild(a);
-    a.click();
-    document.body.removeChild(a);
-    URL.revokeObjectURL(url);
-  };
-
   return (
-    <div className="h-screen bg-[#EFF0EB] flex relative overflow-hidden">
-      {/* Mobile Conversations Overlay */}
-      {showConversations && (
+    <div className="h-screen bg-[#EFF0EB] flex relative overflow-hidden" style={{fontFamily: "'Saans TRIAL', -apple-system, Roboto, Helvetica, sans-serif"}}>
+      {/* Mobile Menu Overlay */}
+      {showMobileMenu && (
         <div
-          className="fixed inset-0 bg-black/50 z-40 lg:hidden"
-          onClick={() => setShowConversations(false)}
+          className="fixed inset-0 bg-black/50 z-50 lg:hidden"
+          onClick={() => setShowMobileMenu(false)}
         >
-          <div
-            className="w-[320px] bg-[#FBFBF9] h-full flex flex-col rounded-r-[20px]"
-            onClick={(e) => e.stopPropagation()}
-          >
+          <div className="w-72 h-full bg-[#FBFBF9] flex flex-col">
             <div className="p-4">
-              <div className="flex items-center justify-between mb-4">
-                <h1 className="text-lg font-medium text-[#363636]">
-                  Conversas
-                </h1>
-                <div className="flex gap-2">
-                  <div className="w-8 h-8 bg-[#F8F8F7] rounded-full flex items-center justify-center">
-                    <svg width="14" height="14" viewBox="0 0 17 17" fill="none">
-                      <path
-                        d="M2.83346 2.125H14.1669C14.5581 2.125 14.8752 2.44208 14.8752 2.83324L14.8753 3.95653C14.8754 4.14444 14.8007 4.32464 14.6679 4.45751L10.1243 9.00086C9.99145 9.13367 9.91679 9.31387 9.91679 9.50172V13.9678C9.91679 14.4286 9.48371 14.7668 9.03668 14.655L7.62002 14.3008C7.30467 14.222 7.08346 13.9387 7.08346 13.6136V9.50172C7.08346 9.31387 7.00883 9.13367 6.87598 9.00086L2.33259 4.45746C2.19975 4.32463 2.12512 4.14446 2.12512 3.9566V2.83333C2.12512 2.44213 2.44225 2.125 2.83346 2.125Z"
-                        stroke="black"
-                        strokeWidth="1.1"
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                      />
-                    </svg>
-                  </div>
-                  <div className="w-8 h-8 bg-[#F8F8F7] rounded-full flex items-center justify-center">
-                    <svg width="14" height="14" viewBox="0 0 19 19" fill="none">
-                      <path
-                        d="M13.4584 13.4584L16.625 16.625"
-                        stroke="black"
-                        strokeWidth="1.1"
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                      />
-                      <path
-                        d="M2.375 8.70833C2.375 12.2062 5.21053 15.0417 8.70833 15.0417C10.4603 15.0417 12.0461 14.3304 13.1927 13.1807C14.3353 12.0351 15.0417 10.4542 15.0417 8.70833C15.0417 5.21053 12.2062 2.375 8.70833 2.375C5.21053 2.375 2.375 5.21053 2.375 8.70833Z"
-                        stroke="black"
-                        strokeWidth="1.1"
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                      />
-                    </svg>
-                  </div>
-                </div>
-              </div>
+              <Button
+                variant="ghost"
+                size="sm"
+                onClick={() => setShowMobileMenu(false)}
+                className="mb-4"
+              >
+                ✕ Fechar
+              </Button>
             </div>
-
-            <div className="flex-1 overflow-y-auto px-4">
-              {conversations.map((conv) => (
-                <div
-                  key={conv.id}
-                  onClick={() => {
-                    setSelectedConversation(conv.id);
-                    setShowConversations(false);
-                  }}
-                  className={`mb-3 rounded-2xl p-3 cursor-pointer transition-colors ${
-                    conv.selected ? "bg-black/[0.04]" : "hover:bg-black/[0.02]"
-                  }`}
-                >
-                  <div className="flex items-start gap-3">
-                    <div className="relative">
-                      <div className="w-8 h-8 bg-[#D9D9D9] rounded-full"></div>
-                      {conv.isWidget && (
-                        <div className="absolute -top-1 -right-1 w-3 h-3 bg-blue-500 rounded-full"></div>
-                      )}
-                    </div>
-                    <div className="flex-1 min-w-0">
-                      <div className="flex items-center justify-between mb-1">
-                        <h3 className="font-medium text-sm text-black flex items-center gap-1">
-                          {conv.name}
-                          {conv.isWidget && (
-                            <span className="text-xs text-blue-600">(Widget)</span>
-                          )}
-                        </h3>
-                        <span className="text-xs text-[#ACACAC]">
-                          {conv.time}
-                        </span>
-                      </div>
-                      <p className="text-sm text-black truncate">
-                        {conv.lastMessage}
-                      </p>
-                      <div className="flex items-center justify-between mt-1">
-                        <div className="flex items-center gap-1">
-                          <div className={`w-2 h-2 rounded-full ${conv.status === "online" ? "bg-green-500" : "bg-gray-400"}`}></div>
-                          <span className="text-xs text-[#ACACAC]">{conv.status}</span>
-                        </div>
-                        {conv.unread > 0 && (
-                          <Badge className="bg-red-500 text-white text-xs">
-                            {conv.unread}
-                          </Badge>
-                        )}
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              ))}
-            </div>
+            {/* Mobile menu content would go here */}
           </div>
         </div>
       )}
 
-      {/* Left Panel - Conversations (Desktop: 320px width) */}
-      <div className="w-[320px] bg-[#FBFBF9] flex flex-col rounded-r-[20px] hidden lg:flex ml-4 mt-3 mb-5">
-        <div className="p-4">
-          <div className="flex items-center justify-between mb-4">
-            <h1 className="text-lg font-medium text-[#363636]">Conversas</h1>
+      {/* 1. Menu Column (Left Navigation) */}
+      <div className="w-[70px] bg-white border-r border-[#F4F4F4] hidden lg:flex flex-col items-center py-6 flex-shrink-0">
+        {/* Online Status Indicator */}
+        <div className="relative mb-6">
+          <div className="w-[34px] h-[34px] bg-[#D9D9D9] rounded-full flex items-center justify-center">
+            <div className="w-2 h-2 bg-[#2EBA85] rounded-full border border-white absolute -bottom-1 -right-1"></div>
+          </div>
+        </div>
+
+        {/* Navigation Icons */}
+        <div className="flex flex-col gap-4">
+          <div className="w-[42px] h-[42px] bg-white rounded-lg border border-[#F1F1F1] shadow-[0_0_9.2px_rgba(0,0,0,0.13)] flex items-center justify-center">
+            <svg width="18" height="18" viewBox="0 0 18 18" fill="none">
+              <path fillRule="evenodd" clipRule="evenodd" d="M3.87 1.8C2.74706 1.8 1.8 2.74706 1.8 3.87V8.82H3.87C5.00736 8.82 6.02118 9.44646 6.5391 10.3494C7.02816 11.1857 7.91916 11.79 9 11.79C10.073 11.79 10.9588 11.1945 11.4502 10.3676C11.9972 9.30372 13.0615 8.82 14.13 8.82H17.1C17.597 8.82 18 9.22296 18 9.72V14.13C18 16.247 16.247 18 14.13 18H3.87C1.75294 18 0 16.247 0 14.13V3.87C0 1.75294 1.75294 0 3.87 0H14.22C16.2648 0 18 1.7709 18 3.87V6.84C18 7.33704 17.597 7.74 17.1 7.74C16.603 7.74 16.2 7.33704 16.2 6.84V3.87C16.2 2.7291 15.2352 1.8 14.22 1.8H3.87ZM1.8 10.62V14.13C1.8 15.253 2.74706 16.2 3.87 16.2H14.13C15.253 16.2 16.2 15.253 16.2 14.13V10.62H14.13C13.5884 10.62 13.2226 10.8472 13.045 11.2025C13.0363 11.2198 13.0271 11.2368 13.0174 11.2535C12.2461 12.5757 10.7979 13.59 9 13.59C7.2021 13.59 5.75388 12.5757 4.98258 11.2535L4.97856 11.2465C4.77576 10.8917 4.35096 10.62 3.87 10.62H1.8Z" fill="#464646"/>
+            </svg>
+          </div>
+
+          <div className="w-[42px] h-[42px] bg-transparent rounded-lg flex items-center justify-center">
+            <svg width="22" height="22" viewBox="0 0 22 22" fill="none">
+              <path d="M4.58337 18.3333V17.4167C4.58337 13.8728 7.45622 11 11 11C14.5439 11 17.4167 13.8728 17.4167 17.4167V18.3333" stroke="black" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+              <path d="M11 11C13.025 11 14.6667 9.3583 14.6667 7.33329C14.6667 5.30825 13.025 3.66663 11 3.66663C8.975 3.66663 7.33337 5.30825 7.33337 7.33329C7.33337 9.3583 8.975 11 11 11Z" stroke="black" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+            </svg>
+          </div>
+        </div>
+      </div>
+
+      {/* 2. Message List Column (Conversations) */}
+      <div className="w-[386px] bg-[#FBFBF9] flex flex-col rounded-r-[33px] ml-[15px] mt-4 mb-5 flex-shrink-0 hidden lg:flex">
+        {/* Header */}
+        <div className="px-5 pt-[29px] pb-0">
+          <div className="flex items-center justify-between mb-6">
+            <h1 className="text-[20px] font-medium text-[#363636]">Conversas</h1>
             <div className="flex gap-2">
-              <div className="w-8 h-8 bg-[#F8F8F7] rounded-full flex items-center justify-center">
-                <svg width="14" height="14" viewBox="0 0 17 17" fill="none">
-                  <path
-                    d="M2.83346 2.125H14.1669C14.5581 2.125 14.8752 2.44208 14.8752 2.83324L14.8753 3.95653C14.8754 4.14444 14.8007 4.32464 14.6679 4.45751L10.1243 9.00086C9.99145 9.13367 9.91679 9.31387 9.91679 9.50172V13.9678C9.91679 14.4286 9.48371 14.7668 9.03668 14.655L7.62002 14.3008C7.30467 14.222 7.08346 13.9387 7.08346 13.6136V9.50172C7.08346 9.31387 7.00883 9.13367 6.87598 9.00086L2.33259 4.45746C2.19975 4.32463 2.12512 4.14446 2.12512 3.9566V2.83333C2.12512 2.44213 2.44225 2.125 2.83346 2.125Z"
-                    stroke="black"
-                    strokeWidth="1.1"
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                  />
+              <div className="w-[34px] h-[34px] bg-[#F8F8F7] rounded-[17px] flex items-center justify-center">
+                <svg width="17" height="17" viewBox="0 0 17 17" fill="none">
+                  <path d="M2.83346 2.125H14.1669C14.5581 2.125 14.8752 2.44208 14.8752 2.83324L14.8753 3.95653C14.8754 4.14444 14.8007 4.32464 14.6679 4.45751L10.1243 9.00086C9.99145 9.13367 9.91679 9.31387 9.91679 9.50172V13.9678C9.91679 14.4286 9.48371 14.7668 9.03668 14.655L7.62002 14.3008C7.30467 14.222 7.08346 13.9387 7.08346 13.6136V9.50172C7.08346 9.31387 7.00883 9.13367 6.87598 9.00086L2.33259 4.45746C2.19975 4.32463 2.12512 4.14446 2.12512 3.9566V2.83333C2.12512 2.44213 2.44225 2.125 2.83346 2.125Z" stroke="black" strokeWidth="1.1" strokeLinecap="round" strokeLinejoin="round"/>
                 </svg>
               </div>
-              <div className="w-8 h-8 bg-[#F8F8F7] rounded-full flex items-center justify-center">
-                <svg width="14" height="14" viewBox="0 0 19 19" fill="none">
-                  <path
-                    d="M13.4584 13.4584L16.625 16.625"
-                    stroke="black"
-                    strokeWidth="1.1"
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                  />
-                  <path
-                    d="M2.375 8.70833C2.375 12.2062 5.21053 15.0417 8.70833 15.0417C10.4603 15.0417 12.0461 14.3304 13.1927 13.1807C14.3353 12.0351 15.0417 10.4542 15.0417 8.70833C15.0417 5.21053 12.2062 2.375 8.70833 2.375C5.21053 2.375 2.375 5.21053 2.375 8.70833Z"
-                    stroke="black"
-                    strokeWidth="1.1"
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                  />
+              <div className="w-[34px] h-[34px] bg-[#F8F8F7] rounded-[17px] flex items-center justify-center">
+                <svg width="19" height="19" viewBox="0 0 19 19" fill="none">
+                  <path d="M13.4584 13.4584L16.625 16.625" stroke="black" strokeWidth="1.1" strokeLinecap="round" strokeLinejoin="round"/>
+                  <path d="M2.375 8.70833C2.375 12.2062 5.21053 15.0417 8.70833 15.0417C10.4603 15.0417 12.0461 14.3304 13.1927 13.1807C14.3353 12.0351 15.0417 10.4542 15.0417 8.70833C15.0417 5.21053 12.2062 2.375 8.70833 2.375C5.21053 2.375 2.375 5.21053 2.375 8.70833Z" stroke="black" strokeWidth="1.1" strokeLinecap="round" strokeLinejoin="round"/>
+                </svg>
+              </div>
+              <div className="w-[34px] h-[34px] bg-[#F8F8F7] rounded-[17px] flex items-center justify-center">
+                <svg width="17" height="17" viewBox="0 0 17 17" fill="none">
+                  <path fillRule="evenodd" clipRule="evenodd" d="M3.655 1.7C2.59444 1.7 1.7 2.59444 1.7 3.655V8.33H3.655C4.72917 8.33 5.68667 8.92166 6.17582 9.77443C6.63771 10.5643 7.47921 11.135 8.5 11.135C9.51337 11.135 10.35 10.5726 10.814 9.79166C11.3307 8.78685 12.3359 8.33 13.345 8.33H16.15C16.6194 8.33 17 8.71057 17 9.18V13.345C17 15.3444 15.3444 17 13.345 17H3.655C1.65556 17 0 15.3444 0 13.345V3.655C0 1.65556 1.65556 0 3.655 0H13.43C15.3612 0 17 1.67252 17 3.655V6.46C17 6.92943 16.6194 7.31 16.15 7.31C15.6806 7.31 15.3 6.92943 15.3 6.46V3.655C15.3 2.57748 14.3888 1.7 13.43 1.7H3.655ZM1.7 10.03V13.345C1.7 14.4056 2.59444 15.3 3.655 15.3H13.345C14.4056 15.3 15.3 14.4056 15.3 13.345V10.03H13.345C12.8335 10.03 12.488 10.2446 12.3202 10.5801C12.3121 10.5964 12.3034 10.6125 12.2942 10.6283C11.5658 11.8771 10.198 12.835 8.5 12.835C6.80198 12.835 5.43422 11.8771 4.70577 10.6283L4.70197 10.6217C4.51044 10.8866 4.10924 10.03 3.655 10.03H1.7Z" fill="black"/>
                 </svg>
               </div>
             </div>
           </div>
         </div>
 
-        <div className="flex-1 overflow-y-auto px-4 pb-4">
-          {conversations.map((conv) => (
+        {/* Conversations List */}
+        <div className="flex-1 overflow-y-auto px-5 pb-4 space-y-4">
+          {conversations.map((conv, index) => (
             <div
               key={conv.id}
-              onClick={() => setSelectedConversation(conv.id)}
-              className={`mb-3 rounded-2xl p-3 cursor-pointer transition-colors ${
+              onClick={() => {
+                setConversations(prev => 
+                  prev.map(c => ({ ...c, selected: c.id === conv.id }))
+                );
+                setSelectedConversation(conv.id);
+              }}
+              className={`rounded-[25px] p-[15px_12px] cursor-pointer transition-all ${
                 conv.id === selectedConversation ? "bg-black/[0.04]" : "hover:bg-black/[0.02]"
               }`}
             >
               <div className="flex items-start gap-3">
-                <div className="relative">
-                  <div className="w-8 h-8 bg-[#D9D9D9] rounded-full"></div>
-                  {conv.isWidget && (
-                    <div className="absolute -top-1 -right-1 w-3 h-3 bg-blue-500 rounded-full"></div>
-                  )}
-                </div>
+                <div className="w-[36px] h-[36px] bg-[#D9D9D9] rounded-[18px] flex-shrink-0"></div>
                 <div className="flex-1 min-w-0">
                   <div className="flex items-center justify-between mb-1">
-                    <h3 className="font-medium text-sm text-black flex items-center gap-1">
+                    <h3 className="font-medium text-[16px] text-black">
                       {conv.name}
-                      {conv.isWidget && (
-                        <span className="text-xs text-blue-600">(Widget)</span>
-                      )}
                     </h3>
-                    <span className="text-xs text-[#ACACAC]">{conv.time}</span>
+                    <span className="text-[10px] text-[#ACACAC]">
+                      {conv.time}
+                    </span>
                   </div>
-                  <p className="text-sm text-black truncate">
+                  <p className="text-[14px] text-black font-normal truncate">
                     {conv.lastMessage}
                   </p>
-                  <div className="flex items-center justify-between mt-1">
-                    <div className="flex items-center gap-1">
-                      <div className={`w-2 h-2 rounded-full ${conv.status === "online" ? "bg-green-500" : "bg-gray-400"}`}></div>
-                      <span className="text-xs text-[#ACACAC]">{conv.status}</span>
-                    </div>
-                    {conv.unread > 0 && (
-                      <Badge className="bg-red-500 text-white text-xs">
-                        {conv.unread}
-                      </Badge>
-                    )}
-                  </div>
                 </div>
               </div>
             </div>
@@ -528,338 +400,203 @@ export default function Index() {
         </div>
       </div>
 
-      {/* Center Panel - Messages (Flexible width) */}
-      <div className="flex-1 flex flex-col bg-[#FBFBF9] rounded-[20px] mx-3 mt-3 mb-5 min-w-0">
-        {/* Chat Header */}
-        <div className="p-4 border-b border-[#F1F1F1]">
+      {/* 3. Message Inbox Column (Center) */}
+      <div className="flex-1 bg-[#FBFBF9] rounded-[33px] mx-3 mt-4 mb-5 flex flex-col min-w-0">
+        {/* Header */}
+        <div className="px-6 pt-[29px] pb-0">
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-3">
               <Button
                 variant="ghost"
                 size="sm"
                 className="lg:hidden p-2"
-                onClick={() => setShowConversations(true)}
+                onClick={() => setShowMobileMenu(true)}
               >
-                <svg
-                  className="w-5 h-5"
-                  fill="none"
-                  stroke="currentColor"
-                  viewBox="0 0 24 24"
-                >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth={2}
-                    d="M4 6h16M4 12h16M4 18h16"
-                  />
+                <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16M4 18h16"/>
                 </svg>
               </Button>
-              <h2 className="text-lg font-medium text-[#363636]">
-                {currentConversation
-                  ? `Mensagens de ${currentConversation.name}${currentConversation.isWidget ? " (Widget)" : ""}`
-                  : "Selecione uma conversa"}
+              <h2 className="text-[20px] font-medium text-[#363636]">
+                {currentConversation ? `Mensagens de ${currentConversation.name}` : "Selecione uma conversa"}
               </h2>
-              {currentConversation && (
-                <div className="flex items-center gap-2">
-                  <div className={`w-2 h-2 rounded-full ${currentConversation.status === "online" ? "bg-green-500" : "bg-gray-400"}`}></div>
-                  <span className="text-sm text-[#ACACAC]">{currentConversation.status}</span>
-                </div>
-              )}
             </div>
             <div className="flex items-center gap-2">
-              <div className={`px-2 py-1 rounded-full text-xs ${
-                connectionStatus === "connected" 
-                  ? "bg-green-100 text-green-800" 
-                  : connectionStatus === "connecting" 
-                  ? "bg-yellow-100 text-yellow-800"
-                  : "bg-red-100 text-red-800"
-              }`}>
-                {connectionStatus === "connected" ? "🟢 Online" : connectionStatus === "connecting" ? "🟡 Conectando" : "🔴 Offline"}
+              <div className="flex items-center gap-2">
+                <div className="w-[34px] h-[34px] bg-[#F8F8F7] rounded-[17px] flex items-center justify-center">
+                  <svg width="33" height="33" viewBox="0 0 33 33" fill="none">
+                    <path d="M23.4498 17.38C24.383 17.38 25.1398 16.6232 25.1398 15.69C25.1398 14.7568 24.383 14 23.4498 14C22.5165 14 21.7598 14.7568 21.7598 15.69C21.7598 16.6232 22.5165 17.38 23.4498 17.38Z" fill="#7A7A7A" stroke="#7A7A7A" strokeWidth="1.1"/>
+                    <path d="M17.0699 17.38C18.0031 17.38 18.7599 16.6232 18.7599 15.69C18.7599 14.7568 18.0031 14 17.0699 14C16.1367 14 15.3799 14.7568 15.3799 15.69C15.3799 16.6232 16.1367 17.38 17.0699 17.38Z" fill="#7A7A7A" stroke="#7A7A7A" strokeWidth="1.1"/>
+                    <path d="M10.69 17.38C11.6234 17.38 12.38 16.6232 12.38 15.69C12.38 14.7568 11.6234 14 10.69 14C9.75665 14 9 14.7568 9 15.69C9 16.6232 9.75665 17.38 10.69 17.38Z" fill="#7A7A7A" stroke="#7A7A7A" strokeWidth="1.1"/>
+                  </svg>
+                </div>
+                <div className="w-[34px] h-[34px] bg-[#F8F8F7] rounded-[17px] flex items-center justify-center">
+                  <div className="w-[17px] h-[17px] relative">
+                    <svg width="13" height="13" viewBox="0 0 13 13" fill="none" className="absolute top-[2px] left-[2px]">
+                      <path d="M0.125 6.15051C0.125 9.86437 3.13566 12.875 6.84949 12.875C9.4898 12.875 11.7747 11.3534 12.875 9.13918C6.84949 9.13918 3.86083 6.15051 3.86083 0.125C1.64665 1.22535 0.125 3.51023 0.125 6.15051Z" fill="#1B1B1B"/>
+                    </svg>
+                    <span className="absolute top-[-3px] left-[10px] text-[12px] font-bold text-[#1B1B1B]">z</span>
+                  </div>
+                </div>
+                <div className="bg-[#1B1B1B] text-white px-4 py-2 rounded-[17px] text-[14px] font-normal flex items-center gap-2">
+                  <svg width="12" height="12" viewBox="0 0 12 12" fill="none">
+                    <path fillRule="evenodd" clipRule="evenodd" d="M2.58 1.2C1.83137 1.2 1.2 1.83137 1.2 2.58V5.88H2.58C3.33824 5.88 4.01412 6.29764 4.3594 6.8996C4.68544 7.45716 5.27944 7.86 6 7.86C6.71532 7.86 7.30588 7.463 7.63344 6.91176C7.99812 6.20248 8.70768 5.88 9.42 5.88H11.4C11.7314 5.88 12 6.14864 12 6.48V9.42C12 10.8314 10.8314 12 9.42 12H2.58C1.16863 12 0 10.8314 0 9.42V2.58C0 1.16863 1.16863 0 2.58 0H9.48C10.8432 0 12 1.1806 12 2.58V4.56C12 4.89136 11.7314 5.16 11.4 5.16C11.0686 5.16 10.8 4.89136 10.8 4.56V2.58C10.8 1.8194 10.1568 1.2 9.48 1.2H2.58ZM1.2 7.08V9.42C1.2 10.1686 1.83137 10.8 2.58 10.8H9.42C10.1686 10.8 10.8 10.1686 10.8 9.42V7.08H9.42C9.05896 7.08 8.81508 7.23148 8.69664 7.46832C8.69088 7.47984 8.68476 7.4912 8.67828 7.50232C8.16408 8.3838 7.1986 9.06 6 9.06C4.8014 9.06 3.83592 8.3838 3.32172 7.50232L3.31904 7.49768C3.18384 7.26112 2.90064 7.08 2.58 7.08H1.2Z" fill="white"/>
+                  </svg>
+                  Close
+                </div>
               </div>
-              <Button
-                variant="ghost"
-                size="sm"
-                onClick={downloadTranscript}
-                className="text-[#363636]"
-              >
-                <svg width="16" height="16" viewBox="0 0 24 24" fill="none">
-                  <path
-                    d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"
-                    stroke="currentColor"
-                    strokeWidth="2"
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                  />
-                  <polyline
-                    points="7,10 12,15 17,10"
-                    stroke="currentColor"
-                    strokeWidth="2"
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                  />
-                  <line
-                    x1="12"
-                    y1="15"
-                    x2="12"
-                    y2="3"
-                    stroke="currentColor"
-                    strokeWidth="2"
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                  />
-                </svg>
-              </Button>
-              <Button
-                variant="ghost"
-                size="sm"
-                className="xl:hidden p-2"
-                onClick={() => setShowSidebar(true)}
-              >
-                <svg
-                  className="w-5 h-5"
-                  fill="none"
-                  stroke="currentColor"
-                  viewBox="0 0 24 24"
-                >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth={2}
-                    d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"
-                  />
-                </svg>
-              </Button>
             </div>
           </div>
         </div>
 
-        {/* Messages Area */}
-        <div className="flex-1 overflow-y-auto p-4 space-y-4">
-          {currentMessages.map((msg) => (
-            <div
-              key={msg.id}
-              className={`flex ${msg.sender === "support" ? "justify-end" : "justify-start"}`}
-            >
-              <div
-                className={`max-w-[70%] rounded-2xl p-3 ${
-                  msg.sender === "support"
-                    ? "bg-black text-white"
-                    : "bg-white border border-[#F1F1F1]"
-                }`}
-              >
-                <p className="text-sm">{msg.text}</p>
-                <p
-                  className={`text-xs mt-1 ${
-                    msg.sender === "support"
-                      ? "text-gray-300"
-                      : "text-[#ACACAC]"
-                  }`}
-                >
-                  {msg.time}
-                </p>
-              </div>
+        {/* Message Content */}
+        <div className="flex-1 p-6 flex flex-col gap-6">
+          {/* User Message */}
+          <div className="bg-white border border-[#F1F1F1] rounded-[33px] p-6 max-w-[384px]">
+            <p className="text-[16px] text-black font-normal mb-3">
+              Hello, please help me. For lorem impsun dolor lorem impsum?
+            </p>
+            <p className="text-[12px] text-[#ACACAC] font-normal">
+              John doe - 1 minute ago
+            </p>
+          </div>
+
+          {/* Large Content Area */}
+          <div className="bg-white border border-[#F1F1F1] rounded-[33px] p-6 flex-1 min-h-[380px]">
+            <div className="w-full h-[332px] bg-[#E7E7E7] rounded-[18px] flex items-center justify-center">
+              <span className="text-[#999] text-sm">Content area</span>
             </div>
-          ))}
-          <div ref={messagesEndRef} />
+            <p className="text-[12px] text-[#ACACAC] font-normal mt-4">
+              John doe - 1 minute ago
+            </p>
+          </div>
+
+          {/* Support Response */}
+          <div className="flex justify-end">
+            <div className="bg-black text-white rounded-[25px] p-4 max-w-[238px]">
+              <p className="text-[16px] font-normal">
+                Hi, yes, my name is john
+              </p>
+              <p className="text-[12px] text-[#ACACAC] font-normal mt-2">
+                1 minute ago
+              </p>
+            </div>
+          </div>
         </div>
 
         {/* Message Input Area */}
-        <div className="p-4 border-t border-[#F1F1F1]">
-          <div className="flex items-center gap-3 bg-white border border-[#F1F1F1] rounded-full px-4 py-2">
-            <div className="flex gap-2">
-              <button className="w-8 h-8 bg-[#F8F8F7] rounded-full flex items-center justify-center">
-                <svg width="12" height="12" viewBox="0 0 14 14" fill="none">
-                  <path
-                    d="M6.99999 0C5.52307 0 4.32153 1.20157 4.32153 2.67846V11.9475C4.32153 13.0792 5.24231 14 6.37406 14C7.50582 14 8.4266 13.0792 8.4266 11.9475V3.34991C8.4266 2.57534 7.79643 1.94513 7.02181 1.94513C6.24724 1.94513 5.61705 2.57532 5.61705 3.34991V11.4686H6.4742V3.34991C6.4742 3.04798 6.71985 2.80227 7.02184 2.80227C7.32382 2.80227 7.56948 3.04795 7.56948 3.34991V11.9474C7.56948 12.6066 7.03321 13.1428 6.37406 13.1428C1.71516 13.1428 1.17892 12.6066 1.17892 11.9474V2.67846C1.17892 1.6742 1.99595 0.857145 6.99999 0.857145C8.00427 0.857145 8.8213 1.6742 8.8213 2.67846V11.4686H9.67845V2.67846C9.67845 1.20157 8.47691 0 6.99999 0Z"
-                    fill="black"
-                  />
+        <div className="p-6">
+          <div className="bg-white border border-[#F1F1F1] rounded-[33px] p-6">
+            <div className="flex items-center gap-4">
+              <div className="flex gap-2">
+                <div className="w-[34px] h-[34px] bg-[#F8F8F7] rounded-[17px] flex items-center justify-center">
+                  <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
+                    <path d="M6.99999 0C5.52307 0 4.32153 1.20157 4.32153 2.67846V11.9475C4.32153 13.0792 5.24231 14 6.37406 14C7.50582 14 8.4266 13.0792 8.4266 11.9475V3.34991C8.4266 2.57534 7.79643 1.94513 7.02181 1.94513C6.24724 1.94513 5.61705 2.57532 5.61705 3.34991V11.4686H6.4742V3.34991C6.4742 3.04798 6.71985 2.80227 7.02184 2.80227C7.32382 2.80227 7.56948 3.04795 7.56948 3.34991V11.9474C7.56948 12.6066 7.03321 13.1428 6.37406 13.1428C5.71492 13.1428 5.17868 12.6066 5.17868 11.9474V2.67846C5.17868 1.6742 5.99571 0.857145 6.99999 0.857145C8.00427 0.857145 8.8213 1.6742 8.8213 2.67846V11.4686H9.67845V2.67846C9.67845 1.20157 8.47691 0 6.99999 0Z" fill="black"/>
+                  </svg>
+                </div>
+                <div className="w-[34px] h-[34px] bg-[#F8F8F7] rounded-[17px] flex items-center justify-center">
+                  <svg width="17" height="17" viewBox="0 0 17 17" fill="none">
+                    <path d="M8.49996 15.5834C4.58794 15.5834 1.41663 12.412 1.41663 8.50002C1.41663 4.588 4.58794 1.41669 8.49996 1.41669C12.4119 1.41669 15.5833 4.588 15.5833 8.50002C15.5833 12.412 12.4119 15.5834 8.49996 15.5834Z" stroke="black" strokeWidth="1.1"/>
+                    <path d="M11.6875 10.2708C11.6875 10.2708 10.625 11.6875 8.5 11.6875C6.375 11.6875 5.3125 10.2708 5.3125 10.2708" stroke="black" strokeWidth="1.1"/>
+                    <path d="M10.9792 6.37502C10.7836 6.37502 10.625 6.21645 10.625 6.02085C10.625 5.82525 10.7836 5.66669 10.9792 5.66669C11.1747 5.66669 11.3333 5.82525 11.3333 6.02085C11.3333 6.21645 11.1747 6.37502 10.9792 6.37502Z" fill="black" stroke="black" strokeWidth="1.1"/>
+                    <path d="M6.02079 6.37502C5.82519 6.37502 5.66663 6.21645 5.66663 6.02085C5.66663 5.82525 5.82519 5.66669 6.02079 5.66669C6.21639 5.66669 6.37496 5.82525 6.37496 6.02085C6.37496 6.21645 6.21639 6.37502 6.02079 6.37502Z" fill="black" stroke="black" strokeWidth="1.1"/>
+                  </svg>
+                </div>
+                <div className="w-[34px] h-[34px] bg-[#F8F8F7] rounded-[17px] flex items-center justify-center">
+                  <svg width="17" height="17" viewBox="0 0 17 17" fill="none">
+                    <path d="M5.66663 9.91669H11.3333" stroke="black" strokeWidth="1.1"/>
+                    <path d="M5.66663 7.08331H7.08329" stroke="black" strokeWidth="1.1"/>
+                    <path d="M5.66663 12.75H8.49996" stroke="black" strokeWidth="1.1"/>
+                    <path d="M7.08337 2.12498H4.25004C3.46764 2.12498 2.83337 2.75924 2.83337 3.54165V14.1666C2.83337 14.9491 3.46764 15.5833 4.25004 15.5833H12.75C13.5325 15.5833 14.1667 14.9491 14.1667 14.1666V3.54165C14.1667 2.75924 13.5325 2.12498 12.75 2.12498H10.2709M7.08337 2.12498V0.708313M7.08337 2.12498V3.54165" stroke="black" strokeWidth="1.1"/>
+                  </svg>
+                </div>
+              </div>
+
+              <Input
+                value={message}
+                onChange={(e) => setMessage(e.target.value)}
+                onKeyPress={handleKeyPress}
+                placeholder="Insira a sua mensagem"
+                className="flex-1 border-0 bg-transparent text-[17px] text-[#9B9B9B] placeholder:text-[#9B9B9B] focus-visible:ring-0 px-0 font-normal"
+              />
+
+              <div className="w-[48px] h-[48px] bg-[#D9D9D9] rounded-[24px] flex items-center justify-center cursor-pointer" onClick={sendMessage}>
+                <svg width="21" height="21" viewBox="0 0 21 21" fill="none" className="rotate-[-90deg]">
+                  <path d="M10.5 18.375L10.5 2.625M10.5 2.625L3.0625 10.0625M10.5 2.625L17.9375 10.0625" stroke="#989898" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
                 </svg>
-              </button>
-              <button className="w-8 h-8 bg-[#F8F8F7] rounded-full flex items-center justify-center">
-                <svg width="12" height="12" viewBox="0 0 17 17" fill="none">
-                  <path
-                    d="M8.49996 15.5834C4.58794 15.5834 1.41663 12.412 1.41663 8.50002C1.41663 4.588 4.58794 1.41669 8.49996 1.41669C12.4119 1.41669 15.5833 4.588 15.5833 8.50002C15.5833 12.412 12.4119 15.5834 8.49996 15.5834Z"
-                    stroke="black"
-                    strokeWidth="1.1"
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                  />
-                  <path
-                    d="M11.6875 10.2708C11.6875 10.2708 10.625 11.6875 8.5 11.6875C6.375 11.6875 5.3125 10.2708 5.3125 10.2708"
-                    stroke="black"
-                    strokeWidth="1.1"
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                  />
-                  <path
-                    d="M10.9792 6.37502C10.7836 6.37502 10.625 6.21645 10.625 6.02085C10.625 5.82525 10.7836 5.66669 10.9792 5.66669C11.1747 5.66669 11.3333 5.82525 11.3333 6.02085C11.3333 6.21645 11.1747 6.37502 10.9792 6.37502Z"
-                    fill="black"
-                    stroke="black"
-                    strokeWidth="1.1"
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                  />
-                  <path
-                    d="M6.02079 6.37502C5.82519 6.37502 5.66663 6.21645 5.66663 6.02085C5.66663 5.82525 5.82519 5.66669 6.02079 5.66669C6.21639 5.66669 6.37496 5.82525 6.37496 6.02085C6.37496 6.21645 6.21639 6.37502 6.02079 6.37502Z"
-                    fill="black"
-                    stroke="black"
-                    strokeWidth="1.1"
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                  />
-                </svg>
-              </button>
+              </div>
             </div>
-
-            <Input
-              value={message}
-              onChange={(e) => setMessage(e.target.value)}
-              onKeyPress={handleKeyPress}
-              placeholder="Digite sua mensagem..."
-              className="border-0 bg-transparent text-sm placeholder:text-[#9B9B9B] focus-visible:ring-0 px-0"
-            />
-
-            <Button
-              onClick={() => sendMessage()}
-              size="sm"
-              className="w-8 h-8 bg-[#D9D9D9] rounded-full p-0 hover:bg-[#C9C9C9]"
-            >
-              <svg
-                width="16"
-                height="16"
-                viewBox="0 0 21 21"
-                fill="none"
-                className="rotate-[-90deg]"
-              >
-                <path
-                  d="M10.5 18.375L10.5 2.625M10.5 2.625L3.0625 10.0625M10.5 2.625L17.9375 10.0625"
-                  stroke="#989898"
-                  strokeWidth="2"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                />
-              </svg>
-            </Button>
           </div>
         </div>
       </div>
 
-      {/* Mobile Sidebar Overlay */}
-      {showSidebar && (
-        <div
-          className="fixed inset-0 bg-black/50 z-40 xl:hidden"
-          onClick={() => setShowSidebar(false)}
-        >
-          <div
-            className="w-[300px] bg-[#FBFBF9] h-full ml-auto rounded-l-[20px]"
-            onClick={(e) => e.stopPropagation()}
-          >
-            <div className="p-4">
-              <div className="flex items-center justify-between mb-4">
-                <div className="flex items-center gap-4">
-                  <h3 className="text-lg font-medium text-[#363636]">Geral</h3>
-                  <h3 className="text-lg font-medium text-[#363636]">
-                    Copilot
-                  </h3>
-                </div>
-                <Button
-                  variant="ghost"
-                  size="sm"
-                  onClick={() => setShowSidebar(false)}
-                >
-                  <svg
-                    className="w-5 h-5"
-                    fill="none"
-                    stroke="currentColor"
-                    viewBox="0 0 24 24"
-                  >
-                    <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      strokeWidth={2}
-                      d="M6 18L18 6M6 6l12 12"
-                    />
-                  </svg>
-                </Button>
+      {/* 4. Sidebar Column (Right) */}
+      <div className="w-[382px] bg-[#FBFBF9] rounded-l-[33px] mr-[20px] mt-4 mb-5 flex-shrink-0 hidden xl:flex flex-col">
+        {/* Header */}
+        <div className="px-6 pt-[29px] pb-0">
+          <div className="flex items-center gap-6 mb-6">
+            <h3 className="text-[20px] font-medium text-[#363636]">Geral</h3>
+            <h3 className="text-[20px] font-medium text-[#363636]">Copilot</h3>
+          </div>
+          <div className="w-full h-[1px] bg-[#F4F4F4] mb-6"></div>
+          <div className="w-12 h-[1px] bg-[#005EFF] mb-6"></div>
+        </div>
+
+        {/* Assignee Section */}
+        <div className="px-6 space-y-6">
+          <div className="space-y-4">
+            <div className="flex items-center justify-between">
+              <span className="text-[16px] text-[#5A5A5A] font-normal">Assignee</span>
+              <div className="flex items-center gap-2">
+                <div className="w-5 h-5 bg-[#D9D9D9] rounded-full"></div>
+                <span className="text-[16px] text-black font-normal">James doe</span>
+              </div>
+            </div>
+
+            <div className="flex items-center justify-between">
+              <span className="text-[16px] text-[#5A5A5A] font-normal">Team</span>
+              <span className="text-[16px] text-black font-normal">Financial Team</span>
+            </div>
+          </div>
+
+          <div className="w-full h-[1px] bg-[#F4F4F4]"></div>
+
+          {/* Conversation Attributes */}
+          <div className="space-y-6">
+            <h3 className="text-[20px] font-medium text-[#363636]">Conversation atributes</h3>
+            
+            <div className="space-y-4">
+              <div className="flex items-center justify-between">
+                <span className="text-[16px] text-[#5A5A5A] font-normal">Full name</span>
+                <span className="text-[16px] text-black font-normal">John Doe</span>
               </div>
 
-              <div className="space-y-4">
-                <div className="p-3 bg-white rounded-lg border border-[#F1F1F1]">
-                  <h4 className="font-medium text-sm mb-2">Status do Chat</h4>
-                  <div className="flex items-center gap-2">
-                    <div className={`w-2 h-2 rounded-full ${connectionStatus === "connected" ? "bg-green-500" : "bg-red-500"}`}></div>
-                    <span className="text-xs text-[#363636]">{connectionStatus === "connected" ? "Online" : "Offline"}</span>
-                  </div>
-                </div>
+              <div className="flex items-center justify-between">
+                <span className="text-[16px] text-[#5A5A5A] font-normal">E-mail</span>
+                <span className="text-[16px] text-black font-normal">johndoe@gmail.com</span>
+              </div>
 
-                <div className="p-3 bg-white rounded-lg border border-[#F1F1F1]">
-                  <h4 className="font-medium text-sm mb-2">WebSocket</h4>
-                  <div className="text-xs text-[#363636]">
-                    Status: {connectionStatus}
-                  </div>
-                </div>
+              <div className="flex items-center justify-between">
+                <span className="text-[16px] text-[#5A5A5A] font-normal">Priority</span>
+                <span className="text-[16px] text-black font-normal">Urgency</span>
+              </div>
 
-                <div className="p-3 bg-white rounded-lg border border-[#F1F1F1]">
-                  <h4 className="font-medium text-sm mb-2">Configurações</h4>
-                  <button
-                    onClick={downloadTranscript}
-                    className="text-xs text-blue-600 hover:underline block mb-1"
-                  >
-                    Baixar transcrição
-                  </button>
-                </div>
+              <div className="flex items-center justify-between">
+                <span className="text-[16px] text-[#5A5A5A] font-normal">Tag ID</span>
+                <span className="text-[16px] text-black font-normal">123456</span>
               </div>
             </div>
           </div>
         </div>
-      )}
 
-      {/* Right Panel - Sidebar (Desktop: 300px width) */}
-      <div className="w-[300px] bg-[#FBFBF9] rounded-l-[20px] hidden xl:block mr-5 mt-3 mb-5">
-        <div className="p-4">
-          <div className="flex items-center justify-between mb-4">
-            <div className="flex items-center gap-4">
-              <h3 className="text-lg font-medium text-[#363636]">Geral</h3>
-              <h3 className="text-lg font-medium text-[#363636]">Copilot</h3>
-            </div>
-          </div>
-
-          <div className="space-y-4">
-            <div className="p-3 bg-white rounded-lg border border-[#F1F1F1]">
-              <h4 className="font-medium text-sm mb-2">Status do Chat</h4>
-              <div className="flex items-center gap-2">
-                <div className={`w-2 h-2 rounded-full ${connectionStatus === "connected" ? "bg-green-500" : "bg-red-500"}`}></div>
-                <span className="text-xs text-[#363636]">{connectionStatus === "connected" ? "Online" : "Offline"}</span>
-              </div>
-            </div>
-
-            <div className="p-3 bg-white rounded-lg border border-[#F1F1F1]">
-              <h4 className="font-medium text-sm mb-2">WebSocket Status</h4>
-              <div className="text-xs text-[#363636] space-y-1">
-                <div>Conexão: {connectionStatus}</div>
-                <div>Conversas ativas: {conversations.length}</div>
-                <div>Widget conversations: {conversations.filter(c => c.isWidget).length}</div>
-              </div>
-            </div>
-
-            <div className="p-3 bg-white rounded-lg border border-[#F1F1F1]">
-              <h4 className="font-medium text-sm mb-2">Usuário Atual</h4>
-              <div className="flex items-center gap-2">
-                <div className="w-6 h-6 bg-[#D9D9D9] rounded-full"></div>
-                <span className="text-xs text-[#363636]">
-                  {currentConversation?.name || "Nenhum usuário"}
-                </span>
-              </div>
-            </div>
-
-            <div className="p-3 bg-white rounded-lg border border-[#F1F1F1]">
-              <h4 className="font-medium text-sm mb-2">Configurações</h4>
-              <button
-                onClick={downloadTranscript}
-                className="text-xs text-blue-600 hover:underline block mb-1"
-              >
-                Baixar transcrição
-              </button>
+        {/* Settings */}
+        <div className="px-6 mt-auto mb-6">
+          <div className="flex items-center justify-end">
+            <div className="w-[34px] h-[34px] bg-[#F8F8F7] rounded-[17px] flex items-center justify-center">
+              <svg width="19" height="19" viewBox="0 0 19 19" fill="none">
+                <path d="M15.0417 16.625H3.95833C3.08388 16.625 2.375 15.9161 2.375 15.0417V3.95833C2.375 3.08388 3.08388 2.375 3.95833 2.375H15.0417C15.9161 2.375 16.625 3.08388 16.625 3.95833V15.0417C16.625 15.9161 15.9161 16.625 15.0417 16.625Z" stroke="black" strokeWidth="1.1"/>
+                <path d="M4.35409 7.91663L5.7395 9.49996L4.35409 11.0833" stroke="black" strokeWidth="1.1"/>
+                <path d="M7.52075 16.625V2.375" stroke="black" strokeWidth="1.1"/>
+              </svg>
             </div>
           </div>
         </div>
@@ -867,22 +604,6 @@ export default function Index() {
 
       {/* Live Chat Widget - Floating (Design baseado no HTML fornecido) */}
       <div className="fixed bottom-5 right-5 z-[1000] flex flex-col items-end">
-        {/* Preview Bubble */}
-        {!isWidgetOpen && (
-          <div className="relative bg-white rounded-[22px] shadow-[0_0_21.2px_6px_rgba(0,0,0,0.02)] p-[15px_20px] mb-[15px] cursor-pointer opacity-0 translate-y-[10px] transition-all duration-[0.4s] ease-out pointer-events-none">
-            <div className="hidden absolute -top-[10px] right-[10px] bg-black text-white px-3 py-1 text-xs font-medium rounded-[59px]">
-              close
-            </div>
-            <div className="flex items-center">
-              <div className="w-[35px] h-[35px] bg-[#E9E9E9] rounded-full mr-[15px] flex-shrink-0"></div>
-              <div>
-                <div className="text-[15px] text-black font-medium">Nova mensagem</div>
-                <div className="text-[13px] text-[#8A8A8A] mt-1">Suporte • agora</div>
-              </div>
-            </div>
-          </div>
-        )}
-
         {/* Chat Container */}
         {isWidgetOpen && (
           <div className="w-[370px] h-[630px] bg-white rounded-[24px] shadow-[0_10px_40px_rgba(0,0,0,0.15)] flex flex-col overflow-hidden mb-[15px] opacity-100 translate-y-0 transition-all duration-300 ease-out" style={{fontFamily: "'Saans TRIAL', sans-serif"}}>
@@ -905,7 +626,7 @@ export default function Index() {
                 {/* Content */}
                 <div className="mt-[30px]">
                   <h1 className="text-[28px] font-medium leading-[1.3] text-black">
-                    Olá! Como podemos te ajudar hoje?
+                    Ol��! Como podemos te ajudar hoje?
                   </h1>
                   <p className="text-[15px] text-[#8A8A8A] mt-[10px] font-normal">
                     Fale conosco, estamos prontos para atender você.
@@ -961,15 +682,6 @@ export default function Index() {
                     <div className="font-medium text-base text-black">Equipa de Suporte</div>
                     <div className="text-[13px] text-[#8A8A8A] font-normal">Responde em minutos</div>
                   </div>
-                  <div className="relative">
-                    <div className="cursor-pointer text-black flex items-center">
-                      <svg width="33" height="33" viewBox="0 0 33 33" fill="none">
-                        <path d="M25.2623 19.1925C26.1955 19.1925 26.9523 18.4357 26.9523 17.5025C26.9523 16.5693 26.1955 15.8125 25.2623 15.8125C24.329 15.8125 23.5723 16.5693 23.5723 17.5025C23.5723 18.4357 24.329 19.1925 25.2623 19.1925Z" fill="#7A7A7A" stroke="#7A7A7A" strokeWidth="1.1"/>
-                        <path d="M15.8824 19.1925C16.8156 19.1925 17.5724 18.4357 17.5724 17.5025C17.5724 16.5693 16.8156 15.8125 15.8824 15.8125C14.9492 15.8125 14.1924 16.5693 14.1924 17.5025C14.1924 18.4357 14.9492 19.1925 15.8824 19.1925Z" fill="#7A7A7A" stroke="#7A7A7A" strokeWidth="1.1"/>
-                        <path d="M6.5025 19.1925C7.43585 19.1925 8.1925 18.4357 8.1925 17.5025C8.1925 16.5693 7.43585 15.8125 6.5025 15.8125C5.56915 15.8125 4.8125 16.5693 4.8125 17.5025C4.8125 18.4357 5.56915 19.1925 6.5025 19.1925Z" fill="#7A7A7A" stroke="#7A7A7A" strokeWidth="1.1"/>
-                      </svg>
-                    </div>
-                  </div>
                 </div>
 
                 {/* Chat Body */}
@@ -1009,21 +721,6 @@ export default function Index() {
                       placeholder="Digite sua mensagem..."
                       className="flex-grow border-none outline-none bg-transparent text-[15px] text-black font-normal placeholder:text-[#8A8A8A] focus-visible:ring-0 shadow-none"
                     />
-                    <div className="flex items-center gap-[6px] mx-[6px]">
-                      <div className="cursor-pointer text-[#5F5F5F] flex items-center">
-                        <svg width="6" height="14" viewBox="0 0 6 14" fill="none">
-                          <path d="M3.00023 0C1.52332 0 0.321777 1.20157 0.321777 2.67846V11.9475C0.321777 13.0792 1.24255 14 2.37431 14C3.50607 14 4.42684 13.0792 4.42684 11.9475V3.34991C4.42684 2.57534 3.79668 1.94513 3.02205 1.94513C2.24749 1.94513 1.6173 2.57532 1.6173 3.34991V11.4686H2.47444V3.34991C2.47444 3.04798 2.7201 2.80227 3.02208 2.80227C3.32407 2.80227 3.56972 3.04795 3.56972 3.34991V11.9474C3.56972 12.6066 3.03346 13.1428 2.37431 13.1428C1.71516 13.1428 1.17892 12.6066 1.17892 11.9474V2.67846C1.17892 1.6742 1.99595 0.857145 3.00023 0.857145C4.00452 0.857145 4.82155 1.6742 4.82155 2.67846V11.4686H5.67869V2.67846C5.67869 1.20157 4.47715 0 3.00023 0Z" fill="black"/>
-                        </svg>
-                      </div>
-                      <div className="cursor-pointer text-[#5F5F5F] flex items-center">
-                        <svg width="20" height="20" strokeWidth="0.8" viewBox="0 0 24 24" fill="none">
-                          <path d="M12 22C6.47715 22 2 17.5228 2 12C2 6.47715 6.47715 2 12 2C17.5228 2 22 6.47715 22 12C22 17.5228 17.5228 22 12 22Z" stroke="black" strokeWidth="0.8"/>
-                          <path d="M16.5 14.5C16.5 14.5 15 16.5 12 16.5C9 16.5 7.5 14.5 7.5 14.5" stroke="black" strokeWidth="0.8"/>
-                          <path d="M15.5 9C15.2239 9 15 8.77614 15 8.5C15 8.22386 15.2239 8 15.5 8C15.7761 8 16 8.22386 16 8.5C16 8.77614 15.7761 9 15.5 9Z" fill="black" stroke="black" strokeWidth="0.8"/>
-                          <path d="M8.5 9C8.22386 9 8 8.77614 8 8.5C8 8.22386 8.22386 8 8.5 8C8.77614 8 9 8.22386 9 8.5C9 8.77614 8.77614 9 8.5 9Z" fill="black" stroke="black" strokeWidth="0.8"/>
-                        </svg>
-                      </div>
-                    </div>
                     <div 
                       onClick={sendWidgetMessage}
                       className="w-[38px] h-[38px] bg-black text-white rounded-full flex justify-center items-center cursor-pointer transition-transform hover:scale-110 flex-shrink-0 ml-2"
