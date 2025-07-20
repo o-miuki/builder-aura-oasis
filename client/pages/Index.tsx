@@ -725,7 +725,7 @@ export default function Index() {
                 className="flex-1 border-0 bg-transparent text-[17px] text-[#9B9B9B] placeholder:text-[#9B9B9B] focus-visible:ring-0 px-0 font-normal"
               />
 
-              <div className="w-[48px] h-[48px] bg-[#D9D9D9] rounded-[24px] flex items-center justify-center cursor-pointer" onClick={sendMessage}>
+                            <div className="w-[48px] h-[48px] bg-[#D9D9D9] rounded-[24px] flex items-center justify-center cursor-pointer hover:bg-[#CACACA] transition-colors" onClick={sendMessage}>
                 <svg width="21" height="21" viewBox="0 0 21 21" fill="none" className="rotate-[-90deg]">
                   <path d="M10.5 18.375L10.5 2.625M10.5 2.625L3.0625 10.0625M10.5 2.625L17.9375 10.0625" stroke="#989898" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
                 </svg>
