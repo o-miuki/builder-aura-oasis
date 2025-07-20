@@ -892,7 +892,11 @@ export default function Index() {
                       <path d="M15 6L9 12L15 18" stroke="black" strokeWidth="0.8" strokeLinecap="round" strokeLinejoin="round"/>
                     </svg>
                   </div>
-                  <div className="w-10 h-10 bg-[#E9E9E9] rounded-full mx-3"></div>
+                                    <img
+                    src={generateAvatarUrl('support-team')}
+                    alt="Support Team Profile"
+                    className="w-10 h-10 rounded-full mx-3 object-cover"
+                  />
                   <div className="flex-grow">
                     <div className="font-medium text-base text-black">Equipa de Suporte</div>
                     <div className="text-[13px] text-[#8A8A8A] font-normal">Responde em minutos</div>
