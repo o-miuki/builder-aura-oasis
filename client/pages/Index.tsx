@@ -394,13 +394,10 @@ export default function Index() {
         </div>
       )}
 
-      {/* 1. Menu Column (Left Navigation) */}
-      <div className="w-[70px] bg-white border-r border-[#F4F4F4] hidden lg:flex flex-col items-center py-6 flex-shrink-0">
-        {/* Online Status Indicator */}
-        <div className="relative mb-6">
-          <div className="w-[34px] h-[34px] bg-[#D9D9D9] rounded-full flex items-center justify-center">
-            <div className="w-2 h-2 bg-[#2EBA85] rounded-full border border-white absolute -bottom-1 -right-1"></div>
-          </div>
+            {/* 1. Menu Column (Left Navigation) */}
+      <div className="w-[70px] bg-transparent border-r border-[#F4F4F4] hidden lg:flex flex-col items-center py-6 flex-shrink-0 justify-start">
+        {/* Navigation Icons */}
+        <div className="relative mb-6 flex flex-col justify-start">
         </div>
 
         {/* Navigation Icons */}
@@ -411,17 +408,22 @@ export default function Index() {
             </svg>
           </div>
 
-          <div className="w-[42px] h-[42px] bg-transparent rounded-lg flex items-center justify-center">
+                    <div className="w-[42px] h-[42px] bg-transparent rounded-lg flex items-center justify-center">
             <svg width="22" height="22" viewBox="0 0 22 22" fill="none">
               <path d="M4.58337 18.3333V17.4167C4.58337 13.8728 7.45622 11 11 11C14.5439 11 17.4167 13.8728 17.4167 17.4167V18.3333" stroke="black" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
               <path d="M11 11C13.025 11 14.6667 9.3583 14.6667 7.33329C14.6667 5.30825 13.025 3.66663 11 3.66663C8.975 3.66663 7.33337 5.30825 7.33337 7.33329C7.33337 9.3583 8.975 11 11 11Z" stroke="black" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
             </svg>
           </div>
         </div>
+
+        {/* Online Status Indicator */}
+        <div className="w-[34px] h-[34px] bg-[#D9D9D9] rounded-full flex items-start justify-end">
+          <div className="w-2 h-2 bg-[#2EBA85] rounded-full border border-white absolute -bottom-1 -right-1"></div>
+        </div>
       </div>
 
-      {/* 2. Message List Column (Conversations) */}
-      <div className="w-[386px] bg-[#FBFBF9] flex flex-col rounded-r-[33px] ml-[15px] mt-4 mb-5 flex-shrink-0 hidden lg:flex">
+            {/* 2. Message List Column (Conversations) */}
+      <div className="w-[386px] bg-[#FBFBF9] flex flex-col rounded-[33px] overflow-hidden ml-[15px] mt-4 mb-5 flex-shrink-0 hidden lg:flex">
         {/* Header */}
         <div className="px-5 pt-[29px] pb-0">
           <div className="flex items-center justify-between mb-6">
@@ -534,7 +536,7 @@ export default function Index() {
                       {conv.time}
                     </span>
                   </div>
-                  <p className="text-[14px] text-black font-normal truncate">
+                                    <p className="text-[14px] text-black font-normal truncate max-w-[264px]">
                     {conv.lastMessage}
                   </p>
                   {conv.unread > 0 && (
@@ -549,8 +551,8 @@ export default function Index() {
         </div>
       </div>
 
-      {/* 3. Message Inbox Column (Center) */}
-      <div className="flex-1 bg-[#FBFBF9] rounded-[33px] mx-3 mt-4 mb-5 flex flex-col min-w-0">
+            {/* 3. Message Inbox Column (Center) */}
+      <div className="flex-1 bg-[#FBFBF9] rounded-[33px] mx-3 mt-4 mb-5 flex flex-col min-w-0 w-auto max-w-[1023px]">
         {/* Header */}
         <div className="px-6 pt-[29px] pb-0">
           <div className="flex items-center justify-between">
