@@ -150,7 +150,7 @@ export default function Index() {
 
     setMessage("");
 
-    // Auto-reply simulation
+        // Auto-reply simulation
     setTimeout(() => {
       const autoReply: Message = {
         id: (Date.now() + 1).toString(),
@@ -174,6 +174,13 @@ export default function Index() {
             : conv,
         ),
       );
+
+      // Show preview message if widget is closed and this is a widget conversation
+      const isWidgetConversation = conversations.find(c => c.id === selectedConversation)?.isWidget;
+      if (!isWidgetOpen && isWidgetConversation) {
+        setPreviewMessages(prev => [...prev.slice(-1), autoReply]); // Keep max 2 messages
+        setShowPreviewMessages(true);
+      }
     }, 2000);
   };
 
