@@ -157,7 +157,7 @@ export default function Index() {
       conversationId: selectedConversation,
     };
 
-    setConversations((prev) =>
+        setConversations((prev) =>
       prev.map((conv) =>
         conv.id === selectedConversation
           ? {
@@ -170,7 +170,13 @@ export default function Index() {
       ),
     );
 
-        setMessage("");
+    // Show preview message if this is an operator sending to a widget conversation
+    const targetConversation = conversations.find(c => c.id === selectedConversation);
+    if (targetConversation?.isWidget && newMessage.sender === "support") {
+      showPreviewMessage(newMessage);
+    }
+
+    setMessage("");
   };
 
   const handleKeyPress = (e: React.KeyboardEvent) => {
