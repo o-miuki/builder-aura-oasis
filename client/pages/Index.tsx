@@ -334,7 +334,7 @@ export default function Index() {
     }
   };
 
-  const emojis = ['😀', '😃', '😄', '😁', '😆', '😅', '😂', '🤣', '😊', '😇', '🙂', '🙃', '😉', '😌', '😍', '🥰', '😘', '😗', '😙', '😚', '😋', '😛', '😝', '😜', '🤪', '🤨', '🧐', '🤓', '😎', '🤩', '🥳', '😏', '😒', '👍', '👎', '✌️', '🤞', '🤟', '🤘', '🤙', '👌', '🙌', '👏', '🙏', '❤️', '💕', '💖', '💗', '💙', '💚', '💛', '🧡', '💜', '🖤', '🤍', '🤎', '💔', '❣️', '💯', '🔥', '✨', '🎉', '🎊'];
+  const emojis = ['😀', '😃', '😄', '😁', '😆', '😅', '😂', '🤣', '😊', '😇', '🙂', '🙃', '😉', '😌', '😍', '🥰', '😘', '😗', '😙', '😚', '😋', '😛', '😝', '😜', '🤪', '🤨', '🧐', '🤓', '😎', '🤩', '🥳', '😏', '😒', '👍', '👎', '✌️', '🤞', '🤟', '🤘', '🤙', '����', '🙌', '👏', '🙏', '❤️', '💕', '💖', '💗', '💙', '💚', '💛', '🧡', '💜', '🖤', '🤍', '🤎', '💔', '❣️', '💯', '🔥', '✨', '🎉', '🎊'];
 
   const handleEmojiSelect = (emoji: string) => {
     setWidgetMessage(prev => prev + emoji);
@@ -998,8 +998,12 @@ export default function Index() {
                       </div>
                     </div>
                     <div 
-                      onClick={sendWidgetMessage}
-                      className="w-[38px] h-[38px] bg-black text-white rounded-full flex justify-center items-center cursor-pointer transition-transform hover:scale-110 flex-shrink-0 ml-2"
+                                            onClick={widgetMessage.trim() ? sendWidgetMessage : undefined}
+                      className={`w-[38px] h-[38px] rounded-full flex justify-center items-center transition-all ${
+                        widgetMessage.trim()
+                          ? 'bg-black cursor-pointer hover:scale-110'
+                          : 'bg-[#D9D9D9] cursor-not-allowed'
+                      } flex-shrink-0 ml-2`}
                     >
                       <svg width="17" height="17" viewBox="0 0 17 17" fill="none">
                         <path d="M8.49984 14.875L8.49984 2.125M8.49984 2.125L2.479 8.14583M8.49984 2.125L14.5207 8.14583" stroke="white" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
