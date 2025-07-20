@@ -212,35 +212,7 @@ export default function Index() {
       ),
     );
 
-    setWidgetMessage("");
-
-    // Auto-reply from support
-    setTimeout(() => {
-      const supportReply: Message = {
-        id: (Date.now() + 1).toString(),
-        text: "Hello! Thank you for reaching out. How can I help you today?",
-        sender: "support", // Support replies
-        time: "now",
-        timestamp: Date.now(),
-        conversationId: widgetConversation!.id,
-      };
-
-            setConversations((prev) =>
-        prev.map((conv) =>
-          conv.id === widgetConversation!.id
-            ? {
-                ...conv,
-                messages: [...conv.messages, supportReply],
-                lastMessage: supportReply.text,
-                time: "now",
-              }
-            : conv,
-        ),
-      );
-
-            // Show preview message if widget is closed
-      showPreviewMessage(supportReply);
-    }, 1500);
+        setWidgetMessage("");
   };
 
   const handleWidgetKeyPress = (e: React.KeyboardEvent) => {
