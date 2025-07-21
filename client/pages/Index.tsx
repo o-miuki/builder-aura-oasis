@@ -1278,7 +1278,7 @@ export default function Index() {
                   animationFillMode: 'both',
                 }}
               >
-                <div className="flex items-start gap-3">
+                <div className={index === 0 ? "flex items-start gap-3" : "flex items-start"}>
                   {/* Only show profile image for the first preview message */}
                   {index === 0 && (
                     <img
@@ -1287,8 +1287,6 @@ export default function Index() {
                       className="w-10 h-10 rounded-full flex-shrink-0 object-cover"
                     />
                   )}
-                  {/* Add margin for subsequent messages without profile image */}
-                  {index > 0 && <div className="w-10"></div>}
                   <div className="flex-1 min-w-0">
                     <div className="text-black text-sm font-normal mb-1 truncate">
                       {msg.text.length > 25 ? `${msg.text.substring(0, 25)}...` : msg.text}
