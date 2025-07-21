@@ -6,14 +6,27 @@ import { useState } from "react";
 interface ChatWidgetProps {
   isOpen?: boolean;
   onToggle?: () => void;
+  config?: {
+    headerTitle?: string;
+    headerSubtitle?: string;
+    placeholder?: string;
+    welcomeMessage?: string;
+    primaryColor?: string;
+    backgroundColor?: string;
+    textColor?: string;
+    buttonColor?: string;
+    logoUrl?: string;
+    showOperatorAvatar?: boolean;
+    operatorName?: string;
+  };
 }
 
-export function ChatWidget({ isOpen = false, onToggle }: ChatWidgetProps) {
+export function ChatWidget({ isOpen = false, onToggle, config = {} }: ChatWidgetProps) {
   const [message, setMessage] = useState("");
   const [messages, setMessages] = useState([
     {
       id: "1",
-      text: "Hello! How can I help you today?",
+      text: config.welcomeMessage || "Hello! How can I help you today?",
       sender: "support",
       time: "2:30 PM",
     },
@@ -56,7 +69,11 @@ export function ChatWidget({ isOpen = false, onToggle }: ChatWidgetProps) {
         <Button
           onClick={onToggle}
           size="lg"
-          className="h-14 w-14 rounded-chat-widget bg-primary hover:bg-primary/90 shadow-lg"
+          className="h-14 w-14 rounded-chat-widget shadow-lg"
+          style={{
+            backgroundColor: config.buttonColor || 'hsl(var(--primary))',
+            color: 'white'
+          }}
         >
           <svg
             className="w-6 h-6"
@@ -77,26 +94,45 @@ export function ChatWidget({ isOpen = false, onToggle }: ChatWidgetProps) {
   }
 
   return (
-    <div className="fixed bottom-6 right-6 z-50 w-80 h-96 bg-card border border-border rounded-chat-widget shadow-xl flex flex-col">
+    <div 
+      className="fixed bottom-6 right-6 z-50 w-80 h-96 border border-border rounded-chat-widget shadow-xl flex flex-col"
+      style={{
+        backgroundColor: config.backgroundColor || 'hsl(var(--card))',
+        color: config.textColor || 'hsl(var(--card-foreground))'
+      }}
+    >
       {/* Header */}
-      <div className="p-4 border-b border-border bg-primary text-primary-foreground rounded-t-chat-widget">
+      <div 
+        className="p-4 border-b border-border rounded-t-chat-widget"
+        style={{
+          backgroundColor: config.primaryColor || 'hsl(var(--primary))',
+          color: 'white'
+        }}
+      >
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-3">
-            <Avatar className="w-8 h-8">
-              <AvatarFallback className="bg-primary-foreground text-primary text-sm">
-                S
-              </AvatarFallback>
-            </Avatar>
+            {config.logoUrl ? (
+              <img src={config.logoUrl} alt="Logo" className="w-8 h-8 rounded-full object-cover" />
+            ) : (
+              config.showOperatorAvatar !== false && (
+                <Avatar className="w-8 h-8">
+                  <AvatarFallback className="bg-primary-foreground text-primary text-sm">
+                    {config.operatorName ? config.operatorName.charAt(0).toUpperCase() : 'S'}
+                  </AvatarFallback>
+                </Avatar>
+              )
+            )}
             <div>
-              <h3 className="font-semibold text-sm">Support</h3>
-              <p className="text-xs opacity-90">Online</p>
+              <h3 className="font-semibold text-sm">{config.headerTitle || 'Support'}</h3>
+              <p className="text-xs opacity-90">{config.headerSubtitle || 'Online'}</p>
             </div>
           </div>
           <Button
             onClick={onToggle}
             variant="ghost"
             size="sm"
-            className="text-primary-foreground hover:bg-primary-foreground/20 h-8 w-8 p-0"
+            className="h-8 w-8 p-0"
+            style={{ color: 'white' }}
           >
             <svg
               className="w-4 h-4"
@@ -164,7 +200,7 @@ export function ChatWidget({ isOpen = false, onToggle }: ChatWidgetProps) {
               value={message}
               onChange={(e) => setMessage(e.target.value)}
               onKeyDown={(e) => e.key === "Enter" && handleSendMessage()}
-              placeholder="Type your message..."
+              placeholder={config.placeholder || "Type your message..."}
               className="text-sm pr-10"
             />
             <Button
