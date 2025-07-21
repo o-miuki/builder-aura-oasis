@@ -409,12 +409,6 @@ export default function Index() {
         return newMessages.slice(-2); // Keep only last 2 messages
       });
       setShowPreviewMessages(true);
-
-      // Auto-hide preview after 5 seconds
-      setTimeout(() => {
-        setShowPreviewMessages(false);
-        setTimeout(() => setPreviewMessages([]), 300);
-      }, 5000);
     }
   };
 
