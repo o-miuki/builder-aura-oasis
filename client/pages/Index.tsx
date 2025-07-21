@@ -330,7 +330,7 @@ export default function Index() {
     }
   };
 
-  const emojis = ['😀', '😃', '😄', '😁', '😆', '😅', '😂', '🤣', '😊', '😇', '🙂', '🙃', '😉', '😌', '😍', '🥰', '😘', '😗', '😙', '😚', '😋', '😛', '😝', '😜', '🤪', '🤨', '🧐', '🤓', '😎', '🤩', '🥳', '😏', '😒', '👍', '👎', '✌️', '🤞', '🤟', '🤘', '🤙', '👌', '🙌', '👏', '🙏', '❤️', '💕', '💖', '💗', '����', '💚', '💛', '🧡', '💜', '🖤', '🤍', '🤎', '💔', '❣️', '💯', '🔥', '✨', '🎉', '🎊'];
+  const emojis = ['😀', '😃', '😄', '😁', '😆', '😅', '😂', '🤣', '😊', '😇', '🙂', '🙃', '😉', '😌', '😍', '🥰', '😘', '😗', '😙', '😚', '😋', '😛', '😝', '😜', '🤪', '🤨', '🧐', '🤓', '😎', '🤩', '🥳', '😏', '😒', '👍', '👎', '✌️', '🤞', '🤟', '🤘', '🤙', '👌', '🙌', '👏', '🙏', '❤️', '💕', '💖', '💗', '����', '💚', '���', '🧡', '💜', '🖤', '🤍', '🤎', '💔', '❣️', '💯', '🔥', '✨', '🎉', '🎊'];
 
   const handleEmojiSelect = (emoji: string) => {
     setWidgetMessage(prev => prev + emoji);
@@ -393,13 +393,13 @@ export default function Index() {
 
   return (
     <div className="h-screen bg-[#EFF0EB] flex relative overflow-hidden" style={{fontFamily: "'Saans TRIAL', -apple-system, Roboto, Helvetica, sans-serif"}}>
-      {/* Hidden file input for widget */}
+      {/* Hidden file input for widget and dashboard */}
       <input
         ref={fileInputRef}
         type="file"
         className="hidden"
         onChange={handleFileUpload}
-        accept="image/*,.pdf,.doc,.docx,.txt"
+        accept="image/*,.pdf,.doc,.docx,.txt,.png,.jpg,.jpeg,.webp,.gif"
       />
 
       {/* Mobile Menu Overlay */}
