@@ -541,7 +541,12 @@ export default function Index() {
               }`}
             >
               <div className="flex items-start gap-3">
-                                <div className="relative">
+                <div className="relative flex flex-col">
+                  {conv.unread > 0 && (
+                    <div className="bg-white border border-[#F1F1F1] rounded-full text-[#484848] text-xs font-semibold leading-none z-[100] ml-auto -mr-[6px] -mb-[11px] px-[7px] py-[10px] shadow-[0_0_10px_0_rgba(0,0,0,0.12)]">
+                      {conv.unread}
+                    </div>
+                  )}
                   <img
                     src={generateAvatarUrl(conv.name + conv.id)}
                     alt={`${conv.name} Profile`}
@@ -563,14 +568,9 @@ export default function Index() {
                       {conv.time}
                     </span>
                   </div>
-                                    <p className="text-[14px] text-black font-normal truncate max-w-[264px]">
+                  <p className="text-[14px] text-black font-normal truncate max-w-[264px]">
                     {conv.lastMessage}
                   </p>
-                  {conv.unread > 0 && (
-                    <Badge className="bg-red-500 text-white text-xs mt-1">
-                      {conv.unread}
-                    </Badge>
-                  )}
                 </div>
               </div>
             </div>
