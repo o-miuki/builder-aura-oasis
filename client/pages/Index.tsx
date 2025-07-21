@@ -1271,7 +1271,9 @@ export default function Index() {
             {previewMessages.slice(-2).map((msg, index) => (
               <div
                 key={msg.id}
-                className={`bg-white rounded-[22px] p-4 shadow-[0_0_21.2px_6px_rgba(0,0,0,0.02)] max-w-[256px] preview-message-enter`}
+                className={`bg-white rounded-[22px] p-4 shadow-[0_0_21.2px_6px_rgba(0,0,0,0.02)] preview-message-enter ${
+                  index === 0 ? 'max-w-[256px]' : 'max-w-[220px]'
+                }`}
                 style={{
                   fontFamily: "'Inter', -apple-system, Roboto, Helvetica, sans-serif",
                   animationDelay: `${index * 100}ms`,
