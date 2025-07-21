@@ -302,7 +302,7 @@ export default function Index() {
     }
   };
 
-  const emojis = ['😀', '😃', '😄', '😁', '😆', '😅', '😂', '🤣', '😊', '😇', '🙂', '🙃', '😉', '😌', '😍', '🥰', '😘', '😗', '😙', '😚', '😋', '😛', '😝', '😜', '🤪', '🤨', '🧐', '🤓', '😎', '🤩', '🥳', '😏', '���', '👍', '👎', '✌️', '🤞', '🤟', '🤘', '🤙', '👌', '🙌', '👏', '🙏', '❤️', '💕', '💖', '💗', '����', '💚', '💛', '🧡', '💜', '🖤', '🤍', '🤎', '💔', '❣️', '💯', '🔥', '✨', '🎉', '🎊'];
+  const emojis = ['😀', '😃', '😄', '😁', '😆', '😅', '😂', '🤣', '😊', '😇', '🙂', '🙃', '😉', '😌', '😍', '🥰', '😘', '😗', '😙', '😚', '😋', '😛', '😝', '😜', '🤪', '🤨', '🧐', '🤓', '😎', '🤩', '🥳', '😏', '😒', '👍', '👎', '✌️', '🤞', '🤟', '🤘', '🤙', '👌', '🙌', '👏', '🙏', '❤️', '💕', '💖', '💗', '����', '💚', '💛', '🧡', '💜', '🖤', '🤍', '🤎', '💔', '❣️', '💯', '🔥', '✨', '🎉', '🎊'];
 
   const handleEmojiSelect = (emoji: string) => {
     setWidgetMessage(prev => prev + emoji);
@@ -661,7 +661,7 @@ export default function Index() {
 
         {/* Message Input Area */}
                 <div className="p-6">
-          <div className="bg-white border border-[#F1F1F1] rounded-[33px] relative h-[129px] flex flex-col justify-start items-start pr-[11px] pb-[11px]" style={{fontFamily: "'Saans TRIAL', -apple-system, Roboto, Helvetica, sans-serif"}}>
+          <div className={`bg-white rounded-[33px] relative h-[129px] flex flex-col justify-start items-start pr-[11px] pb-[11px] transition-all ${message.trim() ? 'border-0' : 'border border-[#F1F1F1]'}`} style={{fontFamily: "'Saans TRIAL', -apple-system, Roboto, Helvetica, sans-serif"}}>
             {/* Input Text */}
             <Input
               value={message}
@@ -705,9 +705,22 @@ export default function Index() {
             </div>
 
             {/* Send Button */}
-            <div className="static w-[48px] h-[48px] bg-[#D9D9D9] rounded-[24px] flex items-center justify-center cursor-pointer hover:bg-[#CACACA] transition-colors ml-auto mt-auto mb-0 mr-0" onClick={sendMessage}>
+            <div
+              className={`static w-[48px] h-[48px] rounded-[24px] flex items-center justify-center transition-all ml-auto mt-auto mb-0 mr-0 ${
+                message.trim()
+                  ? 'bg-black cursor-pointer hover:bg-gray-800'
+                  : 'bg-[#D9D9D9] cursor-not-allowed'
+              }`}
+              onClick={message.trim() ? sendMessage : undefined}
+            >
               <svg width="21" height="21" viewBox="0 0 21 21" fill="none" className="relative">
-                <path d="M10.5 18.375L10.5 2.625M10.5 2.625L3.0625 10.0625M10.5 2.625L17.9375 10.0625" stroke="#989898" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+                <path
+                  d="M10.5 18.375L10.5 2.625M10.5 2.625L3.0625 10.0625M10.5 2.625L17.9375 10.0625"
+                  stroke={message.trim() ? "#FFFFFF" : "#989898"}
+                  strokeWidth="2"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                />
               </svg>
             </div>
           </div>
