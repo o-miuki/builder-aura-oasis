@@ -1101,7 +1101,7 @@ export default function Index() {
                       onChange={(e) => setWidgetMessage(e.target.value)}
                       onKeyPress={handleWidgetKeyPress}
                       placeholder="Insira a sua mensagem"
-                      className="absolute top-[20px] left-[20px] right-[20px] border-0 bg-transparent text-[17px] text-[#9B9B9B] placeholder:text-[#9B9B9B] focus-visible:ring-0 px-0 font-normal h-auto"
+                      className="absolute top-[20px] left-[20px] right-[60px] border-0 bg-transparent text-[17px] text-[#9B9B9B] placeholder:text-[#9B9B9B] focus-visible:ring-0 px-0 font-normal h-auto"
                       style={{fontWeight: 380}}
                     />
 
