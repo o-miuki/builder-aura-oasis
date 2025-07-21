@@ -334,7 +334,7 @@ export default function Index() {
     }
   };
 
-  const emojis = ['😀', '😃', '😄', '😁', '😆', '😅', '😂', '🤣', '😊', '😇', '🙂', '🙃', '😉', '😌', '��', '🥰', '😘', '😗', '😙', '😚', '😋', '😛', '😝', '😜', '🤪', '🤨', '🧐', '🤓', '😎', '🤩', '🥳', '😏', '😒', '👍', '👎', '✌️', '🤞', '🤟', '🤘', '🤙', '👌', '🙌', '👏', '🙏', '❤️', '💕', '💖', '💗', '����', '💚', '💛', '🧡', '💜', '🖤', '🤍', '🤎', '💔', '❣️', '💯', '🔥', '✨', '🎉', '🎊'];
+  const emojis = ['😀', '😃', '😄', '😁', '😆', '😅', '😂', '🤣', '😊', '😇', '🙂', '🙃', '😉', '😌', '😍', '🥰', '😘', '😗', '😙', '😚', '😋', '😛', '😝', '😜', '🤪', '🤨', '🧐', '🤓', '😎', '🤩', '🥳', '😏', '😒', '👍', '👎', '✌️', '🤞', '🤟', '🤘', '🤙', '👌', '🙌', '👏', '🙏', '❤️', '💕', '💖', '💗', '����', '💚', '💛', '🧡', '💜', '🖤', '🤍', '🤎', '💔', '❣️', '💯', '🔥', '✨', '🎉', '🎊'];
 
   const handleEmojiSelect = (emoji: string) => {
     setWidgetMessage(prev => prev + emoji);
@@ -776,11 +776,13 @@ export default function Index() {
             {/* Send Button */}
             <div
               className={`static w-[48px] h-[48px] rounded-[24px] flex items-center justify-center transition-all ml-auto mt-auto mb-0 mr-0 ${
-                message.trim()
-                  ? 'bg-black cursor-pointer hover:bg-gray-800'
-                  : 'bg-[#D9D9D9] cursor-not-allowed'
+                isNotesMode
+                  ? 'bg-yellow-500 cursor-pointer hover:bg-yellow-600'
+                  : (message.trim()
+                      ? 'bg-black cursor-pointer hover:bg-gray-800'
+                      : 'bg-[#D9D9D9] cursor-not-allowed')
               }`}
-              onClick={message.trim() ? sendMessage : undefined}
+              onClick={isNotesMode ? handleNotesToggle : (message.trim() ? sendMessage : undefined)}
             >
               <svg width="21" height="21" viewBox="0 0 21 21" fill="none" className="relative">
                 <path
