@@ -1156,7 +1156,7 @@ export default function Index() {
 
                   {conversations.find(c => c.isWidget)?.messages.filter(msg => !msg.isOperatorNote).map((msg) => (
                     <div key={msg.id} className={`mb-6 ${msg.sender === "user" ? "flex justify-end" : "flex justify-start"}`}>
-                      <div className={`${
+                      <div className={`message-balloon ${
                         msg.sender === "user"
                           ? "w-full max-w-[193px] bg-black text-white rounded-[21px] p-4"
                           : "w-full max-w-[332px] bg-[rgba(0,0,0,0.03)] rounded-[21px] p-4"
