@@ -335,6 +335,8 @@ export default function Index() {
               : conv,
           ),
         );
+        // Play user send sound for file upload
+        playMessageSound('send');
       }
     }
     // Reset file input
