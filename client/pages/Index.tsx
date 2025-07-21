@@ -423,6 +423,16 @@ export default function Index() {
     return `https://tapback.co/api/avatar.webp?seed=${encodeURIComponent(seed)}`;
   };
 
+  const playMessageSound = (type: 'send' | 'receive') => {
+    const audio = new Audio(
+      type === 'send'
+        ? 'https://res.cloudinary.com/dnhnxvtgu/video/upload/v1750381693/submit.855f8290ced1b56f6d4c_fz6ls5.mp3'
+        : 'https://res.cloudinary.com/dnhnxvtgu/video/upload/v1750381699/operator.9f93bde456827113c56c_z7qm5e.mp3'
+    );
+    audio.volume = 0.5;
+    audio.play().catch(error => console.log('Audio play failed:', error));
+  };
+
   const renderFilePreview = (message: Message) => {
     if (!message.fileUrl || !message.fileType) return message.text;
 
