@@ -338,6 +338,11 @@ export default function Index() {
     setShowWidgetEmojiPanel(false);
   };
 
+  const handleDashboardEmojiSelect = (emoji: string) => {
+    setMessage(prev => prev + emoji);
+    setShowDashboardEmojiPanel(false);
+  };
+
   const getStatusColor = (status: string) => {
     switch (status) {
       case 'open': return 'bg-green-500';
