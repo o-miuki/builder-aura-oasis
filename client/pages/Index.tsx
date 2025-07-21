@@ -271,25 +271,53 @@ export default function Index() {
   const handleFileUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (file) {
-      // Simulate file upload in widget
+      // Create file preview URL for images
+      let fileUrl = '';
+      let fileText = `📎 ${file.name}`;
+
+      if (file.type.startsWith('image/')) {
+        fileUrl = URL.createObjectURL(file);
+        fileText = `🖼️ ${file.name}`;
+      }
+
+      // Create file message for widget
       const fileMessage: Message = {
         id: Date.now().toString(),
-        text: `📎 ${file.name}`,
+        text: fileText,
         sender: "user",
         time: "now",
         timestamp: Date.now(),
         conversationId: conversations.find(c => c.isWidget)?.id || "",
       };
 
-      if (conversations.find(c => c.isWidget)) {
+      // Add file message to widget conversation
+      let targetConversation = conversations.find(c => c.isWidget);
+
+      if (!targetConversation) {
+        // Create new widget conversation if it doesn't exist
+        const newConversation: Conversation = {
+          id: "widget-" + Date.now(),
+          name: "Website Visitor",
+          lastMessage: fileText,
+          time: "now",
+          unread: 1,
+          avatar: "",
+          selected: false,
+          status: "open",
+          isWidget: true,
+          messages: [fileMessage],
+        };
+        setConversations(prev => [newConversation, ...prev]);
+      } else {
         setConversations((prev) =>
           prev.map((conv) =>
             conv.isWidget
               ? {
                   ...conv,
                   messages: [...conv.messages, fileMessage],
-                  lastMessage: `📎 ${file.name}`,
+                  lastMessage: fileText,
                   time: "now",
+                  unread: conv.id !== selectedConversation ? conv.unread + 1 : conv.unread,
                 }
               : conv,
           ),
