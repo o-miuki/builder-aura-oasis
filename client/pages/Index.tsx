@@ -757,6 +757,23 @@ export default function Index() {
                 />
               </svg>
             </div>
+
+            {/* Dashboard Emoji Panel */}
+            {showDashboardEmojiPanel && (
+              <div className="absolute bottom-full left-4 right-4 mb-2 bg-white border border-[#F1F1F1] rounded-[18px] p-4 shadow-lg z-10">
+                <div className="grid grid-cols-8 gap-2 max-h-32 overflow-y-auto">
+                  {emojis.map((emoji, index) => (
+                    <button
+                      key={index}
+                      onClick={() => handleDashboardEmojiSelect(emoji)}
+                      className="text-lg hover:bg-gray-100 p-1 rounded"
+                    >
+                      {emoji}
+                    </button>
+                  ))}
+                </div>
+              </div>
+            )}
           </div>
         </div>
       </div>
