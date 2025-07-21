@@ -1049,7 +1049,7 @@ export default function Index() {
                         <div className={`text-[16px] font-normal ${
                           msg.sender === "user" ? "text-white" : "text-black"
                         }`} style={{fontFamily: "'Saans TRIAL', -apple-system, Roboto, Helvetica, sans-serif", fontWeight: 300}}>
-                          {msg.text}
+                          {renderFilePreview(msg)}
                         </div>
                         <div className={`text-[10px] text-[#ACACAC] font-normal mt-2`} style={{fontFamily: "'Saans TRIAL', -apple-system, Roboto, Helvetica, sans-serif", fontWeight: 380}}>
                           1 minute ago
