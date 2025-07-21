@@ -1148,7 +1148,7 @@ export default function Index() {
 
                 {/* Chat Footer */}
                 <div className="px-[21px] pb-[21px]">
-                  <div className="w-[439px] h-[113px] bg-white border-2 border-[#F1F1F1] rounded-[33px] relative" style={{fontFamily: "'Saans TRIAL', -apple-system, Roboto, Helvetica, sans-serif"}}>
+                  <div className="w-full max-w-[439px] h-[113px] bg-white border-2 border-[#F1F1F1] rounded-[33px] relative" style={{fontFamily: "'Saans TRIAL', -apple-system, Roboto, Helvetica, sans-serif"}}>
                     {/* Input Text */}
                     <Input
                       value={widgetMessage}
