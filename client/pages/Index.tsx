@@ -787,7 +787,11 @@ export default function Index() {
               <svg width="21" height="21" viewBox="0 0 21 21" fill="none" className="relative">
                 <path
                   d="M10.5 18.375L10.5 2.625M10.5 2.625L3.0625 10.0625M10.5 2.625L17.9375 10.0625"
-                  stroke={message.trim() ? "#FFFFFF" : "#989898"}
+                  stroke={
+                    isNotesMode
+                      ? "#000000"
+                      : (message.trim() ? "#FFFFFF" : "#989898")
+                  }
                   strokeWidth="2"
                   strokeLinecap="round"
                   strokeLinejoin="round"
