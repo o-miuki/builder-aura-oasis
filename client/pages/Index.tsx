@@ -347,7 +347,7 @@ export default function Index() {
     }
   };
 
-  const emojis = ['😀', '😃', '😄', '😁', '😆', '���', '😂', '🤣', '😊', '😇', '🙂', '🙃', '😉', '😌', '😍', '🥰', '😘', '😗', '😙', '😚', '😋', '😛', '😝', '😜', '🤪', '🤨', '🧐', '🤓', '😎', '🤩', '��', '😏', '😒', '👍', '👎', '✌️', '🤞', '🤟', '🤘', '🤙', '👌', '🙌', '��', '🙏', '❤️', '💕', '💖', '💗', '����', '💚', '💛', '🧡', '💜', '🖤', '🤍', '🤎', '💔', '❣️', '��', '🔥', '✨', '🎉', '🎊'];
+  const emojis = ['😀', '😃', '😄', '😁', '😆', '😅', '😂', '🤣', '😊', '😇', '🙂', '🙃', '😉', '😌', '😍', '🥰', '😘', '😗', '😙', '😚', '😋', '😛', '😝', '😜', '🤪', '🤨', '🧐', '🤓', '😎', '🤩', '��', '😏', '😒', '👍', '👎', '✌️', '🤞', '🤟', '🤘', '🤙', '👌', '🙌', '��', '🙏', '❤️', '💕', '💖', '💗', '����', '💚', '💛', '🧡', '💜', '🖤', '🤍', '🤎', '💔', '❣️', '��', '🔥', '✨', '🎉', '🎊'];
 
   const handleEmojiSelect = (emoji: string) => {
     setWidgetMessage(prev => prev + emoji);
@@ -750,15 +750,32 @@ export default function Index() {
               >
                 <div
                   className={`max-w-[70%] rounded-[33px] p-6 ${
-                    msg.sender === "user"
+                    msg.isOperatorNote
+                      ? "bg-yellow-100 border-2 border-yellow-300"
+                      : msg.sender === "user"
                       ? "bg-white border border-[#F1F1F1]"
                       : "bg-black text-white"
                   }`}
                 >
-                  <div className={`text-[16px] font-normal mb-3 ${msg.sender === "user" ? "text-black" : "text-white"}`}>
+                  {msg.isOperatorNote && (
+                    <div className="text-xs text-yellow-800 font-semibold mb-2">📝 Nota do Operador (não visível ao usuário)</div>
+                  )}
+                  <div className={`text-[16px] font-normal mb-3 ${
+                    msg.isOperatorNote
+                      ? "text-yellow-900"
+                      : msg.sender === "user"
+                      ? "text-black"
+                      : "text-white"
+                  }`}>
                     {renderFilePreview(msg)}
                   </div>
-                  <p className={`text-[12px] font-normal ${msg.sender === "user" ? "text-[#ACACAC]" : "text-[#ACACAC]"}`}>
+                  <p className={`text-[12px] font-normal ${
+                    msg.isOperatorNote
+                      ? "text-yellow-700"
+                      : msg.sender === "user"
+                      ? "text-[#ACACAC]"
+                      : "text-[#ACACAC]"
+                  }`}>
                     {currentConversation?.name} - {msg.time}
                   </p>
                 </div>
