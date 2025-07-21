@@ -181,6 +181,8 @@ export default function Index() {
     const targetConversation = conversations.find(c => c.id === selectedConversation);
     if (targetConversation?.isWidget && newMessage.sender === "support") {
       showPreviewMessage(newMessage);
+      // Play operator message sound
+      playMessageSound('receive');
     }
 
     setMessage("");
