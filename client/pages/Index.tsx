@@ -347,7 +347,7 @@ export default function Index() {
     }
   };
 
-  const emojis = ['😀', '😃', '😄', '😁', '😆', '😅', '😂', '🤣', '😊', '😇', '🙂', '🙃', '😉', '😌', '😍', '🥰', '😘', '😗', '😙', '😚', '😋', '😛', '😝', '😜', '🤪', '🤨', '🧐', '🤓', '😎', '🤩', '��', '😏', '😒', '👍', '👎', '✌️', '🤞', '🤟', '🤘', '🤙', '👌', '🙌', '��', '🙏', '❤️', '💕', '💖', '💗', '����', '💚', '💛', '🧡', '💜', '🖤', '🤍', '🤎', '💔', '❣️', '��', '🔥', '✨', '🎉', '🎊'];
+  const emojis = ['😀', '😃', '😄', '😁', '😆', '😅', '😂', '🤣', '😊', '😇', '🙂', '🙃', '😉', '😌', '��', '🥰', '😘', '😗', '😙', '😚', '😋', '😛', '😝', '😜', '🤪', '🤨', '🧐', '🤓', '😎', '🤩', '��', '😏', '😒', '👍', '👎', '✌️', '🤞', '🤟', '🤘', '🤙', '👌', '🙌', '��', '🙏', '❤️', '💕', '💖', '💗', '����', '💚', '💛', '🧡', '💜', '🖤', '🤍', '🤎', '💔', '❣️', '��', '🔥', '✨', '🎉', '🎊'];
 
   const handleEmojiSelect = (emoji: string) => {
     setWidgetMessage(prev => prev + emoji);
@@ -1103,7 +1103,7 @@ export default function Index() {
                 {/* Chat Body */}
                 <div className="flex-grow p-[29px] overflow-y-auto flex flex-col">
                   {/* Default Copilot Message */}
-                  <div className="w-[332px] h-[81px] bg-[rgba(0,0,0,0.03)] rounded-[21px] p-4 mb-6">
+                  <div className="w-full max-w-[332px] h-[81px] bg-[rgba(0,0,0,0.03)] rounded-[21px] p-4 mb-6">
                     <div className="text-[12px] text-[#5A5959] font-normal mb-2" style={{fontFamily: "'Saans TRIAL', -apple-system, Roboto, Helvetica, sans-serif", fontWeight: 300}}>Copilot</div>
                     <div className="text-[16px] text-black font-normal" style={{fontFamily: "'Saans TRIAL', -apple-system, Roboto, Helvetica, sans-serif", fontWeight: 300}}>Hello, how are help you today?</div>
                     <div className="text-[10px] text-[#ACACAC] font-normal mt-2" style={{fontFamily: "'Saans TRIAL', -apple-system, Roboto, Helvetica, sans-serif", fontWeight: 380}}>1 minute ago</div>
