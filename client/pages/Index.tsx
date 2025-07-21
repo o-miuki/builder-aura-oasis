@@ -293,14 +293,20 @@ export default function Index() {
         fileText = `🖼️ ${file.name}`;
       }
 
-      // Create file message for widget
+      // Determine if this is from dashboard or widget
+      // Dashboard uploads go to the selected conversation as support messages
+      // Widget uploads go to widget conversation as user messages
+      const isDashboardUpload = selectedConversation !== "";
+      const targetConversationId = isDashboardUpload ? selectedConversation : (conversations.find(c => c.isWidget)?.id || "");
+
+      // Create file message
       const fileMessage: Message = {
         id: Date.now().toString(),
         text: fileText,
-        sender: "user",
+        sender: isDashboardUpload ? "support" : "user",
         time: "now",
         timestamp: Date.now(),
-        conversationId: conversations.find(c => c.isWidget)?.id || "",
+        conversationId: targetConversationId,
         fileUrl: fileUrl,
         fileType: file.type,
       };
@@ -347,7 +353,7 @@ export default function Index() {
     }
   };
 
-  const emojis = ['😀', '😃', '😄', '😁', '😆', '😅', '😂', '🤣', '😊', '😇', '🙂', '🙃', '😉', '😌', '😍', '🥰', '😘', '😗', '😙', '😚', '😋', '😛', '😝', '😜', '🤪', '🤨', '🧐', '🤓', '😎', '🤩', '��', '😏', '😒', '👍', '👎', '✌️', '🤞', '🤟', '🤘', '🤙', '����', '🙌', '��', '🙏', '❤️', '💕', '💖', '💗', '����', '💚', '💛', '🧡', '💜', '🖤', '🤍', '🤎', '💔', '❣️', '��', '🔥', '✨', '🎉', '🎊'];
+  const emojis = ['😀', '😃', '😄', '😁', '😆', '😅', '😂', '🤣', '😊', '😇', '🙂', '🙃', '😉', '😌', '😍', '🥰', '😘', '😗', '😙', '😚', '😋', '😛', '😝', '😜', '🤪', '🤨', '🧐', '🤓', '😎', '🤩', '��', '😏', '😒', '👍', '👎', '✌️', '🤞', '🤟', '🤘', '🤙', '����', '🙌', '��', '🙏', '❤️', '💕', '💖', '💗', '����', '💚', '💛', '🧡', '💜', '🖤', '🤍', '🤎', '💔', '❣��', '��', '🔥', '✨', '🎉', '🎊'];
 
   const handleEmojiSelect = (emoji: string) => {
     setWidgetMessage(prev => prev + emoji);
