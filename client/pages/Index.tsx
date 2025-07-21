@@ -347,7 +347,7 @@ export default function Index() {
     }
   };
 
-  const emojis = ['😀', '😃', '😄', '😁', '😆', '😅', '😂', '🤣', '😊', '😇', '🙂', '🙃', '😉', '😌', '😍', '🥰', '😘', '😗', '😙', '😚', '😋', '😛', '😝', '😜', '🤪', '🤨', '🧐', '🤓', '😎', '🤩', '��', '😏', '😒', '👍', '👎', '✌️', '🤞', '🤟', '🤘', '���', '👌', '🙌', '��', '🙏', '❤️', '💕', '💖', '💗', '����', '💚', '💛', '🧡', '💜', '🖤', '🤍', '🤎', '💔', '❣️', '��', '🔥', '✨', '🎉', '🎊'];
+  const emojis = ['😀', '😃', '😄', '😁', '😆', '😅', '😂', '🤣', '😊', '😇', '🙂', '🙃', '😉', '😌', '😍', '🥰', '😘', '😗', '😙', '😚', '😋', '😛', '😝', '😜', '🤪', '🤨', '🧐', '🤓', '😎', '🤩', '��', '😏', '😒', '👍', '👎', '✌️', '🤞', '🤟', '🤘', '🤙', '����', '🙌', '��', '🙏', '❤️', '💕', '💖', '💗', '����', '💚', '💛', '🧡', '💜', '🖤', '🤍', '🤎', '💔', '❣️', '��', '🔥', '✨', '🎉', '🎊'];
 
   const handleEmojiSelect = (emoji: string) => {
     setWidgetMessage(prev => prev + emoji);
@@ -457,14 +457,14 @@ export default function Index() {
 
     if (message.fileType.startsWith('image/')) {
       return (
-        <div className="space-y-2">
+        <div className="space-y-2 w-full">
           <img
             src={message.fileUrl}
             alt={message.text}
-            className="max-w-[200px] max-h-[150px] rounded-lg cursor-pointer object-cover"
+            className="w-full max-w-[160px] max-h-[120px] rounded-lg cursor-pointer object-cover"
             onClick={() => setLightboxImage(message.fileUrl || null)}
           />
-          <p className="text-sm text-gray-600">{message.text}</p>
+          <p className="text-sm opacity-75">{message.text}</p>
         </div>
       );
     }
