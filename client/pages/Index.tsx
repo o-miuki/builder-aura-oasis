@@ -346,6 +346,24 @@ export default function Index() {
     setShowDashboardEmojiPanel(false);
   };
 
+  const handleNotesToggle = () => {
+    setIsNotesMode(!isNotesMode);
+    if (!isNotesMode) {
+      // Load current conversation's notes
+      const currentConv = conversations.find(c => c.id === selectedConversation);
+      setCurrentNotes(currentConv?.notes || "");
+    } else {
+      // Save notes to current conversation
+      setConversations(prev =>
+        prev.map(conv =>
+          conv.id === selectedConversation
+            ? { ...conv, notes: currentNotes }
+            : conv
+        )
+      );
+    }
+  };
+
   const getStatusColor = (status: string) => {
     switch (status) {
       case 'open': return 'bg-green-500';
