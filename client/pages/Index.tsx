@@ -552,9 +552,7 @@ export default function Index() {
                     alt={`${conv.name} Profile`}
                     className="w-[36px] h-[36px] rounded-[18px] flex-shrink-0 object-cover"
                   />
-                  {conv.isWidget && (
-                    <div className="absolute -top-1 -right-1 w-3 h-3 bg-blue-500 rounded-full"></div>
-                  )}
+
                 </div>
                 <div className="flex-1 min-w-0">
                   <div className="flex items-center justify-between mb-1">
