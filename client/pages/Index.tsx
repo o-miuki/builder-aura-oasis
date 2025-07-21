@@ -794,7 +794,7 @@ export default function Index() {
                 className={`flex ${msg.sender === "user" ? "justify-start" : "justify-end"}`}
               >
                 <div
-                  className={`max-w-[70%] rounded-[33px] p-6 ${
+                  className={`max-w-[70%] rounded-[33px] p-6 message-balloon ${
                     msg.isOperatorNote
                       ? "bg-yellow-100 border-2 border-yellow-300"
                       : msg.sender === "user"
