@@ -302,7 +302,7 @@ export default function Index() {
     }
   };
 
-  const emojis = ['😀', '😃', '😄', '😁', '😆', '😅', '😂', '🤣', '😊', '😇', '🙂', '🙃', '😉', '😌', '😍', '🥰', '😘', '😗', '😙', '😚', '😋', '😛', '😝', '😜', '🤪', '🤨', '🧐', '🤓', '😎', '🤩', '🥳', '😏', '😒', '👍', '👎', '✌️', '🤞', '🤟', '🤘', '🤙', '👌', '🙌', '👏', '🙏', '❤️', '💕', '💖', '💗', '����', '💚', '💛', '🧡', '💜', '🖤', '🤍', '🤎', '💔', '❣️', '💯', '🔥', '✨', '🎉', '🎊'];
+  const emojis = ['😀', '😃', '😄', '😁', '😆', '😅', '😂', '🤣', '😊', '😇', '🙂', '🙃', '😉', '😌', '😍', '🥰', '😘', '😗', '😙', '😚', '😋', '😛', '😝', '😜', '🤪', '🤨', '🧐', '🤓', '😎', '🤩', '🥳', '😏', '���', '👍', '👎', '✌️', '🤞', '🤟', '🤘', '🤙', '👌', '🙌', '👏', '🙏', '❤️', '💕', '💖', '💗', '����', '💚', '💛', '🧡', '💜', '🖤', '🤍', '🤎', '💔', '❣️', '💯', '🔥', '✨', '🎉', '🎊'];
 
   const handleEmojiSelect = (emoji: string) => {
     setWidgetMessage(prev => prev + emoji);
@@ -865,48 +865,65 @@ export default function Index() {
               /* Chat View */
               <div className="flex flex-col h-full">
                 {/* Chat Header */}
-                <div className="flex items-center p-[20px_25px] border-b border-[#EDEDED]">
-                  <div 
+                <div className="flex items-center p-[20px_25px] border-b border-[#F4F4F4]">
+                  <div
                     onClick={() => setShowWidgetChat(false)}
                     className="cursor-pointer text-black flex items-center"
                   >
-                    <svg width="33" height="33" strokeWidth="0.8" viewBox="0 0 24 24" fill="none">
-                      <path d="M15 6L9 12L15 18" stroke="black" strokeWidth="0.8" strokeLinecap="round" strokeLinejoin="round"/>
+                    <svg width="21" height="21" viewBox="0 0 21 21" fill="none">
+                      <path d="M13.125 5.25L7.875 10.5L13.125 15.75" stroke="black" strokeWidth="1.1" strokeLinecap="round" strokeLinejoin="round"/>
                     </svg>
                   </div>
-                                                      <img
+                  <img
                     src={generateAvatarUrl('operator-main')}
-                    alt="Operator Profile"
-                    className="w-10 h-10 rounded-full mx-3 object-cover"
+                    alt="Support Team Profile"
+                    className="w-[38px] h-[38px] rounded-[19px] mx-3 object-cover bg-[#D9D9D9]"
                   />
                   <div className="flex-grow">
-                    <div className="font-medium text-base text-black">Equipa de Suporte</div>
-                    <div className="text-[13px] text-[#8A8A8A] font-normal">Responde em minutos</div>
+                    <div className="font-normal text-[16px] text-[#1A1A1A]" style={{fontFamily: "'Saans TRIAL', -apple-system, Roboto, Helvetica, sans-serif", fontWeight: 380}}>Support Team</div>
+                    <div className="text-[11px] text-[rgba(0,0,0,0.57)] font-normal" style={{fontFamily: "'Saans TRIAL', -apple-system, Roboto, Helvetica, sans-serif", fontWeight: 380}}>Responde em minutos</div>
+                  </div>
+                  <div className="w-[129px] h-[31px] flex items-center bg-white border border-[#F1F1F1] rounded-[11px] shadow-[0_0_12.9px_0_rgba(0,0,0,0.07)] cursor-pointer px-3">
+                    <svg width="13" height="13" viewBox="0 0 13 13" fill="none" className="mr-2">
+                      <g clipPath="url(#clip0_download)">
+                        <path d="M4.875 9.20837H8.125" stroke="black" strokeWidth="0.8" strokeLinecap="round" strokeLinejoin="round"/>
+                        <path d="M6.49984 3.25V7.04167M6.49984 7.04167L8.39567 5.14583M6.49984 7.04167L4.604 5.14583" stroke="black" strokeWidth="0.8" strokeLinecap="round" strokeLinejoin="round"/>
+                        <path d="M6.50016 11.9167C9.49168 11.9167 11.9168 9.49156 11.9168 6.50004C11.9168 3.5085 9.49168 1.08337 6.50016 1.08337C3.50862 1.08337 1.0835 3.5085 1.0835 6.50004C1.0835 9.49156 3.50862 11.9167 6.50016 11.9167Z" stroke="black" strokeWidth="0.8" strokeLinecap="round" strokeLinejoin="round"/>
+                      </g>
+                      <defs>
+                        <clipPath id="clip0_download">
+                          <rect width="13" height="13" fill="white"/>
+                        </clipPath>
+                      </defs>
+                    </svg>
+                    <span className="text-[11px] text-black font-normal" style={{fontFamily: "'Saans TRIAL', -apple-system, Roboto, Helvetica, sans-serif", fontWeight: 300}}>Baixar transcrição</span>
                   </div>
                 </div>
 
                 {/* Chat Body */}
-                <div className="flex-grow p-5 overflow-y-auto flex flex-col">
-                  <div className="flex flex-col mb-[18px] max-w-[80%] self-start items-start">
-                    <div className="p-[12px_16px] text-[15px] leading-[1.5] font-normal bg-[#F1F1F1] text-black rounded-[18px_18px_18px_5px]">
-                      Olá! Como posso ajudá-lo hoje?
-                    </div>
-                    <div className="text-[11px] text-[#8A8A8A] mt-[6px] font-normal pl-[5px]">
-                      Agora
-                    </div>
+                <div className="flex-grow p-[29px] overflow-y-auto flex flex-col">
+                  {/* Default Copilot Message */}
+                  <div className="w-[332px] h-[81px] bg-[rgba(0,0,0,0.03)] rounded-[21px] p-4 mb-6">
+                    <div className="text-[12px] text-[#5A5959] font-normal mb-2" style={{fontFamily: "'Saans TRIAL', -apple-system, Roboto, Helvetica, sans-serif", fontWeight: 300}}>Copilot</div>
+                    <div className="text-[16px] text-black font-normal" style={{fontFamily: "'Saans TRIAL', -apple-system, Roboto, Helvetica, sans-serif", fontWeight: 300}}>Hello, how are help you today?</div>
+                    <div className="text-[10px] text-[#ACACAC] font-normal mt-2" style={{fontFamily: "'Saans TRIAL', -apple-system, Roboto, Helvetica, sans-serif", fontWeight: 380}}>1 minute ago</div>
                   </div>
-                  
+
                   {conversations.find(c => c.isWidget)?.messages.map((msg) => (
-                    <div key={msg.id} className={`flex flex-col mb-[18px] max-w-[80%] ${msg.sender === "user" ? "self-end items-end" : "self-start items-start"}`}>
-                      <div className={`p-[12px_16px] text-[15px] leading-[1.5] font-normal ${
-                        msg.sender === "user" 
-                          ? "bg-black text-white rounded-[18px_18px_5px_18px]"
-                          : "bg-[#F1F1F1] text-black rounded-[18px_18px_18px_5px]"
+                    <div key={msg.id} className={`mb-6 ${msg.sender === "user" ? "flex justify-end" : "flex justify-start"}`}>
+                      <div className={`${
+                        msg.sender === "user"
+                          ? "w-[193px] h-[59px] bg-black text-white rounded-[21px] p-4 flex items-center"
+                          : "w-[332px] bg-[rgba(0,0,0,0.03)] rounded-[21px] p-4"
                       }`}>
-                        {msg.text}
-                      </div>
-                      <div className={`text-[11px] text-[#8A8A8A] mt-[6px] font-normal ${msg.sender === "user" ? "pr-[5px]" : "pl-[5px]"}`}>
-                        {msg.time}
+                        <div className={`text-[16px] font-normal ${
+                          msg.sender === "user" ? "text-white" : "text-black"
+                        }`} style={{fontFamily: "'Saans TRIAL', -apple-system, Roboto, Helvetica, sans-serif", fontWeight: 300}}>
+                          {msg.text}
+                        </div>
+                        <div className={`text-[10px] text-[#ACACAC] font-normal mt-2`} style={{fontFamily: "'Saans TRIAL', -apple-system, Roboto, Helvetica, sans-serif", fontWeight: 380}}>
+                          1 minute ago
+                        </div>
                       </div>
                     </div>
                   ))}
@@ -930,50 +947,29 @@ export default function Index() {
                 )}
 
                 {/* Chat Footer */}
-                                <div className="bg-white border-2 border-[#F1F1F1] w-[83%] rounded-[33px] mx-auto mb-3 relative h-[113px]" style={{fontFamily: "'Saans TRIAL', -apple-system, Roboto, Helvetica, sans-serif"}}>
-                                    {/* Input Text */}
-                  <Input
-                    value={widgetMessage}
-                    onChange={(e) => setWidgetMessage(e.target.value)}
-                    onKeyPress={handleWidgetKeyPress}
-                    placeholder="Insira a sua mensagem"
-                    className="absolute top-[20px] left-[20px] right-[20px] border-0 bg-transparent text-[17px] text-[#9B9B9B] placeholder:text-[#9B9B9B] focus-visible:ring-0 px-0 font-normal h-auto"
-                    style={{fontWeight: 380}}
-                  />
+                <div className="px-[21px] pb-[21px]">
+                  <div className="w-[439px] h-[113px] bg-white border-2 border-[#F1F1F1] rounded-[33px] relative" style={{fontFamily: "'Saans TRIAL', -apple-system, Roboto, Helvetica, sans-serif"}}>
+                    {/* Input Text */}
+                    <Input
+                      value={widgetMessage}
+                      onChange={(e) => setWidgetMessage(e.target.value)}
+                      onKeyPress={handleWidgetKeyPress}
+                      placeholder="Insira a sua mensagem"
+                      className="absolute top-[20px] left-[20px] right-[20px] border-0 bg-transparent text-[17px] text-[#9B9B9B] placeholder:text-[#9B9B9B] focus-visible:ring-0 px-0 font-normal h-auto"
+                      style={{fontWeight: 380}}
+                    />
 
-                  {/* Bottom Action Buttons */}
-                  <div className="absolute bottom-[20px] left-[20px] flex gap-2">
-                    <div className="flex items-center gap-[6px] mx-[6px]">
-                      <div 
-                        className="cursor-pointer text-[#5F5F5F] flex items-center"
-                        onClick={() => fileInputRef.current?.click()}
-                      >
-                        <svg width="6" height="14" viewBox="0 0 6 14" fill="none">
-                          <path d="M3.00023 0C1.52332 0 0.321777 1.20157 0.321777 2.67846V11.9475C0.321777 13.0792 1.24255 14 2.37431 14C3.50607 14 4.42684 13.0792 4.42684 11.9475V3.34991C4.42684 2.57534 3.79668 1.94513 3.02205 1.94513C2.24749 1.94513 1.6173 2.57532 1.6173 3.34991V11.4686H2.47444V3.34991C2.47444 3.04798 2.7201 2.80227 3.02208 2.80227C3.32407 2.80227 3.56972 3.04795 3.56972 3.34991V11.9474C3.56972 12.6066 3.03346 13.1428 2.37431 13.1428C1.71516 13.1428 1.17892 12.6066 1.17892 11.9474V2.67846C1.17892 1.6742 1.99595 0.857145 3.00023 0.857145C4.00452 0.857145 4.82155 1.6742 4.82155 2.67846V11.4686H5.67869V2.67846C5.67869 1.20157 4.47715 0 3.00023 0Z" fill="black"/>
-                        </svg>
-                      </div>
-                      <div 
-                        className="cursor-pointer text-[#5F5F5F] flex items-center"
-                        onClick={() => setShowWidgetEmojiPanel(!showWidgetEmojiPanel)}
-                      >
-                        <svg width="20" height="20" strokeWidth="0.8" viewBox="0 0 24 24" fill="none">
-                          <path d="M12 22C6.47715 22 2 17.5228 2 12C2 6.47715 6.47715 2 12 2C17.5228 2 22 6.47715 22 12C22 17.5228 17.5228 22 12 22Z" stroke="black" strokeWidth="0.8"/>
-                          <path d="M16.5 14.5C16.5 14.5 15 16.5 12 16.5C9 16.5 7.5 14.5 7.5 14.5" stroke="black" strokeWidth="0.8"/>
-                          <path d="M15.5 9C15.2239 9 15 8.77614 15 8.5C15 8.22386 15.2239 8 15.5 8C15.7761 8 16 8.22386 16 8.5C16 8.77614 15.7761 9 15.5 9Z" fill="black" stroke="black" strokeWidth="0.8"/>
-                          <path d="M8.5 9C8.22386 9 8 8.77614 8 8.5C8 8.22386 8.22386 8 8.5 8C8.77614 8 9 8.22386 9 8.5C9 8.77614 8.77614 9 8.5 9Z" fill="black" stroke="black" strokeWidth="0.8"/>
-                        </svg>
-                      </div>
-                    </div>
-                    <div 
-                                            onClick={widgetMessage.trim() ? sendWidgetMessage : undefined}
-                      className={`w-[38px] h-[38px] rounded-full flex justify-center items-center transition-all ${
+                    {/* Send Button */}
+                    <div
+                      onClick={widgetMessage.trim() ? sendWidgetMessage : undefined}
+                      className={`absolute top-[13px] right-[13px] w-[38px] h-[38px] rounded-[24px] flex justify-center items-center transition-all ${
                         widgetMessage.trim()
-                          ? 'bg-black cursor-pointer hover:scale-110'
+                          ? 'bg-black cursor-pointer'
                           : 'bg-[#D9D9D9] cursor-not-allowed'
-                      } flex-shrink-0 ml-2`}
+                      }`}
                     >
-                      <svg width="17" height="17" viewBox="0 0 17 17" fill="none">
-                                                <path
+                      <svg width="17" height="17" viewBox="0 0 17 17" fill="none" transform="rotate(-90)">
+                        <path
                           d="M8.49984 14.875L8.49984 2.125M8.49984 2.125L2.479 8.14583M8.49984 2.125L14.5207 8.14583"
                           stroke={widgetMessage.trim() ? "#FFFFFF" : "#989898"}
                           strokeWidth="2"
@@ -981,6 +977,30 @@ export default function Index() {
                           strokeLinejoin="round"
                         />
                       </svg>
+                    </div>
+
+                    {/* Bottom Action Buttons */}
+                    <div className="absolute bottom-[13px] left-[20px] flex gap-2">
+                      <div className="w-[34px] h-[34px] bg-[#F8F8F7] rounded-[17px] flex items-center justify-center cursor-pointer" onClick={() => fileInputRef.current?.click()}>
+                        <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
+                          <path d="M7.00023 0C5.52332 0 4.32178 1.20157 4.32178 2.67846V11.9475C4.32178 13.0792 5.24255 14 6.37431 14C7.50607 14 8.42684 13.0792 8.42684 11.9475V3.34991C8.42684 2.57534 7.79668 1.94513 7.02205 1.94513C6.24749 1.94513 5.6173 2.57532 5.6173 3.34991V11.4686H6.47444V3.34991C6.47444 3.04798 6.7201 2.80227 7.02208 2.80227C7.32407 2.80227 7.56972 3.04795 7.56972 3.34991V11.9474C7.56972 12.6066 7.03346 13.1428 6.37431 13.1428C1.71516 13.1428 5.17892 12.6066 5.17892 11.9474V2.67846C5.17892 1.6742 5.99595 0.857145 7.00023 0.857145C8.00452 0.857145 8.82155 1.6742 8.82155 2.67846V11.4686H9.67869V2.67846C9.67869 1.20157 8.47715 0 7.00023 0Z" fill="black"/>
+                        </svg>
+                      </div>
+                      <div className="w-[34px] h-[34px] bg-[#F8F8F7] rounded-[17px] flex items-center justify-center cursor-pointer" onClick={() => setShowWidgetEmojiPanel(!showWidgetEmojiPanel)}>
+                        <svg width="17" height="17" viewBox="0 0 17 17" fill="none">
+                          <g clipPath="url(#clip0_emoji)">
+                            <path d="M8.49984 15.5834C4.58782 15.5834 1.4165 12.412 1.4165 8.50002C1.4165 4.588 4.58782 1.41669 8.49984 1.41669C12.4118 1.41669 15.5832 4.588 15.5832 8.50002C15.5832 12.412 12.4118 15.5834 8.49984 15.5834Z" stroke="black" strokeWidth="1.1" strokeLinecap="round" strokeLinejoin="round"/>
+                            <path d="M11.6875 10.2708C11.6875 10.2708 10.625 11.6875 8.5 11.6875C6.375 11.6875 5.3125 10.2708 5.3125 10.2708" stroke="black" strokeWidth="1.1" strokeLinecap="round" strokeLinejoin="round"/>
+                            <path d="M10.9792 6.37502C10.7836 6.37502 10.625 6.21645 10.625 6.02085C10.625 5.82525 10.7836 5.66669 10.9792 5.66669C11.1747 5.66669 11.3333 5.82525 11.3333 6.02085C11.3333 6.21645 11.1747 6.37502 10.9792 6.37502Z" fill="black" stroke="black" strokeWidth="1.1" strokeLinecap="round" strokeLinejoin="round"/>
+                            <path d="M6.02067 6.37502C5.82507 6.37502 5.6665 6.21645 5.6665 6.02085C5.6665 5.82525 5.82507 5.66669 6.02067 5.66669C6.21627 5.66669 6.37484 5.82525 6.37484 6.02085C6.37484 6.21645 6.21627 6.37502 6.02067 6.37502Z" fill="black" stroke="black" strokeWidth="1.1" strokeLinecap="round" strokeLinejoin="round"/>
+                          </g>
+                          <defs>
+                            <clipPath id="clip0_emoji">
+                              <rect width="17" height="17" fill="white"/>
+                            </clipPath>
+                          </defs>
+                        </svg>
+                      </div>
                     </div>
                   </div>
                 </div>
