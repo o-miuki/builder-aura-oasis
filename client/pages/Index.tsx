@@ -661,14 +661,14 @@ export default function Index() {
 
         {/* Message Input Area */}
                 <div className="p-6">
-          <div className="bg-white border border-[#F1F1F1] rounded-[33px] relative h-[129px]" style={{fontFamily: "'Saans TRIAL', -apple-system, Roboto, Helvetica, sans-serif"}}>
+          <div className="bg-white border border-[#F1F1F1] rounded-[33px] relative h-[129px] flex flex-col justify-start items-start pr-[11px] pb-[11px]" style={{fontFamily: "'Saans TRIAL', -apple-system, Roboto, Helvetica, sans-serif"}}>
             {/* Input Text */}
             <Input
               value={message}
               onChange={(e) => setMessage(e.target.value)}
               onKeyPress={handleKeyPress}
               placeholder="Insira a sua mensagem"
-              className="absolute top-[14px] left-[24px] right-[24px] border-0 bg-transparent text-[17px] text-[#9B9B9B] placeholder:text-[#9B9B9B] focus-visible:ring-0 px-0 font-normal h-auto w-[87%]"
+              className="absolute top-[14px] left-[24px] right-[24px] border-0 bg-transparent text-[17px] text-[#9B9B9B] placeholder:text-[#9B9B9B] focus-visible:ring-0 px-0 font-normal h-auto w-[80%]"
               style={{fontWeight: 380}}
             />
 
