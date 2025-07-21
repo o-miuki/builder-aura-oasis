@@ -543,7 +543,7 @@ export default function Index() {
               <div className="flex items-start gap-3">
                 <div className="relative flex flex-col">
                   {conv.unread > 0 && (
-                    <div className="bg-white border border-[#F1F1F1] rounded-full text-[#484848] text-xs font-semibold leading-none z-[100] ml-auto -mr-[6px] -mb-[11px] px-[7px] py-[10px] shadow-[0_0_10px_0_rgba(0,0,0,0.12)]">
+                    <div className="bg-white border border-[#F1F1F1] rounded-full text-[#484848] text-xs font-semibold leading-[0] z-[100] ml-auto -mr-[6px] -mb-[11px] p-[7px] shadow-[0_0_10px_0_rgba(0,0,0,0.12)]">
                       {conv.unread}
                     </div>
                   )}
