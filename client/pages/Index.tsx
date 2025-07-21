@@ -749,7 +749,14 @@ export default function Index() {
                   </defs>
                 </svg>
               </div>
-              <div className="w-[34px] h-[34px] bg-[#F8F8F7] rounded-[17px] flex items-center justify-center cursor-pointer hover:bg-[#EAEAEA] transition-colors">
+              <div
+                className={`w-[34px] h-[34px] rounded-[17px] flex items-center justify-center cursor-pointer transition-colors ${
+                  isNotesMode
+                    ? 'bg-yellow-400 hover:bg-yellow-500'
+                    : 'bg-[#F8F8F7] hover:bg-[#EAEAEA]'
+                }`}
+                onClick={handleNotesToggle}
+              >
                 <svg width="17" height="17" viewBox="0 0 17 17" fill="none">
                   <path d="M5.66663 9.91669H11.3333" stroke="black" strokeWidth="1.1" strokeLinecap="round" strokeLinejoin="round"/>
                   <path d="M5.66663 7.08331H7.08329" stroke="black" strokeWidth="1.1" strokeLinecap="round" strokeLinejoin="round"/>
