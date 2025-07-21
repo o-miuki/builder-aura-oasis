@@ -39,6 +39,8 @@ export default function Index() {
   const [searchQuery, setSearchQuery] = useState("");
     const [showWidgetEmojiPanel, setShowWidgetEmojiPanel] = useState(false);
   const [showDashboardEmojiPanel, setShowDashboardEmojiPanel] = useState(false);
+  const [isNotesMode, setIsNotesMode] = useState(false);
+  const [currentNotes, setCurrentNotes] = useState("");
   const [previewMessages, setPreviewMessages] = useState<Message[]>([]);
   const [showPreviewMessages, setShowPreviewMessages] = useState(false);
   
