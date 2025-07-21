@@ -473,7 +473,7 @@ export default function Index() {
   };
 
   return (
-    <div className="h-screen bg-[#EFF0EB] flex relative overflow-hidden chat-container" style={{fontFamily: "'Saans TRIAL', -apple-system, Roboto, Helvetica, sans-serif"}}>
+    <div className="h-screen w-full max-w-full bg-[#EFF0EB] flex relative overflow-hidden chat-container" style={{fontFamily: "'Saans TRIAL', -apple-system, Roboto, Helvetica, sans-serif"}}>
       {/* Hidden file input for widget and dashboard */}
       <input
         ref={fileInputRef}
