@@ -247,7 +247,9 @@ export default function Index() {
       ),
     );
 
-        setWidgetMessage("");
+    // Play user send sound
+    playMessageSound('send');
+    setWidgetMessage("");
   };
 
   const handleWidgetKeyPress = (e: React.KeyboardEvent) => {
