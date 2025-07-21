@@ -360,21 +360,38 @@ export default function Index() {
   };
 
   const handleNotesToggle = () => {
-    setIsNotesMode(!isNotesMode);
-    if (!isNotesMode) {
-      // Load current conversation's notes
+    if (isNotesMode && currentNotes.trim()) {
+      // Send notes as hidden message when exiting notes mode
+      const noteMessage: Message = {
+        id: Date.now().toString(),
+        text: currentNotes.trim(),
+        sender: "support",
+        time: "now",
+        timestamp: Date.now(),
+        conversationId: selectedConversation,
+        isOperatorNote: true,
+      };
+
+      setConversations((prev) =>
+        prev.map((conv) =>
+          conv.id === selectedConversation
+            ? {
+                ...conv,
+                messages: [...conv.messages, noteMessage],
+                notes: currentNotes, // Also save to conversation notes
+              }
+            : conv,
+        ),
+      );
+
+      setCurrentNotes(""); // Clear notes input
+    } else if (!isNotesMode) {
+      // Load current conversation's notes when entering notes mode
       const currentConv = conversations.find(c => c.id === selectedConversation);
       setCurrentNotes(currentConv?.notes || "");
-    } else {
-      // Save notes to current conversation
-      setConversations(prev =>
-        prev.map(conv =>
-          conv.id === selectedConversation
-            ? { ...conv, notes: currentNotes }
-            : conv
-        )
-      );
     }
+
+    setIsNotesMode(!isNotesMode);
   };
 
   const getStatusColor = (status: string) => {
