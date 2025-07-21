@@ -625,7 +625,7 @@ export default function Index() {
         </div>
 
         {/* Message Content */}
-        <div className="flex-1 p-6 flex flex-col gap-6 overflow-y-auto">
+        <div className="flex-1 p-6 flex flex-col gap-6 overflow-y-auto my-[21px] -mb-[53px]">
           {currentMessages.length === 0 ? (
             <div className="flex-1 flex items-center justify-center text-gray-500">
               <div className="text-center">
