@@ -334,7 +334,7 @@ export default function Index() {
     }
   };
 
-  const emojis = ['😀', '😃', '😄', '😁', '😆', '😅', '😂', '🤣', '😊', '😇', '🙂', '🙃', '😉', '😌', '😍', '🥰', '😘', '😗', '😙', '😚', '😋', '😛', '😝', '😜', '🤪', '🤨', '🧐', '🤓', '😎', '🤩', '🥳', '😏', '😒', '👍', '👎', '✌️', '🤞', '🤟', '🤘', '🤙', '👌', '🙌', '👏', '🙏', '❤️', '💕', '💖', '💗', '����', '💚', '💛', '🧡', '💜', '🖤', '🤍', '🤎', '💔', '❣️', '💯', '🔥', '✨', '🎉', '🎊'];
+  const emojis = ['😀', '😃', '😄', '😁', '😆', '😅', '😂', '🤣', '😊', '😇', '🙂', '🙃', '😉', '😌', '��', '🥰', '😘', '😗', '😙', '😚', '😋', '😛', '😝', '😜', '🤪', '🤨', '🧐', '🤓', '😎', '🤩', '🥳', '😏', '😒', '👍', '👎', '✌️', '🤞', '🤟', '🤘', '🤙', '👌', '🙌', '👏', '🙏', '❤️', '💕', '💖', '💗', '����', '💚', '💛', '🧡', '💜', '🖤', '🤍', '🤎', '💔', '❣️', '💯', '🔥', '✨', '🎉', '🎊'];
 
   const handleEmojiSelect = (emoji: string) => {
     setWidgetMessage(prev => prev + emoji);
@@ -716,13 +716,20 @@ export default function Index() {
 
         {/* Message Input Area */}
                 <div className="p-6">
-          <div className={`bg-white rounded-[33px] relative h-[129px] flex flex-col justify-start items-start pr-[11px] pb-[11px] transition-all ${message.trim() ? 'border-0' : 'border border-[#F1F1F1]'}`} style={{fontFamily: "'Saans TRIAL', -apple-system, Roboto, Helvetica, sans-serif"}}>
+          <div
+            className={`rounded-[33px] relative h-[129px] flex flex-col justify-start items-start pr-[11px] pb-[11px] transition-all ${
+              isNotesMode
+                ? 'bg-yellow-100 border border-yellow-300'
+                : `bg-white ${message.trim() || currentNotes.trim() ? 'border-0' : 'border border-[#F1F1F1]'}`
+            }`}
+            style={{fontFamily: "'Saans TRIAL', -apple-system, Roboto, Helvetica, sans-serif"}}
+          >
             {/* Input Text */}
             <Input
-              value={message}
-              onChange={(e) => setMessage(e.target.value)}
-              onKeyPress={handleKeyPress}
-              placeholder="Insira a sua mensagem"
+              value={isNotesMode ? currentNotes : message}
+              onChange={(e) => isNotesMode ? setCurrentNotes(e.target.value) : setMessage(e.target.value)}
+              onKeyPress={isNotesMode ? undefined : handleKeyPress}
+              placeholder={isNotesMode ? "Adicionar notas da conversa (não visível para o usuário)" : "Insira a sua mensagem"}
               className="absolute top-[14px] left-[24px] right-[24px] border-0 bg-transparent text-[17px] text-[#9B9B9B] placeholder:text-[#9B9B9B] focus-visible:ring-0 px-0 font-normal h-auto w-[80%]"
               style={{fontWeight: 380}}
             />
