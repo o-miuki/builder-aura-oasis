@@ -13,6 +13,7 @@ interface Message {
   conversationId: string;
   fileUrl?: string;
   fileType?: string;
+  isOperatorNote?: boolean;
 }
 
 interface Conversation {
