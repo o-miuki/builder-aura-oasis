@@ -24,6 +24,7 @@ interface Conversation {
   messages: Message[];
   status: "open" | "pending" | "resolved";
   isWidget?: boolean;
+  notes?: string;
 }
 
 export default function Index() {
