@@ -474,6 +474,15 @@ export default function Index() {
     audio.play().catch(error => console.log('Audio play failed:', error));
   };
 
+  const downloadFile = (fileUrl: string, fileName: string) => {
+    const link = document.createElement('a');
+    link.href = fileUrl;
+    link.download = fileName;
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+  };
+
   const renderFilePreview = (message: Message) => {
     if (!message.fileUrl || !message.fileType) return message.text;
 
@@ -491,7 +500,21 @@ export default function Index() {
       );
     }
 
-    return message.text;
+    // For non-image files, make them downloadable
+    const fileName = message.text.replace(/^📎\s/, '').replace(/^🖼️\s/, '');
+    return (
+      <div className="space-y-1">
+        <div className="flex items-center gap-2">
+          <span>📎</span>
+          <span
+            className="text-blue-600 underline cursor-pointer hover:text-blue-800"
+            onClick={() => downloadFile(message.fileUrl!, fileName)}
+          >
+            {fileName}
+          </span>
+        </div>
+      </div>
+    );
   };
 
   return (
