@@ -423,6 +423,26 @@ export default function Index() {
     return `https://tapback.co/api/avatar.webp?seed=${encodeURIComponent(seed)}`;
   };
 
+  const renderFilePreview = (message: Message) => {
+    if (!message.fileUrl || !message.fileType) return message.text;
+
+    if (message.fileType.startsWith('image/')) {
+      return (
+        <div className="space-y-2">
+          <img
+            src={message.fileUrl}
+            alt={message.text}
+            className="max-w-[200px] max-h-[150px] rounded-lg cursor-pointer object-cover"
+            onClick={() => setLightboxImage(message.fileUrl || null)}
+          />
+          <p className="text-sm text-gray-600">{message.text}</p>
+        </div>
+      );
+    }
+
+    return message.text;
+  };
+
   return (
     <div className="h-screen bg-[#EFF0EB] flex relative overflow-hidden" style={{fontFamily: "'Saans TRIAL', -apple-system, Roboto, Helvetica, sans-serif"}}>
       {/* Hidden file input for widget and dashboard */}
