@@ -302,7 +302,7 @@ export default function Index() {
     }
   };
 
-  const emojis = ['���', '😃', '😄', '😁', '😆', '😅', '😂', '🤣', '😊', '😇', '🙂', '🙃', '😉', '😌', '😍', '🥰', '😘', '😗', '😙', '😚', '😋', '😛', '😝', '😜', '🤪', '🤨', '🧐', '🤓', '😎', '🤩', '🥳', '😏', '😒', '👍', '👎', '✌️', '🤞', '🤟', '🤘', '🤙', '👌', '🙌', '👏', '🙏', '❤️', '💕', '💖', '💗', '����', '💚', '💛', '🧡', '💜', '🖤', '🤍', '🤎', '💔', '❣️', '💯', '🔥', '✨', '🎉', '🎊'];
+  const emojis = ['😀', '😃', '😄', '😁', '😆', '😅', '😂', '🤣', '😊', '😇', '🙂', '🙃', '😉', '😌', '😍', '🥰', '😘', '😗', '😙', '😚', '😋', '😛', '😝', '😜', '🤪', '🤨', '🧐', '🤓', '😎', '🤩', '🥳', '😏', '😒', '👍', '👎', '✌️', '🤞', '🤟', '🤘', '🤙', '👌', '🙌', '👏', '🙏', '❤️', '💕', '💖', '💗', '����', '💚', '💛', '🧡', '💜', '🖤', '🤍', '🤎', '💔', '❣️', '💯', '🔥', '✨', '🎉', '🎊'];
 
   const handleEmojiSelect = (emoji: string) => {
     setWidgetMessage(prev => prev + emoji);
@@ -857,7 +857,7 @@ export default function Index() {
                     <button className="w-full text-left p-4 rounded-[14px] border border-[#EAEAEA] bg-white text-[15px] text-black cursor-pointer mb-3 font-normal transition-colors hover:bg-[#F9F9F9]">
                       Configurar dns do domínio
                     </button>
-                    <button className="w-full text-left p-4 rounded-[14px] border border-[#EAEAEA] bg-white text-[15px] text-black cursor-pointer mb-3 font-normal transition-colors hover:bg-[#F9F9F9]">
+                    <button className="w-full text-left p-4 rounded-[14px] border-[0.8px] border-black bg-white text-[15px] text-black cursor-pointer mb-3 font-light transition-colors hover:bg-[#F9F9F9]">
                       Acessar base de conhecimento
                     </button>
                   </div>
