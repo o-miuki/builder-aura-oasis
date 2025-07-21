@@ -347,7 +347,7 @@ export default function Index() {
     }
   };
 
-  const emojis = ['😀', '😃', '😄', '😁', '😆', '😅', '😂', '🤣', '😊', '😇', '🙂', '🙃', '😉', '😌', '😍', '🥰', '😘', '😗', '😙', '😚', '😋', '😛', '😝', '😜', '🤪', '🤨', '🧐', '🤓', '😎', '🤩', '��', '😏', '😒', '👍', '👎', '✌️', '🤞', '🤟', '🤘', '🤙', '👌', '🙌', '��', '🙏', '❤️', '💕', '💖', '💗', '����', '💚', '💛', '🧡', '💜', '🖤', '🤍', '🤎', '💔', '❣️', '��', '🔥', '✨', '🎉', '🎊'];
+  const emojis = ['😀', '😃', '😄', '😁', '😆', '😅', '😂', '🤣', '😊', '😇', '🙂', '🙃', '😉', '😌', '😍', '🥰', '😘', '😗', '😙', '😚', '😋', '😛', '😝', '😜', '🤪', '🤨', '🧐', '🤓', '😎', '🤩', '��', '😏', '😒', '👍', '👎', '✌️', '🤞', '🤟', '🤘', '���', '👌', '🙌', '��', '🙏', '❤️', '💕', '💖', '💗', '����', '💚', '💛', '🧡', '💜', '🖤', '🤍', '🤎', '💔', '❣️', '��', '🔥', '✨', '🎉', '🎊'];
 
   const handleEmojiSelect = (emoji: string) => {
     setWidgetMessage(prev => prev + emoji);
@@ -1113,10 +1113,10 @@ export default function Index() {
                     <div key={msg.id} className={`mb-6 ${msg.sender === "user" ? "flex justify-end" : "flex justify-start"}`}>
                       <div className={`${
                         msg.sender === "user"
-                          ? "w-full max-w-[193px] min-h-[59px] bg-black text-white rounded-[21px] p-4 flex items-center"
+                          ? "w-full max-w-[193px] bg-black text-white rounded-[21px] p-4"
                           : "w-full max-w-[332px] bg-[rgba(0,0,0,0.03)] rounded-[21px] p-4"
                       }`}>
-                        <div className={`text-[16px] font-normal ${
+                        <div className={`text-[16px] font-normal break-words ${
                           msg.sender === "user" ? "text-white" : "text-black"
                         }`} style={{fontFamily: "'Saans TRIAL', -apple-system, Roboto, Helvetica, sans-serif", fontWeight: 300}}>
                           {renderFilePreview(msg)}
