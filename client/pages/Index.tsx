@@ -346,7 +346,7 @@ export default function Index() {
     }
   };
 
-  const emojis = ['😀', '😃', '😄', '😁', '😆', '😅', '😂', '🤣', '😊', '😇', '🙂', '🙃', '😉', '😌', '😍', '🥰', '😘', '😗', '😙', '😚', '😋', '😛', '😝', '😜', '🤪', '🤨', '🧐', '🤓', '😎', '🤩', '��', '😏', '😒', '👍', '👎', '✌️', '🤞', '🤟', '🤘', '🤙', '👌', '🙌', '��', '🙏', '❤️', '💕', '💖', '💗', '����', '💚', '💛', '🧡', '💜', '🖤', '🤍', '🤎', '💔', '❣️', '💯', '🔥', '✨', '🎉', '🎊'];
+  const emojis = ['😀', '😃', '😄', '😁', '😆', '😅', '😂', '🤣', '😊', '😇', '🙂', '🙃', '😉', '😌', '😍', '🥰', '😘', '😗', '😙', '😚', '😋', '😛', '😝', '😜', '🤪', '🤨', '🧐', '🤓', '😎', '🤩', '��', '😏', '😒', '👍', '👎', '✌️', '🤞', '🤟', '🤘', '🤙', '👌', '🙌', '��', '🙏', '❤️', '💕', '💖', '💗', '����', '💚', '💛', '🧡', '💜', '🖤', '🤍', '🤎', '💔', '❣️', '��', '🔥', '✨', '🎉', '🎊'];
 
   const handleEmojiSelect = (emoji: string) => {
     setWidgetMessage(prev => prev + emoji);
@@ -1030,20 +1030,44 @@ export default function Index() {
                     <div className="font-normal text-[16px] text-[#1A1A1A]" style={{fontFamily: "'Saans TRIAL', -apple-system, Roboto, Helvetica, sans-serif", fontWeight: 380}}>Support Team</div>
                     <div className="text-[11px] text-[rgba(0,0,0,0.57)] font-normal" style={{fontFamily: "'Saans TRIAL', -apple-system, Roboto, Helvetica, sans-serif", fontWeight: 380}}>Responde em minutos</div>
                   </div>
-                  <div className="w-[129px] h-[31px] flex items-center bg-white border border-[#F1F1F1] rounded-[11px] shadow-[0_0_12.9px_0_rgba(0,0,0,0.07)] cursor-pointer px-3">
-                    <svg width="13" height="13" viewBox="0 0 13 13" fill="none" className="mr-2">
-                      <g clipPath="url(#clip0_download)">
-                        <path d="M4.875 9.20837H8.125" stroke="black" strokeWidth="0.8" strokeLinecap="round" strokeLinejoin="round"/>
-                        <path d="M6.49984 3.25V7.04167M6.49984 7.04167L8.39567 5.14583M6.49984 7.04167L4.604 5.14583" stroke="black" strokeWidth="0.8" strokeLinecap="round" strokeLinejoin="round"/>
-                        <path d="M6.50016 11.9167C9.49168 11.9167 11.9168 9.49156 11.9168 6.50004C11.9168 3.5085 9.49168 1.08337 6.50016 1.08337C3.50862 1.08337 1.0835 3.5085 1.0835 6.50004C1.0835 9.49156 3.50862 11.9167 6.50016 11.9167Z" stroke="black" strokeWidth="0.8" strokeLinecap="round" strokeLinejoin="round"/>
-                      </g>
-                      <defs>
-                        <clipPath id="clip0_download">
-                          <rect width="13" height="13" fill="white"/>
-                        </clipPath>
-                      </defs>
-                    </svg>
-                    <span className="text-[11px] text-black font-normal" style={{fontFamily: "'Saans TRIAL', -apple-system, Roboto, Helvetica, sans-serif", fontWeight: 300}}>Baixar transcrição</span>
+                  <div className="relative">
+                    <div
+                      onClick={() => setShowWidgetDropdown(!showWidgetDropdown)}
+                      className="cursor-pointer"
+                    >
+                      <svg xmlns="http://www.w3.org/2000/svg" width="33" height="33" viewBox="0 0 33 33" fill="none">
+                        <path d="M25.2623 19.1925C26.1955 19.1925 26.9523 18.4357 26.9523 17.5025C26.9523 16.5693 26.1955 15.8125 25.2623 15.8125C24.329 15.8125 23.5723 16.5693 23.5723 17.5025C23.5723 18.4357 24.329 19.1925 25.2623 19.1925Z" fill="#7A7A7A" stroke="#7A7A7A" strokeWidth="1.1" strokeLinecap="round" strokeLinejoin="round"/>
+                        <path d="M15.8824 19.1925C16.8156 19.1925 17.5724 18.4357 17.5724 17.5025C17.5724 16.5693 16.8156 15.8125 15.8824 15.8125C14.9492 15.8125 14.1924 16.5693 14.1924 17.5025C14.1924 18.4357 14.9492 19.1925 15.8824 19.1925Z" fill="#7A7A7A" stroke="#7A7A7A" strokeWidth="1.1" strokeLinecap="round" strokeLinejoin="round"/>
+                        <path d="M6.5025 19.1925C7.43585 19.1925 8.1925 18.4357 8.1925 17.5025C8.1925 16.5693 7.43585 15.8125 6.5025 15.8125C5.56915 15.8125 4.8125 16.5693 4.8125 17.5025C4.8125 18.4357 5.56915 19.1925 6.5025 19.1925Z" fill="#7A7A7A" stroke="#7A7A7A" strokeWidth="1.1" strokeLinecap="round" strokeLinejoin="round"/>
+                      </svg>
+                    </div>
+
+                    {/* Dropdown Menu */}
+                    {showWidgetDropdown && (
+                      <div className="absolute top-full right-0 mt-2 w-[160px] bg-white border border-[#F1F1F1] rounded-[11px] shadow-[0_0_12.9px_0_rgba(0,0,0,0.07)] z-20">
+                        <div
+                          className="flex items-center p-3 hover:bg-gray-50 cursor-pointer"
+                          onClick={() => {
+                            // Handle download transcript
+                            setShowWidgetDropdown(false);
+                          }}
+                        >
+                          <svg width="13" height="13" viewBox="0 0 13 13" fill="none" className="mr-2">
+                            <g clipPath="url(#clip0_download)">
+                              <path d="M4.875 9.20837H8.125" stroke="black" strokeWidth="0.8" strokeLinecap="round" strokeLinejoin="round"/>
+                              <path d="M6.49984 3.25V7.04167M6.49984 7.04167L8.39567 5.14583M6.49984 7.04167L4.604 5.14583" stroke="black" strokeWidth="0.8" strokeLinecap="round" strokeLinejoin="round"/>
+                              <path d="M6.50016 11.9167C9.49168 11.9167 11.9168 9.49156 11.9168 6.50004C11.9168 3.5085 9.49168 1.08337 6.50016 1.08337C3.50862 1.08337 1.0835 3.5085 1.0835 6.50004C1.0835 9.49156 3.50862 11.9167 6.50016 11.9167Z" stroke="black" strokeWidth="0.8" strokeLinecap="round" strokeLinejoin="round"/>
+                            </g>
+                            <defs>
+                              <clipPath id="clip0_download">
+                                <rect width="13" height="13" fill="white"/>
+                              </clipPath>
+                            </defs>
+                          </svg>
+                          <span className="text-[11px] text-black font-normal" style={{fontFamily: "'Saans TRIAL', -apple-system, Roboto, Helvetica, sans-serif", fontWeight: 300}}>Baixar transcrição</span>
+                        </div>
+                      </div>
+                    )}
                   </div>
                 </div>
 
