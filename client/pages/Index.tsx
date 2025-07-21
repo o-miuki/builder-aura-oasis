@@ -311,38 +311,54 @@ export default function Index() {
         fileType: file.type,
       };
 
-      // Add file message to widget conversation
-      let targetConversation = conversations.find(c => c.isWidget);
-
-      if (!targetConversation) {
-        // Create new widget conversation if it doesn't exist
-        const newConversation: Conversation = {
-          id: "widget-" + Date.now(),
-          name: "Website Visitor",
-          lastMessage: fileText,
-          time: "now",
-          unread: 1,
-          avatar: "",
-          selected: false,
-          status: "open",
-          isWidget: true,
-          messages: [fileMessage],
-        };
-        setConversations(prev => [newConversation, ...prev]);
-      } else {
+      if (isDashboardUpload) {
+        // Handle dashboard file upload (goes to selected conversation as support message)
         setConversations((prev) =>
           prev.map((conv) =>
-            conv.isWidget
+            conv.id === selectedConversation
               ? {
                   ...conv,
                   messages: [...conv.messages, fileMessage],
                   lastMessage: fileText,
                   time: "now",
-                  unread: conv.id !== selectedConversation ? conv.unread + 1 : conv.unread,
                 }
               : conv,
           ),
         );
+      } else {
+        // Handle widget file upload (goes to widget conversation as user message)
+        let targetConversation = conversations.find(c => c.isWidget);
+
+        if (!targetConversation) {
+          // Create new widget conversation if it doesn't exist
+          const newConversation: Conversation = {
+            id: "widget-" + Date.now(),
+            name: "Website Visitor",
+            lastMessage: fileText,
+            time: "now",
+            unread: 1,
+            avatar: "",
+            selected: false,
+            status: "open",
+            isWidget: true,
+            messages: [fileMessage],
+          };
+          setConversations(prev => [newConversation, ...prev]);
+        } else {
+          setConversations((prev) =>
+            prev.map((conv) =>
+              conv.isWidget
+                ? {
+                    ...conv,
+                    messages: [...conv.messages, fileMessage],
+                    lastMessage: fileText,
+                    time: "now",
+                    unread: conv.id !== selectedConversation ? conv.unread + 1 : conv.unread,
+                  }
+                : conv,
+            ),
+          );
+        }
         // Play user send sound for file upload
         playMessageSound('send');
       }
@@ -353,7 +369,7 @@ export default function Index() {
     }
   };
 
-  const emojis = ['😀', '😃', '😄', '😁', '😆', '😅', '😂', '🤣', '😊', '😇', '🙂', '🙃', '😉', '😌', '😍', '🥰', '😘', '😗', '😙', '😚', '😋', '😛', '😝', '😜', '🤪', '🤨', '🧐', '🤓', '😎', '🤩', '��', '😏', '😒', '👍', '👎', '✌️', '🤞', '🤟', '🤘', '🤙', '����', '🙌', '��', '🙏', '❤️', '💕', '💖', '💗', '����', '💚', '💛', '🧡', '💜', '🖤', '🤍', '🤎', '💔', '❣��', '��', '🔥', '✨', '🎉', '🎊'];
+  const emojis = ['😀', '😃', '😄', '😁', '😆', '😅', '😂', '🤣', '😊', '😇', '🙂', '🙃', '😉', '😌', '😍', '🥰', '😘', '😗', '😙', '😚', '😋', '😛', '😝', '😜', '🤪', '🤨', '🧐', '🤓', '😎', '🤩', '��', '😏', '😒', '👍', '👎', '✌️', '🤞', '🤟', '🤘', '🤙', '����', '🙌', '��', '🙏', '❤️', '💕', '💖', '💗', '����', '💚', '💛', '🧡', '💜', '🖤', '🤍', '🤎', '💔', '❣️', '��', '🔥', '✨', '🎉', '🎊'];
 
   const handleEmojiSelect = (emoji: string) => {
     setWidgetMessage(prev => prev + emoji);
