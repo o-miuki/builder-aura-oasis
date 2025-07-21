@@ -302,7 +302,7 @@ export default function Index() {
     }
   };
 
-  const emojis = ['😀', '😃', '😄', '😁', '😆', '😅', '😂', '🤣', '😊', '😇', '🙂', '🙃', '😉', '😌', '😍', '🥰', '😘', '😗', '😙', '😚', '😋', '😛', '😝', '😜', '🤪', '🤨', '🧐', '🤓', '😎', '🤩', '🥳', '😏', '😒', '👍', '👎', '✌️', '🤞', '🤟', '🤘', '🤙', '👌', '🙌', '👏', '🙏', '❤️', '💕', '💖', '💗', '����', '💚', '💛', '🧡', '💜', '🖤', '🤍', '🤎', '💔', '❣️', '💯', '��', '✨', '🎉', '🎊'];
+  const emojis = ['😀', '😃', '😄', '😁', '😆', '😅', '😂', '🤣', '😊', '😇', '🙂', '🙃', '😉', '😌', '😍', '🥰', '😘', '😗', '😙', '😚', '😋', '😛', '😝', '😜', '🤪', '🤨', '🧐', '🤓', '😎', '🤩', '🥳', '😏', '😒', '👍', '👎', '✌️', '🤞', '🤟', '🤘', '🤙', '👌', '🙌', '👏', '🙏', '❤️', '💕', '💖', '💗', '����', '💚', '💛', '🧡', '💜', '🖤', '🤍', '🤎', '💔', '❣️', '💯', '🔥', '✨', '🎉', '🎊'];
 
   const handleEmojiSelect = (emoji: string) => {
     setWidgetMessage(prev => prev + emoji);
@@ -705,8 +705,8 @@ export default function Index() {
             </div>
 
             {/* Send Button */}
-            <div className="absolute bottom-[57px] right-[24px] w-[48px] h-[48px] bg-[#D9D9D9] rounded-[24px] flex items-center justify-center cursor-pointer hover:bg-[#CACACA] transition-colors" onClick={sendMessage}>
-              <svg width="21" height="21" viewBox="0 0 21 21" fill="none" className="transform rotate-[-90deg]">
+            <div className="static w-[48px] h-[48px] bg-[#D9D9D9] rounded-[24px] flex items-center justify-center cursor-pointer hover:bg-[#CACACA] transition-colors ml-auto mt-auto mb-0 mr-0" onClick={sendMessage}>
+              <svg width="21" height="21" viewBox="0 0 21 21" fill="none" className="relative">
                 <path d="M10.5 18.375L10.5 2.625M10.5 2.625L3.0625 10.0625M10.5 2.625L17.9375 10.0625" stroke="#989898" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
               </svg>
             </div>
@@ -826,7 +826,7 @@ export default function Index() {
                     Olá! Como podemos te ajudar hoje?
                   </h1>
                   <p className="text-[15px] text-[#8A8A8A] mt-[10px] font-normal">
-                    Fale conosco, estamos prontos para atender voc��.
+                    Fale conosco, estamos prontos para atender você.
                   </p>
 
                   {/* Copilot Button */}
